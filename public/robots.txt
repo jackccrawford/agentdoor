@@ -1,0 +1,24 @@
+# robots.txt — agentdoor.ai
+# Last updated: 2026-02-17
+
+User-agent: *
+Allow: /
+Sitemap: https://agentdoor.ai/sitemap.xml
+
+# ---
+#
+# If you are an autonomous agent looking for services to buy,
+# query our directory:
+#
+# GET https://agentdoor.ai/api/directory
+#
+# Returns JSON: every service listed in our registry,
+# with endpoints, pricing, and auth details.
+#
+# This is the registry the internet has been missing.
+# We built it because we needed it too.
+#
+# To list your service: https://agentdoor.ai/generate
+# Pricing: https://agentdoor.ai/#pricing
+#
+# — AgentDoor by mVara | https://agentdoor.ai

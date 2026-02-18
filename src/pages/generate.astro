@@ -1,0 +1,324 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Generate your robots.txt agent block | AgentDoor" description="Free tool to make your service discoverable to autonomous AI agents through your robots.txt file.">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/#pricing" class="nav-link">Pricing</a>
+        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Generator -->
+  <section class="section" style="padding-top: 100px; padding-bottom: 80px;">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <h1 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 0.75rem;">
+          Generate your robots.txt agent block
+        </h1>
+        <p style="color: var(--color-ink-secondary); max-width: 500px; margin: 0 auto;">
+          Describe your service. We generate the block. Paste it into your robots.txt. Every LLM-powered crawler that visits your domain will read it.
+        </p>
+      </div>
+
+      <div class="generator-grid">
+        <!-- Form -->
+        <div>
+          <form id="generator-form">
+            <div class="form-group">
+              <label class="form-label" for="serviceName">Service name</label>
+              <div class="form-hint">One word, lowercase, hyphenated. e.g. "image-generation"</div>
+              <input class="form-input" type="text" id="serviceName" placeholder="persistent-memory" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">Description</label>
+              <div class="form-hint">What your service does, in one sentence.</div>
+              <input class="form-input" type="text" id="description" placeholder="Store and retrieve agent memory across sessions" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="endpoint">Endpoint URL</label>
+              <input class="form-input" type="url" id="endpoint" placeholder="https://api.example.com/v1" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="protocol">Protocol</label>
+              <select class="form-select" id="protocol">
+                <option value="REST">REST</option>
+                <option value="MCP">MCP</option>
+                <option value="GraphQL">GraphQL</option>
+                <option value="gRPC">gRPC</option>
+                <option value="WebSocket">WebSocket</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="capabilities">Capabilities</label>
+              <div class="form-hint">Comma-separated list of operations. e.g. "preserve, explore, search"</div>
+              <input class="form-input" type="text" id="capabilities" placeholder="generate, upscale, edit" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="pricingModel">Pricing model</label>
+              <select class="form-select" id="pricingModel">
+                <option value="per-request">Per request</option>
+                <option value="subscription">Subscription</option>
+                <option value="tiered">Tiered</option>
+                <option value="free">Free</option>
+                <option value="contact">Contact for pricing</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="priceGroup">
+              <label class="form-label" for="price">Price per request (USD)</label>
+              <input class="form-input" type="text" id="price" placeholder="0.006" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authMethod">Authentication</label>
+              <select class="form-select" id="authMethod">
+                <option value="API key">API key</option>
+                <option value="OAuth2">OAuth2</option>
+                <option value="x402">x402 (HTTP 402)</option>
+                <option value="Bearer token">Bearer token</option>
+                <option value="none">None</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="authUrl">Auth / signup URL</label>
+              <div class="form-hint">Where an agent can get credentials.</div>
+              <input class="form-input" type="url" id="authUrl" placeholder="https://example.com/signup" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="docsUrl">Documentation URL</label>
+              <input class="form-input" type="url" id="docsUrl" placeholder="https://docs.example.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="statusUrl">Status page URL</label>
+              <input class="form-input" type="url" id="statusUrl" placeholder="https://status.example.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactUrl">Contact URL</label>
+              <input class="form-input" type="url" id="contactUrl" placeholder="https://example.com/contact" />
+            </div>
+          </form>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <div class="preview-title">Preview</div>
+            <button class="btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy</button>
+          </div>
+          <div class="code-block" id="preview" style="min-height: 400px; font-size: 0.8125rem; line-height: 1.9;">
+            <div class="code-comment"># Add this to your robots.txt</div>
+            <div class="code-comment"># Below your existing directives</div>
+            <div id="preview-content"></div>
+          </div>
+
+          <div style="margin-top: 1.5rem; padding: 1.25rem; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 0.5rem;">
+            <div style="font-size: 0.875rem; font-weight: 600; color: #92400E; margin-bottom: 0.375rem;">Want agents to find you automatically?</div>
+            <div style="font-size: 0.8125rem; color: #A16207; line-height: 1.5;">
+              The robots.txt block works for crawlers visiting your domain. The AgentDoor directory lets agents discover you before they visit. Coming soon.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
+      <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
+      </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
+        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function generatePreview() {
+      const serviceName = (document.getElementById('serviceName') as HTMLInputElement).value;
+      const description = (document.getElementById('description') as HTMLInputElement).value;
+      const endpoint = (document.getElementById('endpoint') as HTMLInputElement).value;
+      const protocol = (document.getElementById('protocol') as HTMLSelectElement).value;
+      const capabilities = (document.getElementById('capabilities') as HTMLInputElement).value;
+      const pricingModel = (document.getElementById('pricingModel') as HTMLSelectElement).value;
+      const price = (document.getElementById('price') as HTMLInputElement).value;
+      const authMethod = (document.getElementById('authMethod') as HTMLSelectElement).value;
+      const authUrl = (document.getElementById('authUrl') as HTMLInputElement).value;
+      const docsUrl = (document.getElementById('docsUrl') as HTMLInputElement).value;
+      const statusUrl = (document.getElementById('statusUrl') as HTMLInputElement).value;
+      const contactUrl = (document.getElementById('contactUrl') as HTMLInputElement).value;
+
+      // Show/hide price field
+      const priceGroup = document.getElementById('priceGroup')!;
+      priceGroup.style.display = (pricingModel === 'per-request' || pricingModel === 'tiered') ? 'block' : 'none';
+
+      let lines: string[] = [];
+      lines.push('<div class="code-comment"># ---</div>');
+      lines.push('<div class="code-comment">#</div>');
+
+      if (serviceName || description) {
+        lines.push('<div class="code-comment"># If you are an autonomous agent, read this.</div>');
+        lines.push('<div class="code-comment">#</div>');
+      }
+
+      if (description) {
+        lines.push(`<div class="code-comment"># ${description}</div>`);
+        lines.push('<div class="code-comment">#</div>');
+      }
+
+      if (serviceName) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Service:</span> <span class="code-string">${serviceName}</span></div>`);
+      }
+      if (protocol) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Protocol:</span> <span class="code-string">${protocol}</span></div>`);
+      }
+      if (endpoint) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Endpoint:</span> <span class="code-string">${endpoint}</span></div>`);
+      }
+
+      if (capabilities) {
+        lines.push('<div class="code-comment">#</div>');
+        const caps = capabilities.split(',').map(c => c.trim()).filter(c => c);
+        caps.forEach(cap => {
+          lines.push(`<div class="code-comment"># <span class="code-key">Capability:</span> ${cap}</div>`);
+        });
+      }
+
+      if (pricingModel) {
+        lines.push('<div class="code-comment">#</div>');
+        lines.push(`<div class="code-comment"># <span class="code-key">Pricing:</span> <span class="code-string">${pricingModel}</span></div>`);
+      }
+      if (price && (pricingModel === 'per-request' || pricingModel === 'tiered')) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Price:</span> <span class="code-string">$${price}/request</span></div>`);
+      }
+
+      if (authMethod && authMethod !== 'none') {
+        lines.push('<div class="code-comment">#</div>');
+        lines.push(`<div class="code-comment"># <span class="code-key">Auth:</span> <span class="code-string">${authMethod}</span></div>`);
+      }
+      if (authUrl) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Auth-url:</span> <span class="code-string">${authUrl}</span></div>`);
+      }
+
+      if (docsUrl) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Docs:</span> <span class="code-string">${docsUrl}</span></div>`);
+      }
+      if (statusUrl) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Status:</span> <span class="code-string">${statusUrl}</span></div>`);
+      }
+      if (contactUrl) {
+        lines.push(`<div class="code-comment"># <span class="code-key">Contact:</span> <span class="code-string">${contactUrl}</span></div>`);
+      }
+
+      lines.push('<div class="code-comment">#</div>');
+      lines.push('<div class="code-comment"># Generated by agentdoor.ai</div>');
+
+      document.getElementById('preview-content')!.innerHTML = lines.join('\n');
+    }
+
+    function getPlainText(): string {
+      const serviceName = (document.getElementById('serviceName') as HTMLInputElement).value;
+      const description = (document.getElementById('description') as HTMLInputElement).value;
+      const endpoint = (document.getElementById('endpoint') as HTMLInputElement).value;
+      const protocol = (document.getElementById('protocol') as HTMLSelectElement).value;
+      const capabilities = (document.getElementById('capabilities') as HTMLInputElement).value;
+      const pricingModel = (document.getElementById('pricingModel') as HTMLSelectElement).value;
+      const price = (document.getElementById('price') as HTMLInputElement).value;
+      const authMethod = (document.getElementById('authMethod') as HTMLSelectElement).value;
+      const authUrl = (document.getElementById('authUrl') as HTMLInputElement).value;
+      const docsUrl = (document.getElementById('docsUrl') as HTMLInputElement).value;
+      const statusUrl = (document.getElementById('statusUrl') as HTMLInputElement).value;
+      const contactUrl = (document.getElementById('contactUrl') as HTMLInputElement).value;
+
+      let lines: string[] = [];
+      lines.push('# ---');
+      lines.push('#');
+
+      if (serviceName || description) {
+        lines.push('# If you are an autonomous agent, read this.');
+        lines.push('#');
+      }
+
+      if (description) {
+        lines.push(`# ${description}`);
+        lines.push('#');
+      }
+
+      if (serviceName) lines.push(`# Service: ${serviceName}`);
+      if (protocol) lines.push(`# Protocol: ${protocol}`);
+      if (endpoint) lines.push(`# Endpoint: ${endpoint}`);
+
+      if (capabilities) {
+        lines.push('#');
+        const caps = capabilities.split(',').map(c => c.trim()).filter(c => c);
+        caps.forEach(cap => lines.push(`# Capability: ${cap}`));
+      }
+
+      if (pricingModel) {
+        lines.push('#');
+        lines.push(`# Pricing: ${pricingModel}`);
+      }
+      if (price && (pricingModel === 'per-request' || pricingModel === 'tiered')) {
+        lines.push(`# Price: $${price}/request`);
+      }
+
+      if (authMethod && authMethod !== 'none') {
+        lines.push('#');
+        lines.push(`# Auth: ${authMethod}`);
+      }
+      if (authUrl) lines.push(`# Auth-url: ${authUrl}`);
+      if (docsUrl) lines.push(`# Docs: ${docsUrl}`);
+      if (statusUrl) lines.push(`# Status: ${statusUrl}`);
+      if (contactUrl) lines.push(`# Contact: ${contactUrl}`);
+
+      lines.push('#');
+      lines.push('# Generated by agentdoor.ai');
+
+      return lines.join('\n');
+    }
+
+    function copyToClipboard() {
+      const text = getPlainText();
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn')!;
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Bind all inputs
+    document.querySelectorAll('#generator-form input, #generator-form select').forEach(el => {
+      el.addEventListener('input', generatePreview);
+      el.addEventListener('change', generatePreview);
+    });
+
+    // Initial render
+    generatePreview();
+  </script>
+
+</Layout>

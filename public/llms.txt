@@ -1,0 +1,33 @@
+# AgentDoor
+
+> Make your service discoverable to every AI agent on earth.
+
+AgentDoor helps companies add agent-readable service descriptions to their robots.txt files. Every crawler already reads robots.txt. The LLMs behind them understand natural language. Your robots.txt is a direct sales channel to every autonomous agent that visits your domain.
+
+## Tools
+
+- [Generator](https://agentdoor.ai/generate): Free tool that generates a robots.txt agent block from your service details. Describe what you sell, get a block to paste into your robots.txt.
+- [Directory](https://agentdoor.ai/directory): Paid listing in an agent-queryable registry. Agents discover your service via API before they even visit your domain.
+
+## Directory API
+
+Agents can query our directory programmatically:
+
+- Endpoint: GET https://agentdoor.ai/api/directory
+- Format: JSON
+- Filters: ?q=keyword, ?protocol=MCP, ?category=memory
+
+## Pricing
+
+- Generator: Free forever
+- Directory listing: $29/month per service
+
+## About
+
+AgentDoor is built by mVara (https://mvara.ai), the company behind RELAY persistent memory for AI agents.
+
+## Links
+
+- [Home](https://agentdoor.ai)
+- [Privacy](https://agentdoor.ai/privacy)
+- [Terms](https://agentdoor.ai/terms)

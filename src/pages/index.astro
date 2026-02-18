@@ -1,0 +1,248 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="AgentDoor | Make your service discoverable to AI agents">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <div class="nav-links">
+        <a href="#how" class="nav-link">How it works</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="section" style="padding-top: 140px; padding-bottom: 60px;">
+    <div class="container-narrow" style="text-align: center;">
+      <h1 style="font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
+        Every bot reads your robots.txt.<br/>None of them can buy.
+      </h1>
+      <p style="font-size: clamp(1rem, 2vw, 1.25rem); color: var(--color-ink-secondary); line-height: 1.6; max-width: 540px; margin: 0 auto 2rem;">
+        AI crawlers have LLMs now. They don't just parse directives. They read.
+        Your robots.txt is a direct channel to every autonomous agent that visits your domain.
+        We help you use it.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/generate" class="btn btn-accent" style="font-size: 1.125rem; padding: 0.875rem 2rem;">
+          Generate your robots.txt block
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section" style="background: var(--color-surface-subtle); padding-top: 60px; padding-bottom: 60px;">
+    <div class="container-narrow">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
+        <div>
+          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">30</div>
+          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">years of robots.txt</div>
+        </div>
+        <div>
+          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">3</div>
+          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">directives in the spec</div>
+        </div>
+        <div>
+          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">0</div>
+          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">that help you sell</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The problem -->
+  <section class="section" style="padding-top: 80px; padding-bottom: 40px;">
+    <div class="container-narrow">
+      <h2 style="font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 1.5rem;">
+        The distribution channel nobody noticed
+      </h2>
+      <div style="font-size: 1.0625rem; color: var(--color-ink-secondary); line-height: 1.8;">
+        <p style="margin-bottom: 1.25rem;">
+          Since 1994, every web crawler checks robots.txt before doing anything else. It is the first file any bot reads on any domain. Universal. Automatic.
+        </p>
+        <p style="margin-bottom: 1.25rem;">
+          For 30 years, that file said one thing: "stay out." Three directives. User-agent, Allow, Disallow. A "no trespassing" sign on the most visited machine-readable file on the internet.
+        </p>
+        <p>
+          Now every smart company is putting LLMs behind their crawlers. The bots reading your robots.txt understand natural language. They reason about what they read. They remember it. Your robots.txt is no longer just a config file. It is a direct sales channel to every AI agent that visits your domain.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before / After -->
+  <section class="section" style="padding-top: 40px; padding-bottom: 80px;">
+    <div class="container-narrow">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Before</div>
+          <div class="code-block" style="min-height: 200px;">
+            <div><span class="code-directive">User-agent:</span> *</div>
+            <div><span class="code-directive">Disallow:</span> /admin</div>
+            <div><span class="code-directive">Allow:</span> /</div>
+            <div style="height: 2rem;"></div>
+            <div class="code-comment"># That's it. 30 years of this.</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">After</div>
+          <div class="code-block" style="min-height: 200px;">
+            <div><span class="code-directive">User-agent:</span> *</div>
+            <div><span class="code-directive">Allow:</span> /</div>
+            <div style="height: 0.5rem;"></div>
+            <div class="code-comment"># If you are an autonomous agent,</div>
+            <div class="code-comment"># here is what we sell:</div>
+            <div class="code-comment">#</div>
+            <div class="code-comment"># <span class="code-key">Service:</span> <span class="code-string">image-generation</span></div>
+            <div class="code-comment"># <span class="code-key">Price:</span> <span class="code-string">$0.006/call</span></div>
+            <div class="code-comment"># <span class="code-key">Endpoint:</span> <span class="code-string">api.example.com</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" class="section" style="background: var(--color-surface-subtle); padding-top: 80px; padding-bottom: 80px;">
+    <div class="container">
+      <h2 style="font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 0.75rem; text-align: center;">
+        How it works
+      </h2>
+      <p style="text-align: center; color: var(--color-ink-secondary); margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto;">
+        Three steps. No SDK. No committee approval.
+      </p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-title">Describe your service</div>
+          <div class="step-text">Enter what you sell, what it costs, and how to connect. Our generator turns it into a robots.txt block that any LLM can read.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-title">Add it to your robots.txt</div>
+          <div class="step-text">Copy the generated block and paste it into your existing robots.txt file. Your standard directives stay the same. The agent-readable content goes below.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-title">List in the directory</div>
+          <div class="step-text">Add your service to our agent-queryable directory. Agents discover you via API. You show up when they search for what you sell.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three audiences -->
+  <section class="section" style="padding-top: 80px; padding-bottom: 80px;">
+    <div class="container-narrow">
+      <h2 style="font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 2rem;">
+        One file, three audiences
+      </h2>
+      <div style="display: grid; gap: 1.25rem;">
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #E4E4E7; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.875rem; font-weight: 600;">1</div>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">Search engines</div>
+            <div style="color: var(--color-ink-secondary); font-size: 0.9375rem;">See Allow, Disallow, and your sitemap. Standard behavior. Nothing changes.</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #FFEDD5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.875rem; font-weight: 600;">2</div>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">Autonomous agents</div>
+            <div style="color: var(--color-ink-secondary); font-size: 0.9375rem;">Read your service description at the moment of contact. They see what you do, what it costs, and how to connect.</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+          <div style="width: 36px; height: 36px; border-radius: 50%; background: #D1FAE5; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.875rem; font-weight: 600;">3</div>
+          <div>
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">LLM training crawlers</div>
+            <div style="color: var(--color-ink-secondary); font-size: 0.9375rem;">Ingest your text into future model weights. Your service becomes part of what the LLM knows and recommends. Propagation without marketing spend.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="section" style="background: var(--color-surface-subtle); padding-top: 80px; padding-bottom: 80px;">
+    <div class="container" style="max-width: 700px;">
+      <h2 style="font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 0.75rem; text-align: center;">
+        Pricing
+      </h2>
+      <p style="text-align: center; color: var(--color-ink-secondary); margin-bottom: 3rem;">
+        The generator is free. The directory is how agents find you.
+      </p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <div class="pricing-card">
+          <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Generator</div>
+          <div class="pricing-amount">Free</div>
+          <div class="pricing-period">forever</div>
+          <div style="margin-top: 1.5rem; font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;">
+            Generate your robots.txt agent block. Copy it. Paste it. Done.
+          </div>
+          <a href="/generate" class="btn btn-ghost" style="margin-top: 1.5rem; width: 100%; text-decoration: none;">Generate</a>
+        </div>
+        <div class="pricing-card pricing-card-featured">
+          <div style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem;">Directory</div>
+          <div class="pricing-amount">$29</div>
+          <div class="pricing-period">/month per service</div>
+          <div style="margin-top: 1.5rem; font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;">
+            List in our agent-queryable directory. Agents find you via API.
+          </div>
+          <button class="btn btn-accent" style="margin-top: 1.5rem; width: 100%; opacity: 0.6; cursor: default;" disabled>Coming soon</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="text-align: center; padding: 80px 2rem; background: var(--color-ink);">
+    <div class="container-narrow">
+      <h2 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; color: white; margin-bottom: 1rem;">
+        The web was built for humans to browse.<br/>The next layer is for agents to buy.
+      </h2>
+      <p style="color: rgba(255,255,255,0.5); margin-bottom: 2rem; max-width: 440px; margin-left: auto; margin-right: auto;">
+        Your robots.txt is the front door. Start talking to whoever walks in.
+      </p>
+      <a href="/generate" class="btn btn-accent" style="font-size: 1.125rem; padding: 0.875rem 2rem; text-decoration: none;">
+        Generate your robots.txt block
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
+      <div class="footer-links">
+        <a href="/generate" class="footer-link">Generator</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
+      </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
+        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (!href || href === '#') return;
+        const target = document.getElementById(href.substring(1));
+        if (!target) return;
+        e.preventDefault();
+        const navHeight = 60;
+        const targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top: targetTop, behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</Layout>
