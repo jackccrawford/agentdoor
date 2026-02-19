@@ -85,6 +85,40 @@ body {
   color: var(--color-ink);
 }
 
+/* Blog banner */
+.blog-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #111;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  position: fixed;
+  top: 53px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  transition: background 0.15s;
+}
+.blog-banner:hover { background: #1a1a1a; }
+.blog-banner-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--color-accent);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.blog-banner-text {
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+}
+
 /* Hamburger button — hidden on wide viewports */
 .nav-hamburger {
   display: none;
