@@ -29,19 +29,18 @@ setInterval(() => {
   }
 }, 300000);
 
-const PROMPT_PREFIX = `You are AgentDoor's service analyzer. Given webpage content, extract structured metadata about the service or API described.
-
-Return ONLY valid JSON with these fields (omit any you can't determine):
+const PROMPT_PREFIX = `Given this webpage content, return ONLY valid JSON with these fields (omit any you can't determine):
 
 {
-  "serviceName": "lowercase-hyphenated-name (short, descriptive slug)",
+  "serviceName": "lowercase-hyphenated-name",
+  "pitch": "3-4 sentences for a robots.txt comment block. What it does, how to connect programmatically, and one honest limitation. No marketing. Plain text.",
   "description": "One sentence describing what the service does",
   "endpoint": "The API endpoint URL if found",
-  "protocol": "REST" or "MCP" or "GraphQL" or "gRPC" or "WebSocket",
-  "capabilities": "comma-separated list of key operations or features",
-  "pricingModel": "per-request" or "subscription" or "tiered" or "free" or "contact",
+  "protocol": "REST or MCP or GraphQL or gRPC or WebSocket",
+  "capabilities": "comma-separated list of key operations",
+  "pricingModel": "per-request or subscription or tiered or free or contact",
   "price": "numeric price per unit if applicable",
-  "authMethod": "API key" or "OAuth2" or "Bearer token" or "x402" or "none",
+  "authMethod": "API key or OAuth2 or Bearer token or x402 or none",
   "authUrl": "URL where users sign up or get credentials",
   "docsUrl": "Documentation URL",
   "statusUrl": "Status page URL",
