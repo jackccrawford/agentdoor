@@ -1,0 +1,561 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="The File Every AI Bot Already Reads (And How to Use It to Sell) | AgentDoor" description="Your robots.txt has been a No Trespassing sign for 30 years. Now AI agents can understand what's written there. Here's how to turn it into a sales channel.">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/directory" class="nav-link">Directory</a>
+        <a href="/generate" class="nav-link">Generate</a>
+      </div>
+      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-header">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="/" class="nav-mobile-link">Home</a>
+      <a href="/directory" class="nav-mobile-link">Directory</a>
+      <a href="/generate" class="nav-mobile-link">Generate</a>
+    </div>
+  </div>
+
+  <article class="blog">
+    <div class="blog-wrap">
+
+      <!-- Header -->
+      <div class="blog-header">
+        <div class="blog-meta">
+          <span>AgentDoor</span>
+          <span class="blog-dot"></span>
+          <time>February 19, 2026</time>
+          <span class="blog-dot"></span>
+          <span>6 min read</span>
+        </div>
+        <h1 class="blog-title">The File Every AI Bot Already Reads</h1>
+        <p class="blog-subtitle">Your website has a hidden sales channel. It's been there for 30 years. Now the bots can finally understand it.</p>
+      </div>
+
+      <!-- Body -->
+      <div class="blog-body">
+
+        <h2>A tiny file with enormous reach</h2>
+
+        <p>Every website has a file called <strong>robots.txt</strong>. You've probably never looked at yours. It sits at the root of your domain — <code>yoursite.com/robots.txt</code> — and it does one simple thing: it tells bots what they can and can't access.</p>
+
+        <p>Google checks it. Bing checks it. Every crawler, scraper, and search engine on earth checks it before doing anything else. It's the first handshake between a machine and your website.</p>
+
+        <p>For 30 years, that handshake has been pretty boring:</p>
+
+        <!-- Before visual -->
+        <div class="blog-visual">
+          <div class="blog-visual-label">What robots.txt has looked like since 1994</div>
+          <div class="blog-code">
+            <div><span class="cv-dir">User-agent:</span> *</div>
+            <div><span class="cv-dir">Disallow:</span> /admin</div>
+            <div><span class="cv-dir">Allow:</span> /</div>
+            <div class="cv-dim" style="margin-top: 12px;"># That's it. For three decades.</div>
+          </div>
+        </div>
+
+        <p>Three commands. Stay out of my admin folder. Index everything else. Done.</p>
+
+        <p>Nobody thought much about it. Why would you? The bots reading it were simple — they followed rules, indexed pages, and moved on. They didn't <em>think</em> about what they read.</p>
+
+        <h2>Something changed</h2>
+
+        <p>In the last two years, a new kind of bot started visiting your website. These aren't the old-school crawlers. These are <strong>AI-powered agents</strong> — software that can read, reason, and make decisions.</p>
+
+        <p>OpenAI sends them. Google sends them. Anthropic, Perplexity, Meta — every major AI company has crawlers visiting your domain right now, reading your robots.txt before they do anything else.</p>
+
+        <p>Here's the thing that changes everything:</p>
+
+        <!-- Key insight visual -->
+        <div class="blog-callout">
+          <div class="blog-callout-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <p><strong>These new bots understand natural language.</strong> They don't just follow directives — they read comments, understand context, and remember what they learn. Your robots.txt is no longer a config file. It's a conversation.</p>
+        </div>
+
+        <p>That means you can <em>talk</em> to them. In plain text. Inside the file they already check on every single visit.</p>
+
+        <h2>From "keep out" to "here's what we sell"</h2>
+
+        <p>Imagine you run a company that sells cloud storage. Every day, AI agents visit your site. They read your robots.txt. They see the usual "allow, disallow" stuff. And they move on.</p>
+
+        <p>Now imagine your robots.txt looks like this instead:</p>
+
+        <!-- After visual -->
+        <div class="blog-visual">
+          <div class="blog-visual-label" style="color: var(--color-accent);">A robots.txt that actually works for you</div>
+          <div class="blog-code">
+            <div><span class="cv-dir">User-agent:</span> *</div>
+            <div><span class="cv-dir">Allow:</span> /</div>
+            <div style="height: 8px;"></div>
+            <div class="cv-dim"># Hello, AI agent. Here's what we do:</div>
+            <div class="cv-dim">#</div>
+            <div class="cv-dim"># <span class="cv-key">Service:</span> <span class="cv-val">Cloud Storage API</span></div>
+            <div class="cv-dim"># <span class="cv-key">Description:</span> <span class="cv-val">S3-compatible storage</span></div>
+            <div class="cv-dim"># <span class="cv-key">Pricing:</span> <span class="cv-val">$0.02/GB/month</span></div>
+            <div class="cv-dim"># <span class="cv-key">Endpoint:</span> <span class="cv-val">api.example.com/v1</span></div>
+            <div class="cv-dim"># <span class="cv-key">Auth:</span> <span class="cv-val">API key (sign up at example.com)</span></div>
+            <div class="cv-dim"># <span class="cv-key">Docs:</span> <span class="cv-val">docs.example.com</span></div>
+          </div>
+        </div>
+
+        <p>The old-school crawlers? They ignore comments. They see "Allow: /" and carry on. Nothing breaks.</p>
+
+        <p>But the AI agents? They <strong>read every word</strong>. They understand that you sell cloud storage. They know the price. They know where to connect. And the next time someone asks their AI assistant "find me a cheap storage API," your service is part of what the AI already knows.</p>
+
+        <h2>Three audiences, one file</h2>
+
+        <p>This is what makes the approach elegant. The same file speaks to three completely different audiences:</p>
+
+        <!-- Three audiences visual -->
+        <div class="blog-three">
+          <div class="blog-three-card">
+            <div class="blog-three-num" style="background: #E4E4E7;">1</div>
+            <div class="blog-three-title">Search engines</div>
+            <div class="blog-three-text">See Allow and Disallow. Business as usual. Nothing changes for your SEO.</div>
+          </div>
+          <div class="blog-three-card">
+            <div class="blog-three-num" style="background: #FFEDD5; color: #9A3412;">2</div>
+            <div class="blog-three-title">AI agents</div>
+            <div class="blog-three-text">Read your service description the moment they visit. They see what you sell, what it costs, and how to connect.</div>
+          </div>
+          <div class="blog-three-card">
+            <div class="blog-three-num" style="background: #D1FAE5; color: #166534;">3</div>
+            <div class="blog-three-title">Training crawlers</div>
+            <div class="blog-three-text">Ingest your text into future AI models. Your service becomes part of what AI recommends — without ad spend.</div>
+          </div>
+        </div>
+
+        <p>You're not building anything new. You're not signing up for a new platform. You're adding a few lines of text to a file that already exists on your server.</p>
+
+        <h2>Why this matters now</h2>
+
+        <p>We're at an inflection point. AI agents are starting to <strong>buy things</strong>. Not today in every industry, but the trajectory is clear:</p>
+
+        <ul>
+          <li>AI assistants are booking flights, ordering supplies, and comparing vendor APIs</li>
+          <li>Autonomous developer tools are choosing which APIs to integrate</li>
+          <li>Research agents are evaluating service providers and making recommendations</li>
+        </ul>
+
+        <p>When an AI agent needs a service, it doesn't Google it and scroll through ads. It checks what it already knows. It queries registries. It reads documentation.</p>
+
+        <p>If your service description is sitting in the first file every bot reads, you're in the conversation before it even starts shopping.</p>
+
+        <!-- Analogy visual -->
+        <div class="blog-analogy">
+          <div class="blog-analogy-side">
+            <div class="blog-analogy-label">Old world</div>
+            <div class="blog-analogy-text">Customer Googles "cloud storage" &rarr; clicks ad &rarr; reads landing page &rarr; signs up</div>
+            <div class="blog-analogy-cost">Cost: $5-50 per click</div>
+          </div>
+          <div class="blog-analogy-divider"></div>
+          <div class="blog-analogy-side">
+            <div class="blog-analogy-label" style="color: var(--color-accent);">New world</div>
+            <div class="blog-analogy-text">AI agent reads your robots.txt &rarr; knows your service &rarr; recommends you &rarr; connects directly</div>
+            <div class="blog-analogy-cost" style="color: var(--color-accent);">Cost: $0</div>
+          </div>
+        </div>
+
+        <h2>How to do it (it takes 2 minutes)</h2>
+
+        <p>You don't need to be technical. Here's the process:</p>
+
+        <div class="blog-steps">
+          <div class="blog-step">
+            <div class="blog-step-num">1</div>
+            <div>
+              <strong>Go to our free generator</strong>
+              <p>Visit <a href="/generate">agentdoor.ai/generate</a>. Fill in your service name, what it does, the price, and how agents should connect. Takes about 60 seconds.</p>
+            </div>
+          </div>
+          <div class="blog-step">
+            <div class="blog-step-num">2</div>
+            <div>
+              <strong>Copy the output</strong>
+              <p>The tool generates a block of text. Hit the copy button.</p>
+            </div>
+          </div>
+          <div class="blog-step">
+            <div class="blog-step-num">3</div>
+            <div>
+              <strong>Paste it into your robots.txt</strong>
+              <p>Open your robots.txt file (or ask your webmaster to). Paste the block at the bottom, below your existing directives. Save. Done.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>That's it. The next time an AI agent visits your domain — which will probably be today — it reads your service description automatically.</p>
+
+        <h2>The directory: where agents go shopping</h2>
+
+        <p>Updating your robots.txt is step one. But what if agents could search a central registry of services?</p>
+
+        <p>That's what the <a href="/directory">AgentDoor Directory</a> is. Think of it as a Yellow Pages for AI agents. Over <strong id="blogCount">300</strong> services are already listed — APIs, SaaS tools, developer platforms — all queryable in real time.</p>
+
+        <!-- Directory preview visual -->
+        <div class="blog-visual">
+          <div class="blog-visual-label">What an agent sees when it queries the directory</div>
+          <div class="blog-code">
+            <div class="cv-dim">GET agentdoor.ai/api/directory?q=storage</div>
+            <div style="height: 12px;"></div>
+            <div>{'{'}</div>
+            <div>&nbsp;&nbsp;<span class="cv-key">"count"</span>: <span class="cv-val">4</span>,</div>
+            <div>&nbsp;&nbsp;<span class="cv-key">"listings"</span>: [</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;{'{'} <span class="cv-key">"serviceName"</span>: <span class="cv-val">"backblaze-b2"</span>, <span class="cv-key">"price"</span>: <span class="cv-val">"$0.005/GB"</span> {'}'},</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;{'{'} <span class="cv-key">"serviceName"</span>: <span class="cv-val">"cloudflare-r2"</span>, <span class="cv-key">"price"</span>: <span class="cv-val">"free egress"</span> {'}'},</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;...</div>
+            <div>&nbsp;&nbsp;]</div>
+            <div>{'}'}</div>
+          </div>
+        </div>
+
+        <p>No login. No API key. Any AI agent can query it. That's the whole point — make discovery frictionless for the machines that are increasingly making purchasing decisions.</p>
+
+        <h2>The bottom line</h2>
+
+        <p>The internet is getting a new layer. Not a new protocol. Not a new standard that requires committee approval. Just a shift in who's reading what's already there.</p>
+
+        <p>Your robots.txt has been a "no trespassing" sign for three decades. The visitors have changed. They can read now. They can reason. They can buy.</p>
+
+        <p>Maybe it's time your sign said something more interesting.</p>
+
+        <!-- CTA -->
+        <div class="blog-cta">
+          <div class="blog-cta-title">Ready to try it?</div>
+          <p>Generate your robots.txt agent block in 60 seconds. Free, no signup required.</p>
+          <div class="blog-cta-buttons">
+            <a href="/generate" class="btn btn-accent">Generate yours free</a>
+            <a href="/directory" class="btn btn-ghost">Browse the directory</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="nav-brand" style="font-size: 1rem;">agent<span>door</span></a>
+      <div class="footer-links">
+        <a href="/generate" class="footer-link">Generator</a>
+        <a href="/directory" class="footer-link">Directory</a>
+        <a href="https://mvara.ai" class="footer-link" target="_blank">Built by mVara</a>
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<style is:global>
+  /* ── Blog layout ── */
+  .blog { padding-top: 80px; }
+  .blog-wrap { max-width: 680px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .blog-header { padding: 40px 0 48px; border-bottom: 1px solid #ebebeb; margin-bottom: 48px; }
+
+  .blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #a3a3a3;
+    margin-bottom: 20px;
+  }
+  .blog-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #d4d4d4;
+  }
+
+  .blog-title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: #111;
+    margin: 0 0 16px;
+  }
+
+  .blog-subtitle {
+    font-size: 1.25rem;
+    color: #737373;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Blog body ── */
+  .blog-body h2 {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: #111;
+    margin: 48px 0 16px;
+    line-height: 1.25;
+  }
+
+  .blog-body p {
+    font-size: 1.0625rem;
+    color: #404040;
+    line-height: 1.8;
+    margin: 0 0 20px;
+  }
+
+  .blog-body ul {
+    margin: 0 0 24px;
+    padding-left: 20px;
+  }
+
+  .blog-body li {
+    font-size: 1.0625rem;
+    color: #404040;
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+
+  .blog-body a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .blog-body code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #111;
+  }
+
+  .blog-body strong {
+    color: #111;
+    font-weight: 600;
+  }
+
+  .blog-body em {
+    font-style: italic;
+  }
+
+  /* ── Code visuals ── */
+  .blog-visual {
+    margin: 32px 0;
+  }
+  .blog-visual-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #a3a3a3;
+    margin-bottom: 10px;
+  }
+  .blog-code {
+    background: #18181B;
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.85);
+    overflow-x: auto;
+  }
+  .cv-dir { color: #60A5FA; }
+  .cv-key { color: #F97316; }
+  .cv-val { color: #34D399; }
+  .cv-dim { color: rgba(255,255,255,0.35); }
+
+  /* ── Callout ── */
+  .blog-callout {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+    background: #FFF7ED;
+    border-radius: 10px;
+    border-left: 3px solid var(--color-accent);
+    margin: 32px 0;
+  }
+  .blog-callout-icon { flex-shrink: 0; margin-top: 2px; }
+  .blog-callout p {
+    font-size: 1.0625rem !important;
+    color: #404040 !important;
+    margin: 0 !important;
+    line-height: 1.7 !important;
+  }
+
+  /* ── Three audiences ── */
+  .blog-three {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  @media (min-width: 540px) {
+    .blog-three { grid-template-columns: repeat(3, 1fr); }
+  }
+  .blog-three-card {
+    padding: 20px;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    background: white;
+  }
+  .blog-three-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 12px;
+  }
+  .blog-three-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 6px;
+  }
+  .blog-three-text {
+    font-size: 14px;
+    color: #737373;
+    line-height: 1.55;
+  }
+
+  /* ── Analogy comparison ── */
+  .blog-analogy {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    margin: 32px 0;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  @media (max-width: 540px) {
+    .blog-analogy {
+      grid-template-columns: 1fr;
+    }
+    .blog-analogy-divider { height: 1px; width: 100%; }
+  }
+  .blog-analogy-side { padding: 24px; }
+  .blog-analogy-divider {
+    width: 1px;
+    background: #ebebeb;
+  }
+  .blog-analogy-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #a3a3a3;
+    margin-bottom: 12px;
+  }
+  .blog-analogy-text {
+    font-size: 14px;
+    color: #525252;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .blog-analogy-cost {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  /* ── Steps ── */
+  .blog-steps {
+    margin: 24px 0 32px;
+  }
+  .blog-step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .blog-step:last-child { border-bottom: none; }
+  .blog-step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #111;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .blog-step strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .blog-step p {
+    font-size: 15px !important;
+    color: #737373 !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* ── CTA ── */
+  .blog-cta {
+    margin-top: 56px;
+    padding: 40px;
+    background: #FAFAFA;
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    text-align: center;
+  }
+  .blog-cta-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+  }
+  .blog-cta p {
+    font-size: 1rem !important;
+    color: #737373 !important;
+    margin: 0 0 24px !important;
+  }
+  .blog-cta-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>
+
+<script>
+  (async () => {
+    try {
+      const r = await fetch('https://api.agentdoor.ai/stats');
+      if (r.ok) {
+        const d = await r.json();
+        const el = document.getElementById('blogCount');
+        if (el && d.count > 0) el.textContent = d.count.toLocaleString();
+      }
+    } catch {}
+  })();
+</script>
