@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Terms of Service - AgentDoor">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <div class="nav-links">
+        <a href="/#pricing" class="nav-link">Pricing</a>
+        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+      </div>
+      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-header">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="/" class="nav-mobile-link">Home</a>
+      <a href="/directory" class="nav-mobile-link">Directory</a>
+      <a href="/#pricing" class="nav-mobile-link">Pricing</a>
+      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top: 140px; padding-bottom: 80px;">
+    <div class="container-narrow" style="max-width: 720px;">
+      <a href="/" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-ink-tertiary); text-decoration: none; margin-bottom: 2rem; font-size: 0.9375rem;">
+        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Home
+      </a>
+
+      <h1 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.75rem;">Terms of Service</h1>
+      <p style="color: var(--color-ink-tertiary); margin-bottom: 3rem;">Last Updated: January 1, 2026</p>
+
+      <div style="color: var(--color-ink-secondary); line-height: 1.8; font-size: 1.0625rem;">
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-bottom: 1rem;">Welcome to AgentDoor</h2>
+        <p>These terms and conditions outline the rules and regulations for the use of AgentDoor and the website located at agentdoor.ai.</p>
+        <p style="margin-top: 1rem;">By accessing this website or using AgentDoor, we assume you accept these terms and conditions. Do not continue to use the Service if you do not agree to take all of the terms and conditions stated on this page.</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">Your Data, Your Ownership</h2>
+        <p><strong style="color: var(--color-ink);">You own your data.</strong> All content you create, upload, or generate through AgentDoor -- including service descriptions and robots.txt blocks -- remains your property. We claim no ownership or license to your content beyond what is necessary to provide the Service to you.</p>
+        <p style="margin-top: 1rem;">We will not:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li>Use your content to train our own models, and we select AI providers with strong privacy commitments</li>
+          <li>Sell or share your content with third parties</li>
+          <li>Access your content except as needed to provide support you request</li>
+        </ul>
+        <p style="margin-top: 1rem;">You may export or delete your data at any time.</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">License</h2>
+        <p>Unless otherwise stated, Managed Ventures LLC and/or its licensors own the intellectual property rights for all material on the website. All intellectual property rights are reserved.</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">User Obligations</h2>
+        <p>You must not:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li>Republish material from the AgentDoor website</li>
+          <li>Sell, rent or sub-license material from the website</li>
+          <li>Reproduce, duplicate or copy material from the website</li>
+          <li>Redistribute content from the website</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">Disclaimer</h2>
+        <p>The information and services on the website are provided on an 'as is' basis. Managed Ventures LLC makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties.</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">Governing Law</h2>
+        <p>These terms and conditions are governed by and construed in accordance with the laws of California, USA and you irrevocably submit to the exclusive jurisdiction of the courts in that State.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
+      <div class="footer-links">
+        <a href="/generate" class="footer-link">Generator</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
+      </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
+        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
+      </p>
+    </div>
+  </footer>
+
+</Layout>

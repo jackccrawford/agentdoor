@@ -10,11 +10,30 @@ import Layout from '../layouts/Layout.astro';
       <a href="/" class="nav-brand">agent<span>door</span></a>
       <div class="nav-links">
         <a href="/" class="nav-link">Home</a>
+        <a href="/directory" class="nav-link">Directory</a>
         <a href="/#pricing" class="nav-link">Pricing</a>
         <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
       </div>
+      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
     </div>
   </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-header">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="/" class="nav-mobile-link">Home</a>
+      <a href="/directory" class="nav-mobile-link">Directory</a>
+      <a href="/#pricing" class="nav-mobile-link">Pricing</a>
+      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+    </div>
+  </div>
 
   <!-- Generator -->
   <section class="section" style="padding-top: 100px; padding-bottom: 80px;">
@@ -26,6 +45,26 @@ import Layout from '../layouts/Layout.astro';
         <p style="color: var(--color-ink-secondary); max-width: 500px; margin: 0 auto;">
           Describe your service. We generate the block. Paste it into your robots.txt. Every LLM-powered crawler that visits your domain will read it.
         </p>
+      </div>
+
+      <!-- URL Analyzer -->
+      <div style="max-width: 600px; margin: 0 auto 2.5rem;">
+        <div style="display: flex; gap: 0.75rem;">
+          <input
+            class="form-input"
+            type="url"
+            id="analyzeUrl"
+            placeholder="https://your-service.com"
+            style="flex: 1; margin: 0;"
+          />
+          <button
+            class="btn btn-accent"
+            id="analyzeBtn"
+            type="button"
+            style="white-space: nowrap; padding: 0.625rem 1.5rem;"
+          >Analyze</button>
+        </div>
+        <div id="analyzeStatus" style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem; min-height: 1.25rem;"></div>
       </div>
 
       <div class="generator-grid">
@@ -120,7 +159,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="preview-panel">
           <div class="preview-header">
             <div class="preview-title">Preview</div>
-            <button class="btn-copy" id="copyBtn" onclick="copyToClipboard()">Copy</button>
+            <button class="btn-copy" id="copyBtn">Copy</button>
           </div>
           <div class="code-block" id="preview" style="min-height: 400px; font-size: 0.8125rem; line-height: 1.9;">
             <div class="code-comment"># Add this to your robots.txt</div>
@@ -298,24 +337,226 @@ import Layout from '../layouts/Layout.astro';
       return lines.join('\n');
     }
 
-    function copyToClipboard() {
+    async function copyToClipboard() {
       const text = getPlainText();
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('copyBtn')!;
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
+      const btn = document.getElementById('copyBtn')!;
+
+      try {
+        // Try modern clipboard API first
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          // Fallback: textarea + execCommand
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        btn.innerHTML = '&#10003; Copied';
+        btn.style.background = '#16A34A';
+        btn.style.color = '#fff';
         setTimeout(() => {
           btn.textContent = 'Copy';
-          btn.classList.remove('copied');
+          btn.style.background = '';
+          btn.style.color = '';
         }, 2000);
-      });
+
+        // Register listing in background
+        registerListing();
+      } catch (err) {
+        btn.textContent = 'Failed';
+        btn.style.background = '#DC2626';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 2000);
+      }
     }
 
-    // Bind all inputs
-    document.querySelectorAll('#generator-form input, #generator-form select').forEach(el => {
-      el.addEventListener('input', generatePreview);
-      el.addEventListener('change', generatePreview);
+    // --- URL Analyzer ---
+    const ANALYZE_URL = 'https://api.agentdoor.ai/analyze';
+
+    async function analyzeUrl() {
+      const urlInput = document.getElementById('analyzeUrl') as HTMLInputElement;
+      const btn = document.getElementById('analyzeBtn') as HTMLButtonElement;
+      const status = document.getElementById('analyzeStatus')!;
+      const url = urlInput.value.trim();
+
+      if (!url) {
+        status.textContent = 'Enter a URL to analyze.';
+        status.style.color = 'var(--color-accent)';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Analyzing...';
+      status.textContent = 'Fetching and analyzing page...';
+      status.style.color = 'var(--color-ink-tertiary)';
+
+      try {
+        const res = await fetch(ANALYZE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+          throw new Error(err.error || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // Reset all fields first
+        const defaults: Record<string, string> = {
+          serviceName: '',
+          description: '',
+          endpoint: '',
+          protocol: 'REST',
+          capabilities: '',
+          pricingModel: 'per-request',
+          price: '',
+          authMethod: 'API key',
+          authUrl: '',
+          docsUrl: '',
+          statusUrl: '',
+          contactUrl: '',
+        };
+
+        // Clear everything, then fill with what the LLM returned
+        let filled = 0;
+        for (const [key, defaultVal] of Object.entries(defaults)) {
+          const el = document.getElementById(key) as HTMLInputElement | HTMLSelectElement;
+          if (!el) continue;
+          if (data[key]) {
+            el.value = data[key];
+            filled++;
+          } else {
+            // Reset selects to first option, inputs to empty
+            if (el.tagName === 'SELECT') {
+              (el as HTMLSelectElement).selectedIndex = 0;
+            } else {
+              el.value = '';
+            }
+          }
+        }
+
+        status.textContent = `Done — filled ${filled} field${filled !== 1 ? 's' : ''}. Review and adjust as needed.`;
+        status.style.color = '#16A34A';
+        generatePreview();
+      } catch (err: any) {
+        status.textContent = err.message || 'Failed to analyze URL.';
+        status.style.color = 'var(--color-accent)';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Analyze';
+      }
+    }
+
+    document.getElementById('copyBtn')!.addEventListener('click', copyToClipboard);
+    document.getElementById('analyzeBtn')!.addEventListener('click', analyzeUrl);
+    document.getElementById('analyzeUrl')!.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') {
+        e.preventDefault();
+        analyzeUrl();
+      }
     });
+
+    // --- Session storage: save and restore form state ---
+    const STORAGE_KEY = 'agentdoor_form';
+    const allFields = ['serviceName', 'description', 'endpoint', 'protocol', 'capabilities',
+      'pricingModel', 'price', 'authMethod', 'authUrl', 'docsUrl', 'statusUrl', 'contactUrl'];
+
+    function saveFormState() {
+      const state: Record<string, string> = {};
+      for (const field of allFields) {
+        const el = document.getElementById(field) as HTMLInputElement | HTMLSelectElement;
+        if (el && el.value) state[field] = el.value;
+      }
+      const analyzeInput = document.getElementById('analyzeUrl') as HTMLInputElement;
+      if (analyzeInput && analyzeInput.value) state._source = analyzeInput.value;
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function restoreFormState() {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      try {
+        const state = JSON.parse(raw);
+        let restored = false;
+        for (const field of allFields) {
+          if (state[field]) {
+            const el = document.getElementById(field) as HTMLInputElement | HTMLSelectElement;
+            if (el) { el.value = state[field]; restored = true; }
+          }
+        }
+        if (state._source) {
+          (document.getElementById('analyzeUrl') as HTMLInputElement).value = state._source;
+        }
+        return restored;
+      } catch { return false; }
+    }
+
+    // Bind all inputs — save state on every change
+    document.querySelectorAll('#generator-form input, #generator-form select').forEach(el => {
+      el.addEventListener('input', () => { generatePreview(); saveFormState(); });
+      el.addEventListener('change', () => { generatePreview(); saveFormState(); });
+    });
+
+    // --- Load from URL params (coming from homepage hero) ---
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('serviceName') || params.has('source')) {
+      for (const field of allFields) {
+        const val = params.get(field);
+        if (val) {
+          const el = document.getElementById(field) as HTMLInputElement | HTMLSelectElement;
+          if (el) el.value = val;
+        }
+      }
+
+      const source = params.get('source');
+      if (source) {
+        (document.getElementById('analyzeUrl') as HTMLInputElement).value = source;
+      }
+
+      const status = document.getElementById('analyzeStatus')!;
+      status.textContent = 'Auto-filled from your website. Review and copy when ready.';
+      status.style.color = '#16A34A';
+      saveFormState();
+    } else {
+      // No URL params — try restoring from session storage
+      if (restoreFormState()) {
+        const status = document.getElementById('analyzeStatus')!;
+        status.textContent = 'Restored your previous work.';
+        status.style.color = 'var(--color-ink-tertiary)';
+      }
+    }
+
+    // --- Register listing (called from copyToClipboard on success) ---
+    function registerListing() {
+      const listing: Record<string, string> = {};
+      for (const f of allFields) {
+        const el = document.getElementById(f) as HTMLInputElement | HTMLSelectElement;
+        if (el && el.value) listing[f] = el.value;
+      }
+      const analyzeInput = document.getElementById('analyzeUrl') as HTMLInputElement;
+      if (analyzeInput && analyzeInput.value) listing.url = analyzeInput.value;
+
+      if (listing.serviceName) {
+        fetch('https://api.agentdoor.ai/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(listing),
+        }).catch(() => {});
+      }
+    }
 
     // Initial render
     generatePreview();

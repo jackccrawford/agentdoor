@@ -18,6 +18,7 @@ const siteUrl = "https://agentdoor.ai";
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
   <meta name="description" content={description} />
 
@@ -44,5 +45,29 @@ const siteUrl = "https://agentdoor.ai";
 </head>
 <body>
   <slot />
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const open = document.getElementById('navOpen');
+      const close = document.getElementById('navClose');
+      const overlay = document.getElementById('navOverlay');
+      const mobile = document.getElementById('navMobile');
+      if (!open || !close || !overlay || !mobile) return;
+
+      function show() {
+        overlay.classList.add('open');
+        mobile.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function hide() {
+        overlay.classList.remove('open');
+        mobile.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      open.addEventListener('click', show);
+      close.addEventListener('click', hide);
+      overlay.addEventListener('click', hide);
+      mobile.querySelectorAll('.nav-mobile-link').forEach(a => a.addEventListener('click', hide));
+    });
+  </script>
 </body>
 </html>

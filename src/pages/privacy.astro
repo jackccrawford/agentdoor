@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Privacy Policy - AgentDoor">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <div class="nav-links">
+        <a href="/#pricing" class="nav-link">Pricing</a>
+        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+      </div>
+      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-header">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="/" class="nav-mobile-link">Home</a>
+      <a href="/directory" class="nav-mobile-link">Directory</a>
+      <a href="/#pricing" class="nav-mobile-link">Pricing</a>
+      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top: 140px; padding-bottom: 80px;">
+    <div class="container-narrow" style="max-width: 720px;">
+      <a href="/" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-ink-tertiary); text-decoration: none; margin-bottom: 2rem; font-size: 0.9375rem;">
+        <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Home
+      </a>
+
+      <h1 style="font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.75rem;">Privacy Policy</h1>
+      <p style="color: var(--color-ink-tertiary); margin-bottom: 3rem;">Effective Date: January 1, 2026</p>
+
+      <div style="color: var(--color-ink-secondary); line-height: 1.8; font-size: 1.0625rem;">
+        <p><strong style="color: var(--color-ink);">Managed Ventures LLC d/b/a mVara</strong> ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use AgentDoor and visit our website agentdoor.ai (collectively, the "Service").</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">Our Core Commitment</h2>
+        <p><strong style="color: var(--color-ink);">Your data is not the product.</strong> We believe your information belongs to you. Here is what that means:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li><strong style="color: var(--color-ink);">No data harvesting:</strong> We do not mine your content for advertising, profiling, or any purpose beyond providing you the Service.</li>
+          <li><strong style="color: var(--color-ink);">No training by us:</strong> We do not use your inputs or generated content to train any models. We select AI providers with strong privacy commitments.</li>
+          <li><strong style="color: var(--color-ink);">No selling:</strong> We will never sell, rent, or trade your personal information or content to third parties.</li>
+          <li><strong style="color: var(--color-ink);">Encryption:</strong> Your data is encrypted in transit and at rest.</li>
+          <li><strong style="color: var(--color-ink);">Your control:</strong> You can export or delete your data at any time.</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">1. Information We Collect</h2>
+        <p>We may collect information about you in a variety of ways:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li><strong style="color: var(--color-ink);">Personal Data:</strong> Personally identifiable information, such as your name, email address, and telephone number, that you voluntarily give to us when you register or contact us.</li>
+          <li><strong style="color: var(--color-ink);">Derivative Data:</strong> Information our servers automatically collect when you access the Site, such as your IP address, browser type, and access times.</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">2. Use of Your Information</h2>
+        <p>We may use information collected about you to:</p>
+        <ul style="list-style: disc; padding-left: 1.5rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li>Create and manage your account</li>
+          <li>Contact you about your use of our services</li>
+          <li>Respond to product and customer service requests</li>
+          <li>Monitor and analyze usage to improve your experience</li>
+        </ul>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">3. Security of Your Information</h2>
+        <p>We use administrative, technical, and physical security measures to help protect your personal information. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that no security measures are perfect or impenetrable.</p>
+
+        <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--color-ink); margin-top: 2.5rem; margin-bottom: 1rem;">4. Contact Us</h2>
+        <p>If you have questions about this Privacy Policy, please contact us at:</p>
+        <p style="margin-top: 0.5rem;">
+          Managed Ventures LLC d/b/a mVara<br/>
+          Email: <a href="mailto:legal@managedv.com" style="color: var(--color-accent); text-decoration: underline;">legal@managedv.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
+      <div class="footer-links">
+        <a href="/generate" class="footer-link">Generator</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
+      </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
+        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
+      </p>
+    </div>
+  </footer>
+
+</Layout>

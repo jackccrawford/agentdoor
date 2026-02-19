@@ -85,8 +85,109 @@ body {
   color: var(--color-ink);
 }
 
+/* Hamburger button — hidden on wide viewports */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-hamburger svg {
+  display: block;
+}
+
+/* Mobile overlay */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.nav-overlay.open {
+  opacity: 1;
+}
+
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  width: 260px;
+  max-width: 80vw;
+  background: white;
+  box-shadow: -4px 0 24px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+}
+
+.nav-mobile.open {
+  transform: translateX(0);
+}
+
+.nav-mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.nav-mobile-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--color-ink-tertiary);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-mobile-close:hover {
+  color: var(--color-ink);
+}
+
+.nav-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.nav-mobile-link {
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-ink-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 0.15s ease;
+}
+
+.nav-mobile-link:last-child {
+  border-bottom: none;
+}
+
+.nav-mobile-link:hover {
+  color: var(--color-ink);
+}
+
 @media (max-width: 640px) {
   .nav-links { display: none; }
+  .nav-hamburger { display: block; }
+  .nav-overlay { display: block; pointer-events: none; }
+  .nav-overlay.open { pointer-events: auto; }
+  .nav-mobile { display: block; }
 }
 
 /* Sections */
@@ -386,4 +487,19 @@ body {
 
 .footer-link:hover {
   color: var(--color-ink);
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-ink-quaternary);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

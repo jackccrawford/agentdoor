@@ -10,11 +10,30 @@ import Layout from '../layouts/Layout.astro';
       <a href="/" class="nav-brand">agent<span>door</span></a>
       <div class="nav-links">
         <a href="#how" class="nav-link">How it works</a>
+        <a href="/directory" class="nav-link">Directory</a>
         <a href="#pricing" class="nav-link">Pricing</a>
         <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
       </div>
+      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
     </div>
   </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <div class="nav-mobile" id="navMobile">
+    <div class="nav-mobile-header">
+      <a href="/" class="nav-brand">agent<span>door</span></a>
+      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="nav-mobile-links">
+      <a href="#how" class="nav-mobile-link">How it works</a>
+      <a href="/directory" class="nav-mobile-link">Directory</a>
+      <a href="#pricing" class="nav-mobile-link">Pricing</a>
+      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
+    </div>
+  </div>
 
   <!-- Hero -->
   <section class="section" style="padding-top: 140px; padding-bottom: 60px;">
@@ -23,14 +42,29 @@ import Layout from '../layouts/Layout.astro';
         Every bot reads your robots.txt.<br/>None of them can buy.
       </h1>
       <p style="font-size: clamp(1rem, 2vw, 1.25rem); color: var(--color-ink-secondary); line-height: 1.6; max-width: 540px; margin: 0 auto 2rem;">
-        AI crawlers have LLMs now. They don't just parse directives. They read.
-        Your robots.txt is a direct channel to every autonomous agent that visits your domain.
-        We help you use it.
+        Type in your URL. We'll read your site and generate a robots.txt block
+        that tells every AI agent what you sell, what it costs, and how to connect.
       </p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="/generate" class="btn btn-accent" style="font-size: 1.125rem; padding: 0.875rem 2rem;">
-          Generate your robots.txt block
-        </a>
+      <div style="max-width: 520px; margin: 0 auto;">
+        <div style="display: flex; gap: 0.75rem;">
+          <input
+            class="form-input"
+            type="url"
+            id="heroUrl"
+            placeholder="https://your-service.com"
+            style="flex: 1; margin: 0; font-size: 1.0625rem; padding: 0.875rem 1rem;"
+          />
+          <button
+            class="btn btn-accent"
+            id="heroBtn"
+            type="button"
+            style="white-space: nowrap; padding: 0.875rem 1.75rem; font-size: 1.0625rem;"
+          >Generate</button>
+        </div>
+        <div id="heroStatus" style="font-size: 0.875rem; color: var(--color-ink-tertiary); margin-top: 0.75rem; min-height: 1.5rem;"></div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <a href="/generate" style="font-size: 0.875rem; color: var(--color-ink-tertiary); text-decoration: underline;">or fill in the details manually</a>
       </div>
     </div>
   </section>
@@ -40,16 +74,16 @@ import Layout from '../layouts/Layout.astro';
     <div class="container-narrow">
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
         <div>
+          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);" id="statsCount">—</div>
+          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">services indexed</div>
+        </div>
+        <div>
           <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">30</div>
           <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">years of robots.txt</div>
         </div>
         <div>
-          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">3</div>
-          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">directives in the spec</div>
-        </div>
-        <div>
           <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">0</div>
-          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">that help you sell</div>
+          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">directives that help you sell</div>
         </div>
       </div>
     </div>
@@ -231,6 +265,7 @@ import Layout from '../layouts/Layout.astro';
   </footer>
 
   <script>
+    // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
@@ -242,6 +277,78 @@ import Layout from '../layouts/Layout.astro';
         const targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight;
         window.scrollTo({ top: targetTop, behavior: 'smooth' });
       });
+    });
+
+    // Fetch and display live counter
+    async function loadStats() {
+      try {
+        const res = await fetch('https://api.agentdoor.ai/stats');
+        if (res.ok) {
+          const data = await res.json();
+          const el = document.getElementById('statsCount');
+          if (el && data.count > 0) {
+            el.textContent = data.count.toLocaleString();
+          }
+        }
+      } catch {}
+    }
+    loadStats();
+
+    // Hero URL analyzer
+    const ANALYZE_URL = 'https://api.agentdoor.ai/analyze';
+
+    async function heroAnalyze() {
+      const urlInput = document.getElementById('heroUrl') as HTMLInputElement;
+      const btn = document.getElementById('heroBtn') as HTMLButtonElement;
+      const status = document.getElementById('heroStatus')!;
+      const url = urlInput.value.trim();
+
+      if (!url) {
+        status.textContent = 'Enter your website URL.';
+        status.style.color = 'var(--color-accent)';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Analyzing...';
+      status.innerHTML = '<span style="display:inline-flex;align-items:center;gap:0.5rem;"><span class="spinner"></span> Creating your robot...</span>';
+      status.style.color = 'var(--color-ink-secondary)';
+
+      try {
+        const res = await fetch(ANALYZE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+          throw new Error(err.error || `HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+
+        // Encode data as URL params and redirect to generate page
+        const params = new URLSearchParams();
+        for (const [key, value] of Object.entries(data)) {
+          if (value) params.set(key, value as string);
+        }
+        params.set('source', url);
+        window.location.href = `/generate?${params.toString()}`;
+      } catch (err: any) {
+        status.textContent = err.message || 'Failed to analyze. Try again.';
+        status.style.color = 'var(--color-accent)';
+        btn.disabled = false;
+        btn.textContent = 'Generate';
+      }
+    }
+
+    document.getElementById('heroBtn')!.addEventListener('click', heroAnalyze);
+    document.getElementById('heroUrl')!.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Enter') {
+        e.preventDefault();
+        heroAnalyze();
+      }
     });
   </script>
 

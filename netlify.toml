@@ -9,6 +9,31 @@
 [functions]
   node_bundler = "esbuild"
 
+# Proxy to berth droplet services
+[[redirects]]
+  from = "/api/analyze"
+  to = "http://164.92.101.19:3847/analyze"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/directory"
+  to = "http://164.92.101.19:3847/directory"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/register"
+  to = "http://164.92.101.19:3847/register"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/stats"
+  to = "http://164.92.101.19:3847/stats"
+  status = 200
+  force = true
+
 # Sitemap rewrite
 [[redirects]]
   from = "/sitemap.xml"
