@@ -42,13 +42,13 @@ import Layout from '../layouts/Layout.astro';
   </a>
 
   <!-- Hero -->
-  <section class="section" style="padding-top: 140px; padding-bottom: 60px;">
+  <section class="section" style="padding-top: 140px; padding-bottom: 40px;">
     <div class="container-narrow" style="text-align: center;">
-      <h1 style="font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
-        There's a file on your website<br/>every AI bot reads.<br/>Here's how to make it sell.
+      <h1 style="font-size: clamp(2.5rem, 5.5vw, 3.75rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.035em; margin-bottom: 1.5rem;">
+        Every AI on earth<br/>visits your website.<br/><span style="color: var(--color-accent);">What does it find?</span>
       </h1>
-      <p style="font-size: clamp(1rem, 2vw, 1.25rem); color: var(--color-ink-secondary); line-height: 1.6; max-width: 540px; margin: 0 auto 2rem;">
-        Type in your URL. We'll generate a robots.txt block that tells every AI agent what you do and how to connect.
+      <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.6; max-width: 440px; margin: 0 auto 2.5rem;">
+        Right now, a three-line config file from 1994.<br/>We can fix that in 30 seconds.
       </p>
       <div style="max-width: 520px; margin: 0 auto;">
         <div style="display: flex; gap: 0.75rem;">
@@ -68,61 +68,21 @@ import Layout from '../layouts/Layout.astro';
         </div>
         <div id="heroStatus" style="font-size: 0.875rem; color: var(--color-ink-tertiary); margin-top: 0.75rem; min-height: 1.5rem;"></div>
       </div>
-      <div style="margin-top: 1rem;">
-        <a href="/generate" style="font-size: 0.875rem; color: var(--color-ink-tertiary); text-decoration: underline;">or fill in the details manually</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section class="section" style="background: var(--color-surface-subtle); padding-top: 60px; padding-bottom: 60px;">
-    <div class="container-narrow">
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center;">
-        <div>
-          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);" id="statsCount">—</div>
-          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">services indexed</div>
-        </div>
-        <div>
-          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">30</div>
-          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">years of robots.txt</div>
-        </div>
-        <div>
-          <div style="font-size: 2.5rem; font-weight: 700; color: var(--color-accent);">0</div>
-          <div style="font-size: 0.875rem; color: var(--color-ink-secondary);">directives that help you sell</div>
-        </div>
+      <div style="margin-top: 0.75rem;">
+        <a href="/generate" style="font-size: 0.8125rem; color: var(--color-ink-tertiary); text-decoration: underline;">or fill in the details manually</a>
       </div>
     </div>
   </section>
 
   <!-- Showcase: robots.txt in the wild -->
-  <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
+  <section class="section" style="padding-top: 40px; padding-bottom: 60px;">
     <div class="container-narrow" style="text-align: center;">
-      <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 1rem;">robots.txt in the wild</div>
-      <div id="showcase" style="background: #0a0a0a; border-radius: 10px; padding: 1.5rem 2rem; min-height: 200px; max-height: 320px; text-align: left; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.8; position: relative; overflow-y: auto;">
+      <div style="font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-ink-quaternary); margin-bottom: 0.75rem;">here's what they see right now</div>
+      <div id="showcase" style="background: #0a0a0a; border-radius: 10px; padding: 1.5rem 2rem; min-height: 160px; max-height: 280px; text-align: left; font-family: var(--font-mono); font-size: 0.8125rem; line-height: 1.8; position: relative; overflow-y: auto;">
         <div id="showcaseDomain" style="color: rgba(255,255,255,0.35); font-size: 0.6875rem; letter-spacing: 0.05em; margin-bottom: 0.75rem; position: sticky; top: 0; background: #0a0a0a; padding-bottom: 0.25rem;"></div>
         <div id="showcaseContent" style="color: #4ade80; white-space: pre-wrap;"></div>
       </div>
-      <button id="showcaseBtn" type="button" style="margin-top: 1rem; background: none; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; padding: 0.5rem 1.25rem; font-size: 0.8125rem; color: var(--color-ink-secondary); cursor: pointer; transition: all 0.15s;">show me another</button>
-    </div>
-  </section>
-
-  <!-- The insight -->
-  <section class="section" style="padding-top: 80px; padding-bottom: 40px;">
-    <div class="container-narrow">
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">First file read.</div>
-          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Every crawler checks robots.txt before anything else. Since 1994. Universal.</div>
-        </div>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">Now they understand it.</div>
-          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Today's bots have LLMs behind them. They read natural language. They reason about it.</div>
-        </div>
-        <div>
-          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">So talk to them.</div>
-          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Add a description of your service. What it does, what it costs, how to connect.</div>
-        </div>
-      </div>
+      <button id="showcaseBtn" type="button" style="margin-top: 0.75rem; background: none; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; padding: 0.4rem 1rem; font-size: 0.75rem; color: var(--color-ink-tertiary); cursor: pointer; transition: all 0.15s;">show me another</button>
     </div>
   </section>
 
@@ -297,21 +257,6 @@ import Layout from '../layouts/Layout.astro';
         window.scrollTo({ top: targetTop, behavior: 'smooth' });
       });
     });
-
-    // Fetch and display live counter
-    async function loadStats() {
-      try {
-        const res = await fetch('https://api.agentdoor.ai/stats');
-        if (res.ok) {
-          const data = await res.json();
-          const el = document.getElementById('statsCount');
-          if (el && data.count > 0) {
-            el.textContent = data.count.toLocaleString();
-          }
-        }
-      } catch {}
-    }
-    loadStats();
 
     // Showcase: robots.txt in the wild
     async function loadShowcase() {
