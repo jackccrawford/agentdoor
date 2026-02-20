@@ -1,0 +1,15 @@
+[Unit]
+Description=AgentDoor Analyze Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/Dev/ShipAgents/AGENTDOOR
+ExecStart=/usr/bin/node /root/Dev/ShipAgents/AGENTDOOR/analyze.mjs
+Restart=on-failure
+RestartSec=5
+Environment=PORT=3847
+
+[Install]
+WantedBy=multi-user.target
