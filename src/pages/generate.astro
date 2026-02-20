@@ -72,6 +72,7 @@ import Layout from '../layouts/Layout.astro';
         <div>
           <form id="generator-form">
             <input type="hidden" id="_pitch" value="" />
+            <input type="hidden" id="_existingRobots" value="" />
             <div class="form-group">
               <label class="form-label" for="serviceName">Service name</label>
               <div class="form-hint">One word, lowercase, hyphenated. e.g. "image-generation"</div>
@@ -163,8 +164,6 @@ import Layout from '../layouts/Layout.astro';
             <button class="btn-copy" id="copyBtn">Copy</button>
           </div>
           <div class="code-block" id="preview" style="min-height: 400px; font-size: 0.8125rem; line-height: 1.9;">
-            <div class="code-comment"># Add this to your robots.txt</div>
-            <div class="code-comment"># Below your existing directives</div>
             <div id="preview-content"></div>
           </div>
 
@@ -218,6 +217,22 @@ import Layout from '../layouts/Layout.astro';
       const pitch = pitchEl ? pitchEl.value : '';
 
       let lines: string[] = [];
+
+      // Prepend existing robots.txt or default
+      const robotsEl = document.getElementById('_existingRobots') as HTMLInputElement;
+      const existingRobots = robotsEl ? robotsEl.value : '';
+      if (existingRobots) {
+        for (const line of existingRobots.split('\n')) {
+          const escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          lines.push(`<div class="code-line">${escaped}</div>`);
+        }
+        lines.push('<div class="code-line">&nbsp;</div>');
+      } else {
+        lines.push('<div class="code-line">User-agent: *</div>');
+        lines.push('<div class="code-line">Allow: /</div>');
+        lines.push('<div class="code-line">&nbsp;</div>');
+      }
+
       lines.push('<div class="code-comment"># ---</div>');
       lines.push('<div class="code-comment">#</div>');
 
@@ -312,6 +327,19 @@ import Layout from '../layouts/Layout.astro';
       const pitch = pitchEl ? pitchEl.value : '';
 
       let lines: string[] = [];
+
+      // Prepend existing robots.txt or default
+      const robotsEl = document.getElementById('_existingRobots') as HTMLInputElement;
+      const existingRobots = robotsEl ? robotsEl.value : '';
+      if (existingRobots) {
+        lines.push(existingRobots);
+        lines.push('');
+      } else {
+        lines.push('User-agent: *');
+        lines.push('Allow: /');
+        lines.push('');
+      }
+
       lines.push('# ---');
       lines.push('#');
 
@@ -462,10 +490,17 @@ import Layout from '../layouts/Layout.astro';
           contactUrl: '',
         };
 
-        // Store pitch if returned
+        // Store pitch and existing robots.txt if returned
         if (data.pitch) {
           const pitchEl = document.getElementById('_pitch') as HTMLInputElement;
           if (pitchEl) pitchEl.value = data.pitch;
+        }
+        if (data.existingRobotsTxt) {
+          const robotsEl = document.getElementById('_existingRobots') as HTMLInputElement;
+          if (robotsEl) robotsEl.value = data.existingRobotsTxt;
+        } else {
+          const robotsEl = document.getElementById('_existingRobots') as HTMLInputElement;
+          if (robotsEl) robotsEl.value = '';
         }
 
         // Clear everything, then fill with what the LLM returned

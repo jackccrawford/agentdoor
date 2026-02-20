@@ -103,7 +103,7 @@ function stripHtml(html) {
 function analyzeWithClaude(pageContent) {
   const prompt = PROMPT_PREFIX + pageContent;
   return new Promise((resolve, reject) => {
-    const proc = spawn("claude", ["-p", "--model", "sonnet"], {
+    const proc = spawn("claude", ["-p", "--model", "claude-haiku-4-5-20251001"], {
       cwd: "/root/Dev/ShipAgents/AGENTDOOR",
       env: { ...process.env, TERM: "dumb" },
       stdio: ["pipe", "pipe", "pipe"],
@@ -255,13 +255,33 @@ const server = http.createServer(async (req, res) => {
   try { new URL(url); } catch { return sendJson(res, 400, { error: "Invalid URL" }); }
 
   try {
-    console.log(`[analyze] Fetching ${url}`);
-    const html = await fetchPage(url);
+    const origin = new URL(url).origin;
+    const robotsUrl = `${origin}/robots.txt`;
+
+    // Fetch page and existing robots.txt in parallel
+    console.log(`[analyze] Fetching ${url} + ${robotsUrl}`);
+    const [html, existingRobots] = await Promise.all([
+      fetchPage(url),
+      fetch(robotsUrl, {
+        headers: { "User-Agent": "AgentDoor/1.0 (https://agentdoor.ai; service analyzer)" },
+        redirect: "follow",
+        signal: AbortSignal.timeout(5000),
+      })
+        .then(r => r.ok ? r.text() : null)
+        .catch(() => null),
+    ]);
+
     console.log(`[analyze] Extracting content (${html.length} bytes)`);
     const content = stripHtml(html);
     console.log(`[analyze] Sending to claude -p`);
     const result = await analyzeWithClaude(content);
     console.log(`[analyze] Done:`, result.serviceName || "unknown");
+
+    // Include existing robots.txt if found
+    if (existingRobots) {
+      result.existingRobotsTxt = existingRobots.trim();
+    }
+
     return sendJson(res, 200, result);
   } catch (err) {
     console.error(`[analyze] Error:`, err.message);
