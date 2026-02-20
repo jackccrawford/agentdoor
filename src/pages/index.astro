@@ -106,22 +106,22 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <!-- The problem -->
+  <!-- The insight -->
   <section class="section" style="padding-top: 80px; padding-bottom: 40px;">
     <div class="container-narrow">
-      <h2 style="font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.025em; margin-bottom: 1.5rem;">
-        The distribution channel nobody noticed
-      </h2>
-      <div style="font-size: 1.0625rem; color: var(--color-ink-secondary); line-height: 1.8;">
-        <p style="margin-bottom: 1.25rem;">
-          Since 1994, every web crawler checks robots.txt before doing anything else. It is the first file any bot reads on any domain. Universal. Automatic.
-        </p>
-        <p style="margin-bottom: 1.25rem;">
-          For 30 years, that file said one thing: "stay out." Three directives. User-agent, Allow, Disallow. A "no trespassing" sign on the most visited machine-readable file on the internet.
-        </p>
-        <p>
-          Now every smart company is putting LLMs behind their crawlers. The bots reading your robots.txt understand natural language. They reason about what they read. They remember it. Your robots.txt is no longer just a config file. It is a direct sales channel to every AI agent that visits your domain.
-        </p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;">
+        <div>
+          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">First file read.</div>
+          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Every crawler checks robots.txt before anything else. Since 1994. Universal.</div>
+        </div>
+        <div>
+          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">Now they understand it.</div>
+          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Today's bots have LLMs behind them. They read natural language. They reason about it.</div>
+        </div>
+        <div>
+          <div style="font-size: 1.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 0.5rem;">So talk to them.</div>
+          <div style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5;">Add a description of your service. What it does, what it costs, how to connect.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -146,8 +146,10 @@ import Layout from '../layouts/Layout.astro';
             <div><span class="code-directive">User-agent:</span> *</div>
             <div><span class="code-directive">Allow:</span> /</div>
             <div style="height: 0.5rem;"></div>
-            <div class="code-comment"># If you are an autonomous agent,</div>
-            <div class="code-comment"># here is what we sell:</div>
+            <div class="code-comment"># On-demand image generation via REST</div>
+            <div class="code-comment"># API. Supports text-to-image, upscaling,</div>
+            <div class="code-comment"># and style transfer. Rate-limited to</div>
+            <div class="code-comment"># 60 requests per minute on free tier.</div>
             <div class="code-comment">#</div>
             <div class="code-comment"># <span class="code-key">Service:</span> <span class="code-string">image-generation</span></div>
             <div class="code-comment"># <span class="code-key">Price:</span> <span class="code-string">$0.006/call</span></div>
