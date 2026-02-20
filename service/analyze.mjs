@@ -5,6 +5,7 @@ import { spawn } from "node:child_process";
 const PORT = process.env.PORT || 3847;
 const API_KEY = process.env.AGENTDOOR_API_KEY;
 const LISTINGS_FILE = "/root/Dev/ShipAgents/AGENTDOOR/listings.jsonl";
+const SHOWCASE_FILE = "/root/Dev/ShipAgents/AGENTDOOR/showcase.jsonl";
 
 // Rate limiting: 10 requests per minute per IP
 const rateMap = new Map();
@@ -100,8 +101,8 @@ function stripHtml(html) {
   return content;
 }
 
-function analyzeWithClaude(pageContent) {
-  const prompt = PROMPT_PREFIX + pageContent;
+function analyzeWithClaude(pageContent, url) {
+  const prompt = PROMPT_PREFIX + `URL: ${url}\n\n` + pageContent;
   return new Promise((resolve, reject) => {
     const proc = spawn("claude", ["-p", "--model", "claude-haiku-4-5-20251001"], {
       cwd: "/root/Dev/ShipAgents/AGENTDOOR",
@@ -158,9 +159,50 @@ function getAllListings() {
   }
 }
 
-// Seed file if it doesn't exist
+// Seed files if they don't exist
 if (!fs.existsSync(LISTINGS_FILE)) {
   fs.writeFileSync(LISTINGS_FILE, "");
+}
+if (!fs.existsSync(SHOWCASE_FILE)) {
+  fs.writeFileSync(SHOWCASE_FILE, "");
+}
+
+// --- Showcase: interesting robots.txt snippets ---
+
+function saveShowcase(domain, robotsTxt) {
+  // Extract comment lines (the interesting human-written bits)
+  const commentLines = robotsTxt.split("\n").filter(l => l.startsWith("#")).map(l => l.trim());
+  if (commentLines.length === 0) return;
+
+  // Skip if just generic comments (Sitemap references, bare "#")
+  const interesting = commentLines.filter(l =>
+    l.length > 5 && !l.match(/^#\s*(sitemap|robots\.txt)/i)
+  );
+  if (interesting.length === 0) return;
+
+  // Deduplicate by domain
+  const existing = getShowcaseEntries();
+  if (existing.some(e => e.domain === domain)) return;
+
+  const entry = {
+    domain,
+    snippet: interesting.join("\n"),
+    fullLength: robotsTxt.split("\n").length,
+    _ts: new Date().toISOString(),
+  };
+  fs.appendFileSync(SHOWCASE_FILE, JSON.stringify(entry) + "\n");
+  console.log(`[showcase] Saved ${domain}`);
+}
+
+function getShowcaseEntries() {
+  try {
+    const data = fs.readFileSync(SHOWCASE_FILE, "utf8");
+    return data.trim().split("\n").filter(Boolean).map(l => {
+      try { return JSON.parse(l); } catch { return null; }
+    }).filter(Boolean);
+  } catch {
+    return [];
+  }
 }
 
 function sendJson(res, status, data) {
@@ -189,6 +231,13 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === "GET" && req.url === "/stats") {
     return sendJson(res, 200, { count: getListingCount() });
+  }
+
+  if (req.method === "GET" && req.url === "/showcase") {
+    const entries = getShowcaseEntries();
+    if (entries.length === 0) return sendJson(res, 200, { domain: null, snippet: null });
+    const pick = entries[Math.floor(Math.random() * entries.length)];
+    return sendJson(res, 200, pick);
   }
 
   if (req.method === "GET" && req.url.startsWith("/directory")) {
@@ -274,12 +323,13 @@ const server = http.createServer(async (req, res) => {
     console.log(`[analyze] Extracting content (${html.length} bytes)`);
     const content = stripHtml(html);
     console.log(`[analyze] Sending to claude -p`);
-    const result = await analyzeWithClaude(content);
+    const result = await analyzeWithClaude(content, url);
     console.log(`[analyze] Done:`, result.serviceName || "unknown");
 
-    // Include existing robots.txt if found
+    // Include existing robots.txt if found, and save interesting ones
     if (existingRobots) {
       result.existingRobotsTxt = existingRobots.trim();
+      try { saveShowcase(origin.replace(/^https?:\/\//, ""), existingRobots); } catch {}
     }
 
     return sendJson(res, 200, result);
