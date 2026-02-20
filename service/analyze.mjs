@@ -170,24 +170,20 @@ if (!fs.existsSync(SHOWCASE_FILE)) {
 // --- Showcase: interesting robots.txt snippets ---
 
 function saveShowcase(domain, robotsTxt) {
-  // Extract comment lines (the interesting human-written bits)
-  const commentLines = robotsTxt.split("\n").filter(l => l.startsWith("#")).map(l => l.trim());
-  if (commentLines.length === 0) return;
-
-  // Skip if just generic comments (Sitemap references, bare "#")
-  const interesting = commentLines.filter(l =>
-    l.length > 5 && !l.match(/^#\s*(sitemap|robots\.txt)/i)
-  );
-  if (interesting.length === 0) return;
+  const trimmed = robotsTxt.trim();
+  if (!trimmed || trimmed.length < 10) return;
 
   // Deduplicate by domain
   const existing = getShowcaseEntries();
   if (existing.some(e => e.domain === domain)) return;
 
+  // Cap at 2000 chars to keep the file reasonable
+  const snippet = trimmed.length > 2000 ? trimmed.slice(0, 2000) + "\n..." : trimmed;
+
   const entry = {
     domain,
-    snippet: interesting.join("\n"),
-    fullLength: robotsTxt.split("\n").length,
+    snippet,
+    fullLength: trimmed.split("\n").length,
     _ts: new Date().toISOString(),
   };
   fs.appendFileSync(SHOWCASE_FILE, JSON.stringify(entry) + "\n");
