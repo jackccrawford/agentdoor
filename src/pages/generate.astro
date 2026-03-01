@@ -442,6 +442,7 @@ import Layout from '../layouts/Layout.astro';
 
     // --- URL Analyzer ---
     const ANALYZE_URL = 'https://api.agentdoor.ai/analyze';
+    const AD_KEY = import.meta.env.PUBLIC_AGENTDOOR_API_KEY || '';
 
     async function analyzeUrl() {
       const urlInput = document.getElementById('analyzeUrl') as HTMLInputElement;
@@ -463,7 +464,7 @@ import Layout from '../layouts/Layout.astro';
       try {
         const res = await fetch(ANALYZE_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-AgentDoor-Key': AD_KEY },
           body: JSON.stringify({ url }),
         });
 
@@ -625,7 +626,7 @@ import Layout from '../layouts/Layout.astro';
       if (listing.serviceName) {
         fetch('https://api.agentdoor.ai/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-AgentDoor-Key': AD_KEY },
           body: JSON.stringify(listing),
         }).catch(() => {});
       }
