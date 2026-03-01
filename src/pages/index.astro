@@ -283,6 +283,7 @@ import Layout from '../layouts/Layout.astro';
 
     // Hero URL analyzer
     const ANALYZE_URL = 'https://api.agentdoor.ai/analyze';
+    const AD_KEY = 'e5006ec992b0f2081f185e90f20a77ecd34161f3c0e24035';
 
     async function heroAnalyze() {
       const urlInput = document.getElementById('heroUrl') as HTMLInputElement;
@@ -304,7 +305,7 @@ import Layout from '../layouts/Layout.astro';
       try {
         const res = await fetch(ANALYZE_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-AgentDoor-Key': AD_KEY },
           body: JSON.stringify({ url }),
         });
 
