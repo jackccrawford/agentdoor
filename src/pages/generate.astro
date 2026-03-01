@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const adKey = import.meta.env.PUBLIC_AGENTDOOR_API_KEY || '';
 ---
 
 <Layout title="Generate your robots.txt agent block | AgentDoor" description="Free tool to make your service discoverable to autonomous AI agents through your robots.txt file.">
@@ -193,7 +194,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </footer>
 
-  <script>
+  <script define:vars={{ adKey }}>
     function generatePreview() {
       const serviceName = (document.getElementById('serviceName') as HTMLInputElement).value;
       const description = (document.getElementById('description') as HTMLInputElement).value;
@@ -442,7 +443,7 @@ import Layout from '../layouts/Layout.astro';
 
     // --- URL Analyzer ---
     const ANALYZE_URL = 'https://api.agentdoor.ai/analyze';
-    const AD_KEY = import.meta.env.PUBLIC_AGENTDOOR_API_KEY || '';
+    const AD_KEY = adKey;
 
     async function analyzeUrl() {
       const urlInput = document.getElementById('analyzeUrl') as HTMLInputElement;
