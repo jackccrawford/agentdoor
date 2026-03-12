@@ -257,12 +257,15 @@ import Layout from '../../layouts/Layout.astro';
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
-      <a href="/" class="nav-brand" style="font-size: 1rem;">agent<span>door</span></a>
+      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
       <div class="footer-links">
         <a href="/generate" class="footer-link">Generator</a>
-        <a href="/directory" class="footer-link">Directory</a>
-        <a href="https://mvara.ai" class="footer-link" target="_blank">Built by mVara</a>
+        <a href="/privacy" class="footer-link">Privacy</a>
+        <a href="/terms" class="footer-link">Terms</a>
       </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
+        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
+      </p>
     </div>
   </footer>
 </Layout>

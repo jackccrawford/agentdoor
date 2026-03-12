@@ -76,18 +76,18 @@ import Layout from '../layouts/Layout.astro';
             <div class="form-group">
               <label class="form-label" for="serviceName">Service name</label>
               <div class="form-hint">One word, lowercase, hyphenated. e.g. "image-generation"</div>
-              <input class="form-input" type="text" id="serviceName" placeholder="persistent-memory" />
+              <input class="form-input" type="text" id="serviceName" placeholder="persistent-memory" maxlength="60" required pattern="[a-z0-9\-]+" title="Lowercase letters, numbers, and hyphens only" />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="description">Description</label>
               <div class="form-hint">What your service does, in one sentence.</div>
-              <input class="form-input" type="text" id="description" placeholder="Store and retrieve agent memory across sessions" />
+              <input class="form-input" type="text" id="description" placeholder="Store and retrieve agent memory across sessions" maxlength="200" required />
             </div>
 
             <div class="form-group">
               <label class="form-label" for="endpoint">Endpoint URL</label>
-              <input class="form-input" type="url" id="endpoint" placeholder="https://api.example.com/v1" />
+              <input class="form-input" type="url" id="endpoint" placeholder="https://api.example.com/v1" required />
             </div>
 
             <div class="form-group">
@@ -104,7 +104,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="form-group">
               <label class="form-label" for="capabilities">Capabilities</label>
               <div class="form-hint">Comma-separated list of operations. e.g. "preserve, explore, search"</div>
-              <input class="form-input" type="text" id="capabilities" placeholder="generate, upscale, edit" />
+              <input class="form-input" type="text" id="capabilities" placeholder="generate, upscale, edit" maxlength="200" />
             </div>
 
             <div class="form-group">
@@ -120,7 +120,7 @@ import Layout from '../layouts/Layout.astro';
 
             <div class="form-group" id="priceGroup">
               <label class="form-label" for="price">Price per request (USD)</label>
-              <input class="form-input" type="text" id="price" placeholder="0.006" />
+              <input class="form-input" type="number" id="price" placeholder="0.006" step="any" min="0" />
             </div>
 
             <div class="form-group">
@@ -194,6 +194,10 @@ import Layout from '../layouts/Layout.astro';
   </footer>
 
   <script is:inline>
+    function esc(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     function generatePreview() {
       const serviceName = (document.getElementById('serviceName')).value;
       const description = (document.getElementById('description')).value;
@@ -240,7 +244,7 @@ import Layout from '../layouts/Layout.astro';
       const opener = pitch || description;
       if (opener) {
         // Word-wrap at ~70 chars for robots.txt readability
-        const words = opener.split(' ');
+        const words = esc(opener).split(' ');
         let currentLine = '#';
         for (const word of words) {
           if ((currentLine + ' ' + word).length > 72) {
@@ -257,47 +261,47 @@ import Layout from '../layouts/Layout.astro';
       }
 
       if (serviceName) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Service:</span> <span class="code-string">${serviceName}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Service:</span> <span class="code-string">${esc(serviceName)}</span></div>`);
       }
       if (protocol) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Protocol:</span> <span class="code-string">${protocol}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Protocol:</span> <span class="code-string">${esc(protocol)}</span></div>`);
       }
       if (endpoint) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Endpoint:</span> <span class="code-string">${endpoint}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Endpoint:</span> <span class="code-string">${esc(endpoint)}</span></div>`);
       }
 
       if (capabilities) {
         lines.push('<div class="code-comment">#</div>');
         const caps = capabilities.split(',').map(c => c.trim()).filter(c => c);
         caps.forEach(cap => {
-          lines.push(`<div class="code-comment"># <span class="code-key">Capability:</span> ${cap}</div>`);
+          lines.push(`<div class="code-comment"># <span class="code-key">Capability:</span> ${esc(cap)}</div>`);
         });
       }
 
       if (pricingModel) {
         lines.push('<div class="code-comment">#</div>');
-        lines.push(`<div class="code-comment"># <span class="code-key">Pricing:</span> <span class="code-string">${pricingModel}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Pricing:</span> <span class="code-string">${esc(pricingModel)}</span></div>`);
       }
       if (price && (pricingModel === 'per-request' || pricingModel === 'tiered')) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Price:</span> <span class="code-string">$${price}/request</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Price:</span> <span class="code-string">$${esc(price)}/request</span></div>`);
       }
 
       if (authMethod && authMethod !== 'none') {
         lines.push('<div class="code-comment">#</div>');
-        lines.push(`<div class="code-comment"># <span class="code-key">Auth:</span> <span class="code-string">${authMethod}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Auth:</span> <span class="code-string">${esc(authMethod)}</span></div>`);
       }
       if (authUrl) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Auth-url:</span> <span class="code-string">${authUrl}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Auth-url:</span> <span class="code-string">${esc(authUrl)}</span></div>`);
       }
 
       if (docsUrl) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Docs:</span> <span class="code-string">${docsUrl}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Docs:</span> <span class="code-string">${esc(docsUrl)}</span></div>`);
       }
       if (statusUrl) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Status:</span> <span class="code-string">${statusUrl}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Status:</span> <span class="code-string">${esc(statusUrl)}</span></div>`);
       }
       if (contactUrl) {
-        lines.push(`<div class="code-comment"># <span class="code-key">Contact:</span> <span class="code-string">${contactUrl}</span></div>`);
+        lines.push(`<div class="code-comment"># <span class="code-key">Contact:</span> <span class="code-string">${esc(contactUrl)}</span></div>`);
       }
 
       lines.push('<div class="code-comment">#</div>');

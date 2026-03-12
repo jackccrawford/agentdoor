@@ -101,32 +101,65 @@ function stripHtml(html) {
   return content;
 }
 
-function analyzeWithClaude(pageContent, url) {
+// Model cascade — try each in order until one succeeds
+const MODEL_CASCADE = [
+  {
+    model: "qwen3-coder:480b-cloud",
+    timeout: 60000,
+    env: {
+      ANTHROPIC_BASE_URL: "http://localhost:11434",
+      ANTHROPIC_AUTH_TOKEN: "ollama",
+      ANTHROPIC_API_KEY: "",
+    },
+  },
+  {
+    model: "claude-haiku-4-5-20251001",
+    timeout: 30000,
+    env: {},
+  },
+];
+
+function analyzeWithModel(pageContent, url, modelConfig) {
   const prompt = PROMPT_PREFIX + `URL: ${url}\n\n` + pageContent;
   return new Promise((resolve, reject) => {
-    const proc = spawn("claude", ["-p", "--model", "claude-haiku-4-5-20251001"], {
+    const proc = spawn("claude", ["-p", "--model", modelConfig.model], {
       cwd: "/root/Dev/ShipAgents/AGENTDOOR",
-      env: { ...process.env, TERM: "dumb" },
+      env: { ...process.env, PATH: "/root/.local/bin:" + (process.env.PATH || ""), TERM: "dumb", ...modelConfig.env },
       stdio: ["pipe", "pipe", "pipe"],
     });
     let stdout = "", stderr = "";
     proc.stdout.on("data", (chunk) => { stdout += chunk; });
     proc.stderr.on("data", (chunk) => { stderr += chunk; });
     proc.on("close", (code) => {
-      if (code !== 0) return reject(new Error(`claude exited ${code}: ${stderr.slice(0, 200)}`));
+      if (code !== 0) return reject(new Error(`${modelConfig.model} exited ${code}: ${stderr.slice(0, 200)}`));
       try {
         const cleaned = stdout.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
         resolve(JSON.parse(cleaned));
       } catch (err) {
-        reject(new Error(`Failed to parse JSON: ${stdout.slice(0, 200)}`));
+        reject(new Error(`${modelConfig.model} failed to parse JSON: ${stdout.slice(0, 200)}`));
       }
     });
     proc.on("error", reject);
-    const timeout = setTimeout(() => { proc.kill(); reject(new Error("claude timed out after 30s")); }, 30000);
+    const ms = modelConfig.timeout || 30000;
+    const timeout = setTimeout(() => { proc.kill(); reject(new Error(`${modelConfig.model} timed out after ${ms / 1000}s`)); }, ms);
     proc.on("close", () => clearTimeout(timeout));
     proc.stdin.write(prompt);
     proc.stdin.end();
   });
+}
+
+async function analyzeWithClaude(pageContent, url) {
+  for (const modelConfig of MODEL_CASCADE) {
+    try {
+      console.log(`[analyze] Trying ${modelConfig.model}`);
+      const result = await analyzeWithModel(pageContent, url, modelConfig);
+      console.log(`[analyze] Success with ${modelConfig.model}`);
+      return result;
+    } catch (err) {
+      console.warn(`[analyze] ${modelConfig.model} failed: ${err.message}`);
+    }
+  }
+  throw new Error("All models in cascade failed");
 }
 
 // --- Listings file (JSONL) ---
@@ -270,7 +303,19 @@ const server = http.createServer(async (req, res) => {
     try {
       const listing = JSON.parse(body);
       if (!listing.serviceName) return sendJson(res, 400, { error: "serviceName required" });
-      registerListing(listing);
+      // Sanitize: only allow expected fields, enforce types and lengths
+      const allowed = ["serviceName","description","endpoint","protocol","capabilities","pricingModel","price","authMethod","authUrl","docsUrl","statusUrl","contactUrl","url"];
+      const clean = {};
+      for (const key of allowed) {
+        if (listing[key] !== undefined) {
+          const val = String(listing[key]).slice(0, 500).replace(/<[^>]*>/g, "");
+          clean[key] = val;
+        }
+      }
+      if (!clean.serviceName) return sendJson(res, 400, { error: "serviceName required" });
+      if (!/^[a-z0-9\-]+$/.test(clean.serviceName)) return sendJson(res, 400, { error: "serviceName must be lowercase alphanumeric with hyphens" });
+      if (clean.price && isNaN(Number(clean.price))) return sendJson(res, 400, { error: "price must be numeric" });
+      registerListing(clean);
       return sendJson(res, 200, { ok: true });
     } catch {
       return sendJson(res, 400, { error: "Invalid JSON" });
