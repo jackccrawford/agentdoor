@@ -1,39 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="AgentDoor | Make your service discoverable to AI agents">
 
-  <!-- Nav -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <div class="nav-links">
-        <a href="#how" class="nav-link">How it works</a>
-        <a href="/directory" class="nav-link">Directory</a>
-        <a href="/blog/robots-txt-agent-commerce" class="nav-link">Blog</a>
-        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
-      </div>
-      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </button>
-    </div>
-  </nav>
-  <div class="nav-overlay" id="navOverlay"></div>
-  <div class="nav-mobile" id="navMobile">
-    <div class="nav-mobile-header">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="nav-mobile-links">
-      <a href="#how" class="nav-mobile-link">How it works</a>
-      <a href="/directory" class="nav-mobile-link">Directory</a>
-      <a href="/blog/robots-txt-agent-commerce" class="nav-mobile-link">Blog</a>
-      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
-    </div>
-  </div>
+  <Nav currentPage="home" />
 
   <!-- Blog banner -->
   <a href="/blog/robots-txt-agent-commerce" class="blog-banner">
@@ -132,17 +105,17 @@ import Layout from '../layouts/Layout.astro';
       <div class="steps-grid">
         <div class="step-card">
           <div class="step-number">1</div>
-          <div class="step-title">Describe your service</div>
+          <h3 class="step-title">Describe your service</h3>
           <div class="step-text">Enter what you sell, what it costs, and how to connect. Our generator turns it into a robots.txt block that any LLM can read.</div>
         </div>
         <div class="step-card">
           <div class="step-number">2</div>
-          <div class="step-title">Add it to your robots.txt</div>
+          <h3 class="step-title">Add it to your robots.txt</h3>
           <div class="step-text">Copy the generated block and paste it into your existing robots.txt file. Your standard directives stay the same. The agent-readable content goes below.</div>
         </div>
         <div class="step-card">
           <div class="step-number">3</div>
-          <div class="step-title">List in the directory</div>
+          <h3 class="step-title">List in the directory</h3>
           <div class="step-text">Add your service to our agent-queryable directory. Agents discover you via API. You show up when they search for what you sell.</div>
         </div>
       </div>
@@ -228,20 +201,33 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
-      <div class="footer-links">
-        <a href="/generate" class="footer-link">Generator</a>
-        <a href="/privacy" class="footer-link">Privacy</a>
-        <a href="/terms" class="footer-link">Terms</a>
-      </div>
-      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
-        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
-      </p>
-    </div>
-  </footer>
+  <div style="text-align: center; font-size: 0.75rem; color: var(--color-ink-quaternary); padding: 0.5rem 0;">
+    Last updated <time datetime="2026-03-11">March 2026</time>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to make your service discoverable to AI agents",
+    "description": "Three steps to list your service for AI agent discovery via robots.txt",
+    "step": [
+      {"@type": "HowToStep", "position": 1, "name": "Describe your service", "text": "Enter what you sell, what it costs, and how to connect. Our generator turns it into a robots.txt block that any LLM can read."},
+      {"@type": "HowToStep", "position": 2, "name": "Add it to your robots.txt", "text": "Copy the generated block and paste it into your existing robots.txt file."},
+      {"@type": "HowToStep", "position": 3, "name": "List in the directory", "text": "Add your service to our agent-queryable directory. Agents discover you via API."}
+    ]
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How does robots.txt work for search engines?", "acceptedAnswer": {"@type": "Answer", "text": "Search engines see Allow, Disallow, and your sitemap. Standard behavior. Nothing changes."}},
+      {"@type": "Question", "name": "How do autonomous AI agents use robots.txt?", "acceptedAnswer": {"@type": "Answer", "text": "Agents read your service description at the moment of contact. They see what you do, what it costs, and how to connect."}},
+      {"@type": "Question", "name": "How do LLM training crawlers use robots.txt?", "acceptedAnswer": {"@type": "Answer", "text": "They ingest your text into future model weights. Your service becomes part of what the LLM knows and recommends."}}
+    ]
+  })} />
 
   <script>
     // Smooth scroll for anchor links

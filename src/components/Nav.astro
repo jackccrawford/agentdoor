@@ -1,0 +1,46 @@
+---
+interface Props {
+  currentPage?: 'home' | 'directory' | 'blog' | 'generate' | 'privacy' | 'terms';
+}
+const { currentPage = 'home' } = Astro.props;
+const isHome = currentPage === 'home';
+---
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand">agent<span>door</span></a>
+    <div class="nav-links">
+      {isHome ? (
+        <a href="#how" class="nav-link" style="font-weight: 600; color: var(--color-accent);">How it works</a>
+      ) : (
+        <a href="/" class="nav-link">Home</a>
+      )}
+      <a href="/directory" class="nav-link" style={currentPage === 'directory' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Directory</a>
+      <a href="/blog/robots-txt-agent-commerce" class="nav-link" style={currentPage === 'blog' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Blog</a>
+      <a href="/generate" class="nav-link" style={currentPage === 'generate' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Generate</a>
+    </div>
+    <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="nav-overlay" id="navOverlay"></div>
+<div class="nav-mobile" id="navMobile">
+  <div class="nav-mobile-header">
+    <a href="/" class="nav-brand">agent<span>door</span></a>
+    <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="nav-mobile-links">
+    {isHome ? (
+      <a href="#how" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">How it works</a>
+    ) : (
+      <a href="/" class="nav-mobile-link">Home</a>
+    )}
+    <a href="/directory" class="nav-mobile-link" style={currentPage === 'directory' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Directory</a>
+    <a href="/blog/robots-txt-agent-commerce" class="nav-mobile-link" style={currentPage === 'blog' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Blog</a>
+    <a href="/generate" class="nav-mobile-link" style={currentPage === 'generate' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Generate</a>
+  </div>
+</div>

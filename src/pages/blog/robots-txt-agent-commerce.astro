@@ -1,39 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
 ---
 
 <Layout title="The File Every AI Bot Already Reads (And How to Use It to Sell) | AgentDoor" description="Your robots.txt has been a No Trespassing sign for 30 years. Now AI agents can understand what's written there. Here's how to turn it into a sales channel.">
 
-  <!-- Nav -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/directory" class="nav-link">Directory</a>
-        <a href="/blog/robots-txt-agent-commerce" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Blog</a>
-        <a href="/generate" class="nav-link">Generate</a>
-      </div>
-      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </button>
-    </div>
-  </nav>
-  <div class="nav-overlay" id="navOverlay"></div>
-  <div class="nav-mobile" id="navMobile">
-    <div class="nav-mobile-header">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="nav-mobile-links">
-      <a href="/" class="nav-mobile-link">Home</a>
-      <a href="/directory" class="nav-mobile-link">Directory</a>
-      <a href="/blog/robots-txt-agent-commerce" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Blog</a>
-      <a href="/generate" class="nav-mobile-link">Generate</a>
-    </div>
-  </div>
+  <Nav currentPage="blog" />
 
   <article class="blog">
     <div class="blog-wrap">
@@ -49,6 +22,13 @@ import Layout from '../../layouts/Layout.astro';
         </div>
         <h1 class="blog-title">The File Every AI Bot Already Reads</h1>
         <p class="blog-subtitle">Your website has a hidden sales channel. It's been there for 30 years. Now the bots can finally understand it.</p>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2rem; color: var(--color-ink-tertiary); font-size: 0.875rem;">
+          <span>By <a href="https://mvara.ai" style="color: var(--color-ink-secondary); text-decoration: underline;">mVara</a></span>
+          <span style="color: var(--color-ink-quaternary);">·</span>
+          <time datetime="2026-01-15">January 15, 2026</time>
+          <span style="color: var(--color-ink-quaternary);">·</span>
+          <span>Updated <time datetime="2026-03-11">March 11, 2026</time></span>
+        </div>
       </div>
 
       <!-- Body -->
@@ -254,20 +234,18 @@ import Layout from '../../layouts/Layout.astro';
     </div>
   </article>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
-      <div class="footer-links">
-        <a href="/generate" class="footer-link">Generator</a>
-        <a href="/privacy" class="footer-link">Privacy</a>
-        <a href="/terms" class="footer-link">Terms</a>
-      </div>
-      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
-        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
-      </p>
-    </div>
-  </footer>
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The File Every AI Bot Already Reads (And How to Use It to Sell)",
+    "description": "Your robots.txt has been a No Trespassing sign for 30 years. Now AI agents can understand what's written there.",
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-03-11",
+    "author": {"@type": "Organization", "name": "mVara", "url": "https://mvara.ai"},
+    "publisher": {"@type": "Organization", "name": "AgentDoor", "url": "https://agentdoor.ai"}
+  })} />
 </Layout>
 
 <style is:global>

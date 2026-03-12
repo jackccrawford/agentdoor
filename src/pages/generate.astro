@@ -1,39 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout title="Generate your robots.txt agent block | AgentDoor" description="Free tool to make your service discoverable to autonomous AI agents through your robots.txt file.">
 
-  <!-- Nav -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <div class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/directory" class="nav-link">Directory</a>
-        <a href="/blog/robots-txt-agent-commerce" class="nav-link">Blog</a>
-        <a href="/generate" class="nav-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
-      </div>
-      <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </button>
-    </div>
-  </nav>
-  <div class="nav-overlay" id="navOverlay"></div>
-  <div class="nav-mobile" id="navMobile">
-    <div class="nav-mobile-header">
-      <a href="/" class="nav-brand">agent<span>door</span></a>
-      <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="nav-mobile-links">
-      <a href="/" class="nav-mobile-link">Home</a>
-      <a href="/directory" class="nav-mobile-link">Directory</a>
-      <a href="/blog/robots-txt-agent-commerce" class="nav-mobile-link">Blog</a>
-      <a href="/generate" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">Generate</a>
-    </div>
-  </div>
+  <Nav currentPage="generate" />
 
   <!-- Generator -->
   <section class="section" style="padding-top: 100px; padding-bottom: 80px;">
@@ -178,20 +151,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <a href="/" class="nav-brand" style="font-size: 1rem; text-decoration: none;">agent<span>door</span></a>
-      <div class="footer-links">
-        <a href="/" class="footer-link">Home</a>
-        <a href="/privacy" class="footer-link">Privacy</a>
-        <a href="/terms" class="footer-link">Terms</a>
-      </div>
-      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary);">
-        Built by <a href="https://mvara.ai" style="color: var(--color-ink-tertiary); text-decoration: underline;">mVara</a>
-      </p>
-    </div>
-  </footer>
+  <Footer />
 
   <script is:inline>
     function esc(str) {

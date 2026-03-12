@@ -35,12 +35,33 @@ const siteUrl = "https://agentdoor.ai";
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+  <link rel="canonical" href={`${siteUrl}${Astro.url.pathname}`} />
+
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "AgentDoor",
     "url": siteUrl,
     "description": description
+  })} />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "AgentDoor",
+    "url": "https://agentdoor.ai",
+    "logo": "https://agentdoor.ai/favicon.svg",
+    "description": "Make your service discoverable to every AI agent on earth.",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "mVara",
+      "url": "https://mvara.ai"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "legal@managedv.com",
+      "contactType": "customer support"
+    }
   })} />
 </head>
 <body>

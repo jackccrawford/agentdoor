@@ -380,6 +380,18 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
+function shutdown() {
+  console.log('[agentdoor-analyze] Shutting down...');
+  server.close(() => {
+    console.log('[agentdoor-analyze] Closed.');
+    process.exit(0);
+  });
+  // Force exit after 5 seconds if connections hang
+  setTimeout(() => process.exit(1), 5000);
+}
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
 server.listen(PORT, () => {
   console.log(`[agentdoor-analyze] Listening on port ${PORT}`);
   console.log(`[agentdoor-analyze] Listings: ${LISTINGS_FILE} (${getListingCount()} entries)`);
