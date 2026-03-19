@@ -1,9 +1,8 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'directory' | 'blog' | 'generate' | 'privacy' | 'terms';
+  currentPage?: 'home' | 'clawmark' | 'token-scout' | 'shine' | 'directory' | 'blog' | 'generate' | 'privacy' | 'terms';
 }
 const { currentPage = 'home' } = Astro.props;
-const isHome = currentPage === 'home';
 ---
 
 <!-- Nav -->
@@ -11,14 +10,11 @@ const isHome = currentPage === 'home';
   <div class="nav-inner">
     <a href="/" class="nav-brand">agent<span>door</span></a>
     <div class="nav-links">
-      {isHome ? (
-        <a href="#how" class="nav-link" style="font-weight: 600; color: var(--color-accent);">How it works</a>
-      ) : (
-        <a href="/" class="nav-link">Home</a>
-      )}
-      <a href="/directory" class="nav-link" style={currentPage === 'directory' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Directory</a>
+      <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
+      <a href="/clawmark" class="nav-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
+      <a href="/token-scout" class="nav-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
+      <a href="/shine" class="nav-link" style={currentPage === 'shine' || currentPage === 'generate' || currentPage === 'directory' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Shine</a>
       <a href="/blog/robots-txt-agent-commerce" class="nav-link" style={currentPage === 'blog' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Blog</a>
-      <a href="/generate" class="nav-link" style={currentPage === 'generate' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Generate</a>
     </div>
     <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -34,13 +30,10 @@ const isHome = currentPage === 'home';
     </button>
   </div>
   <div class="nav-mobile-links">
-    {isHome ? (
-      <a href="#how" class="nav-mobile-link" style="font-weight: 600; color: var(--color-accent);">How it works</a>
-    ) : (
-      <a href="/" class="nav-mobile-link">Home</a>
-    )}
-    <a href="/directory" class="nav-mobile-link" style={currentPage === 'directory' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Directory</a>
+    <a href="/" class="nav-mobile-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
+    <a href="/clawmark" class="nav-mobile-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
+    <a href="/token-scout" class="nav-mobile-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
+    <a href="/shine" class="nav-mobile-link" style={currentPage === 'shine' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Shine</a>
     <a href="/blog/robots-txt-agent-commerce" class="nav-mobile-link" style={currentPage === 'blog' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Blog</a>
-    <a href="/generate" class="nav-mobile-link" style={currentPage === 'generate' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Generate</a>
   </div>
 </div>

@@ -1,0 +1,216 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Token Scout | Find free LLM models. Use them directly."
+  description="An MCP server that gives your AI agent instant awareness of 19 free LLM models across 6 providers. No proxy, no middleware, no latency tax."
+>
+
+  <Nav currentPage="token-scout" />
+
+  <!-- Hero -->
+  <section class="section" style="padding-top: 140px; padding-bottom: 40px;">
+    <div class="container-narrow" style="text-align: center;">
+      <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-ink-quaternary); margin-bottom: 1rem;">Open source &middot; MIT license &middot; MCP server</div>
+      <h1 style="font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
+        Find free LLM models.<br/><span style="color: var(--color-accent);">Use them directly.</span>
+      </h1>
+      <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.6; max-width: 500px; margin: 0 auto 2rem;">
+        One MCP tool gives your agent instant awareness of what's available for free. No proxy, no middleware. Token Scout tells you where to go — you make the call.
+      </p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/jackccrawford/token-scout" class="btn btn-accent" style="padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">View on GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What it does -->
+  <section class="section" style="padding-top: 40px; padding-bottom: 60px;">
+    <div class="container-narrow">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">One tool. Every free model.</h2>
+
+      <div style="margin-bottom: 2rem;">
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Find models by capability</div>
+        <div class="code-block">
+          <div><span style="color: #4ade80;">token_scout</span>(query="reasoning")</div>
+          <div style="color: #a1a1aa;">&rarr; DeepSeek R1 671B-MoE on OpenRouter, Grok 3 Mini on GitHub...</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Find the fastest option</div>
+        <div class="code-block">
+          <div><span style="color: #4ade80;">token_scout</span>(query="fast classification")</div>
+          <div style="color: #a1a1aa;">&rarr; Llama 3.1 8B on Groq, Llama 4 Scout on Cerebras...</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 2rem;">
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Rank by what matters</div>
+        <div class="code-block">
+          <div><span style="color: #4ade80;">token_scout</span>(query="", prefer="context")</div>
+          <div style="color: #a1a1aa;">&rarr; all models ranked by context window size</div>
+          <div style="height: 0.75rem;"></div>
+          <div style="color: #71717a;">prefer options: quota (most requests remaining), speed (fastest), context (largest window)</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Check your status</div>
+        <div class="code-block">
+          <div><span style="color: #4ade80;">token_scout</span>(query="")</div>
+          <div style="color: #a1a1aa;">&rarr; status: which providers are configured, how many models available</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Providers -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px; background: var(--color-surface-subtle);">
+    <div class="container-narrow">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem; text-align: center;">19 models. 6 providers. All free.</h2>
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-bottom: 2rem;">No credit card required. Sign up for the ones you want — Token Scout auto-detects your keys.</p>
+      <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9375rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--color-border);">
+              <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;">Provider</th>
+              <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;">Models</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">Groq</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Llama 4 Scout/Maverick, Llama 3.3 70B, Llama 3.1 8B, Kimi K2, Qwen3 32B, GPT-OSS 120B</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">Cerebras</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Llama 3.3 70B, Llama 4 Scout, Qwen3 32B</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">Mistral</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Mistral Small 3.1 24B</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">OpenRouter</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Gemma 3 27B, Llama 3.3 70B, Mistral Small 3.1, DeepSeek R1</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">GitHub Models</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">GPT-4o, DeepSeek R1, Grok 3 Mini</td>
+            </tr>
+            <tr>
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">Google AI</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Gemini 2.0 Flash (1M context)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick start -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="container-narrow">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Five minutes to first query</h2>
+
+      <div style="max-width: 560px; margin: 0 auto;">
+        <div style="margin-bottom: 2rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Install</div>
+          <div class="code-block">
+            <div><span style="color: #4ade80;">$</span> git clone https://github.com/jackccrawford/token-scout.git</div>
+            <div><span style="color: #4ade80;">$</span> cd token-scout</div>
+            <div><span style="color: #4ade80;">$</span> pip install -e .</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Add your keys (whichever providers you have)</div>
+          <div class="code-block">
+            <div><span style="color: #4ade80;">$</span> export GROQ_API_KEY=gsk_...</div>
+            <div><span style="color: #4ade80;">$</span> export OPENROUTER_API_KEY=sk-or-...</div>
+            <div><span style="color: #4ade80;">$</span> export GITHUB_TOKEN=ghp_...</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 2rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Add to Claude Code</div>
+          <div class="code-block">
+            <div><span style="color: #4ade80;">$</span> claude mcp add token-scout -- token-scout</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Or add to Claude Desktop</div>
+          <div class="code-block">
+            <div style="color: #71717a;">// claude_desktop_config.json</div>
+            <div>{</div>
+            <div>&nbsp;&nbsp;"mcpServers": {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;"token-scout": {</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"command": "<span style="color: #4ade80;">token-scout</span>"</div>
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;}</div>
+            <div>&nbsp;&nbsp;}</div>
+            <div>}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px; background: var(--color-surface-subtle);">
+    <div class="container-narrow">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-align: center;">A registry, not a proxy</h2>
+      <div style="max-width: 560px; margin: 0 auto;">
+        <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
+          Token Scout knows what free models exist, what keys you have, and what each model is good at. When you query, it searches, filters, ranks, and returns everything you need to make the call yourself.
+        </p>
+        <div class="code-block" style="margin-bottom: 1.5rem;">
+          <div style="color: #a1a1aa;">Your agent &rarr; Token Scout (registry) &rarr; model endpoint</div>
+          <div style="color: #71717a; margin-top: 0.5rem;">Zero inference overhead. The call goes straight from you to the provider.</div>
+        </div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.7;">
+          Returns: model ID, endpoint, API style, key env var, context window, strengths, and quota. Everything your agent needs to call the model directly. No middleman.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why not bookmarks -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="container-narrow" style="text-align: center;">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem;">Why not just bookmark the docs?</h2>
+      <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 520px; margin: 0 auto;">
+        You could. But your AI can't read your bookmarks. Token Scout gives any MCP-connected AI instant awareness of what's available for free. Instead of hardcoding model IDs, an agent can ask "what's good for reasoning?" and get a current answer.
+      </p>
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); line-height: 1.7; max-width: 520px; margin: 1rem auto 0;">
+        It's also a single place to update when providers change their free tiers — update the registry, every connected AI benefits.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 80px; background: var(--color-surface-subtle);">
+    <div class="container-narrow" style="text-align: center;">
+      <h2 style="font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 1rem;">
+        Your agent doesn't know<br/>what's free.
+      </h2>
+      <p style="font-size: 1rem; color: var(--color-ink-secondary); margin-bottom: 2rem;">
+        One tool. Five minutes. 19 models.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/jackccrawford/token-scout" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; background: var(--color-surface-dark); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: opacity 0.15s;" onmouseenter="this.style.opacity='0.85'" onmouseleave="this.style.opacity='1'">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          View on GitHub
+        </a>
+      </div>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Python &middot; MCP Server &middot; Works with Claude Code &amp; Desktop</p>
+    </div>
+  </section>
+
+  <Footer />
+
+</Layout>

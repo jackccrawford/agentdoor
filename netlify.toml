@@ -15,6 +15,32 @@
   to = "/sitemap-index.xml"
   status = 200
 
+# Suite refactor redirects — preserve existing URLs
+[[redirects]]
+  from = "/aifind"
+  to = "/shine"
+  status = 301
+
+[[redirects]]
+  from = "/aifind/generate"
+  to = "/generate"
+  status = 301
+
+[[redirects]]
+  from = "/aifind/directory"
+  to = "/directory"
+  status = 301
+
+[[redirects]]
+  from = "/shine/generate"
+  to = "/generate"
+  status = 301
+
+[[redirects]]
+  from = "/shine/directory"
+  to = "/directory"
+  status = 301
+
 # Trailing slash removal
 [[redirects]]
   from = "/:splat/"
