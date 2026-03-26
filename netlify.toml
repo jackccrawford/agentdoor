@@ -15,32 +15,6 @@
   to = "/sitemap-index.xml"
   status = 200
 
-# Deprecated pages — redirect to homepage
-[[redirects]]
-  from = "/aifind"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/shine"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/generate"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/directory"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/blog/*"
-  to = "/"
-  status = 301
-
 # Trailing slash removal
 [[redirects]]
   from = "/:splat/"
