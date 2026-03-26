@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'clawmark' | 'token-scout' | 'privacy' | 'terms';
+  currentPage?: 'home' | 'clawmark' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
 }
 const { currentPage = 'home' } = Astro.props;
 ---
@@ -13,6 +13,7 @@ const { currentPage = 'home' } = Astro.props;
       <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
       <a href="/clawmark" class="nav-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
       <a href="/token-scout" class="nav-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
+      <a href="/sendblue" class="nav-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
     </div>
     <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -31,5 +32,6 @@ const { currentPage = 'home' } = Astro.props;
     <a href="/" class="nav-mobile-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
     <a href="/clawmark" class="nav-mobile-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
     <a href="/token-scout" class="nav-mobile-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
+    <a href="/sendblue" class="nav-mobile-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
   </div>
 </div>
