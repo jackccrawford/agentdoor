@@ -15,30 +15,30 @@
   to = "/sitemap-index.xml"
   status = 200
 
-# Suite refactor redirects — preserve existing URLs
+# Deprecated pages — redirect to homepage
 [[redirects]]
   from = "/aifind"
-  to = "/shine"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/aifind/generate"
-  to = "/generate"
+  from = "/shine"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/aifind/directory"
-  to = "/directory"
+  from = "/generate"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/shine/generate"
-  to = "/generate"
+  from = "/directory"
+  to = "/"
   status = 301
 
 [[redirects]]
-  from = "/shine/directory"
-  to = "/directory"
+  from = "/blog/*"
+  to = "/"
   status = 301
 
 # Trailing slash removal
@@ -56,4 +56,4 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.agentdoor.ai"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"
