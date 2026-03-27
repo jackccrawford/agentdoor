@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 
 <Layout
   title="Clawmark | Continuity for AI agents"
-  description="Your agent solves problems, makes decisions, learns things. Then the session ends. Clawmark gives it a place to put what it learned, and a way to find it again."
+  description="Your AI agent forgets everything between sessions. Clawmark gives it memory that persists — local, private, searchable by meaning."
 >
 
   <Nav currentPage="clawmark" />
@@ -14,12 +14,12 @@ import Footer from '../components/Footer.astro';
   <!-- Hero -->
   <section class="section" style="padding-top: 140px; padding-bottom: 40px;">
     <div class="container-narrow" style="text-align: center;">
-      <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-ink-quaternary); margin-bottom: 1rem;">Open source &middot; MIT license &middot; Works with any agent</div>
+      <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-ink-quaternary); margin-bottom: 1rem;">Open source &middot; MIT license &middot; Works with any AI agent</div>
       <h1 style="font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
-        Continuity for<br/><span style="color: var(--color-accent);">AI agents.</span>
+        Your AI agent<br/><span style="color: var(--color-accent);">remembers now.</span>
       </h1>
-      <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.6; max-width: 500px; margin: 0 auto 2rem;">
-        Your agent solves problems, makes decisions, learns things. Then the session ends. Next session &mdash; blank slate. Clawmark fixes that.
+      <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.6; max-width: 520px; margin: 0 auto 2rem;">
+        Every session starts blank. Your agent re-learns your preferences, re-asks your goals, re-discovers what it figured out last week. Clawmark gives it a place to remember &mdash; private, local, searchable by meaning.
       </p>
       <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
         <a href="https://github.com/jackccrawford/clawmark" class="btn btn-accent" style="padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">View on GitHub</a>
@@ -30,16 +30,16 @@ import Footer from '../components/Footer.astro';
   <!-- The round trip -->
   <section class="section" style="padding-top: 40px; padding-bottom: 60px;">
     <div class="container-narrow">
-      <div class="code-block" style="max-width: 620px; margin: 0 auto;">
-        <div><span style="color: #4ade80;">$</span> clawmark signal -c "Token validation must run after refresh, not before. Lines 42-47 in auth.rs." -g "fix: auth token refresh order"</div>
-        <div style="color: #4ade80;">&#x2705; Signal 98672A90 saved</div>
+      <div class="code-block" style="max-width: 640px; margin: 0 auto;">
+        <div><span style="color: #4ade80;">$</span> clawmark signal -c "Maria prefers retention over acquisition in Q2. Budget is $40K. The board pushed back on expansion." -g "client: Maria &mdash; Q2 priorities, retention focus"</div>
+        <div style="color: #4ade80;">&#x2705; Signal 7A3B29F1 saved</div>
       </div>
-      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1rem;">47 sessions later:</p>
-      <div class="code-block" style="max-width: 620px; margin: 0.75rem auto 0;">
-        <div><span style="color: #4ade80;">$</span> clawmark tune "authentication middleware"</div>
-        <div style="color: #a1a1aa;">98672A90 | 2026-03-19 18:47 | fix: auth token refresh order (0.487)</div>
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1rem;">Three weeks later, different session:</p>
+      <div class="code-block" style="max-width: 640px; margin: 0.75rem auto 0;">
+        <div><span style="color: #4ade80;">$</span> clawmark tune "Maria's budget priorities"</div>
+        <div style="color: #a1a1aa;">7A3B29F1 | 2026-03-05 14:23 | client: Maria &mdash; Q2 priorities, retention focus (0.52)</div>
       </div>
-      <p style="font-size: 1rem; font-weight: 600; text-align: center; margin-top: 1rem;">Zero re-explanation.</p>
+      <p style="font-size: 1rem; font-weight: 600; text-align: center; margin-top: 1rem;">The agent already knows. No re-asking.</p>
     </div>
   </section>
 
@@ -49,69 +49,86 @@ import Footer from '../components/Footer.astro';
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">What this actually looks like</h2>
 
       <div style="margin-bottom: 2.5rem;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Monday &mdash; Session 1</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent debugs a production issue for two hours. Before the session ends:</p>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Tuesday &mdash; Client call</div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent just helped you prepare for a 90-minute call with a new client. Before the session ends:</p>
         <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark signal -c "OAuth token refresh is async but middleware assumed sync validation. Swapped lines 42-47 in auth.rs. Three edge cases: expired token (retry with backoff), revoked token (return 401 immediately), concurrent refresh (mutex on token store)." -g "fix: auth token refresh &mdash; async ordering in middleware, three edge cases"</div>
-          <div style="color: #4ade80;">&#x2705; Signal 98672A90 saved</div>
+          <div><span style="color: #4ade80;">$</span> clawmark signal -c "David runs a 12-person landscaping company in Austin. Wants to automate scheduling and client follow-ups. Currently uses spreadsheets. Budget around $500/mo. Wife handles the books. Mentioned he loses 2-3 jobs a week from slow responses." -g "prospect: David &mdash; landscaping, scheduling automation, $500/mo budget"</div>
+          <div style="color: #4ade80;">&#x2705; Signal C4D891A3 saved</div>
         </div>
       </div>
 
       <div style="margin-bottom: 2.5rem;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Wednesday &mdash; Session 2</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Different session. The agent is working on a related endpoint:</p>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Thursday &mdash; Follow-up prep</div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Different session. You ask your agent to draft a follow-up email:</p>
         <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark tune "token validation"</div>
-          <div style="color: #a1a1aa;">98672A90 | 2026-03-19 18:47 | fix: auth token refresh &mdash; async ordering in middleware, three edge cases (0.487)</div>
+          <div><span style="color: #4ade80;">$</span> clawmark tune "David landscaping"</div>
+          <div style="color: #a1a1aa;">C4D891A3 | 2026-03-18 16:45 | prospect: David &mdash; landscaping, scheduling automation, $500/mo budget (0.61)</div>
         </div>
-        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">Searched "token validation," found Monday's signal about "OAuth refresh." Meaning matched, not keywords. No re-investigation.</p>
+        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">The agent finds Tuesday's notes by meaning. It drafts the email knowing David's budget, pain point, and company size. No re-briefing.</p>
       </div>
 
       <div>
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Friday &mdash; Session 3, different agent</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">A second agent shares the station and hits a related problem:</p>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Next month &mdash; David becomes a client</div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent threads the update to the original signal:</p>
         <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark tune --full "auth edge cases"</div>
-          <div style="color: #a1a1aa;">98672A90 | 2026-03-19 18:47 | fix: auth token refresh &mdash; async ordering in middleware</div>
-          <div style="color: #71717a; padding-left: 2ch;">OAuth token refresh is async but middleware assumed sync validation.</div>
-          <div style="color: #71717a; padding-left: 2ch;">Swapped lines 42-47 in auth.rs. Three edge cases...</div>
-          <div style="height: 0.75rem;"></div>
-          <div><span style="color: #4ade80;">$</span> clawmark signal -c "Applied same pattern to /api/billing endpoint. Added mutex." -g "fix: billing auth &mdash; same async pattern" -p 98672A90</div>
-          <div style="color: #4ade80;">&#x2705; Signal E5F6A7B8 saved</div>
+          <div><span style="color: #4ade80;">$</span> clawmark signal -c "David signed. Starting with scheduling module. Onboarding call set for April 3. His wife Elena will join &mdash; she manages invoicing." -g "client: David &mdash; signed, onboarding April 3" -p C4D891A3</div>
+          <div style="color: #4ade80;">&#x2705; Signal F8E2B174 saved</div>
         </div>
-        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">Agent B threaded a follow-up to Agent A's signal. Knowledge transferred across agents, across sessions, no human in the loop.</p>
+        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">Threaded to the original signal. The full client history &mdash; from prospect to signed &mdash; is one chain. Any future session finds the whole story.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Personal use -->
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
+    <div class="container-narrow">
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Not just business. Personal too.</h2>
+
+      <div style="max-width: 620px; margin: 0 auto; display: grid; gap: 1.5rem;">
+        <div style="padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">Research</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5; margin: 0;"><em>"Remember that paper about attention mechanisms I read last month?"</em> &mdash; your agent finds it by meaning, not by remembering the exact title.</p>
+        </div>
+        <div style="padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">Writing</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5; margin: 0;">Your agent maintains voice and continuity across chapters, drafts, and revisions &mdash; even weeks apart.</p>
+        </div>
+        <div style="padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">Health &amp; wellness</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5; margin: 0;">Track symptoms, medications, what your doctor said. Your agent builds a picture over time instead of starting fresh every visit.</p>
+        </div>
+        <div style="padding: 1.25rem; border: 1px solid var(--color-border); border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 0.5rem;">Learning</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.5; margin: 0;">Your agent remembers what you've already covered, where you got stuck, and what clicked. No repeating lessons.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Works with everything -->
-  <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
+  <section class="section" style="padding-top: 60px; padding-bottom: 60px; background: var(--color-surface-subtle);">
     <div class="container-narrow">
-      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Works with everything</h2>
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Works with any agent</h2>
       <div style="overflow-x: auto;">
         <table style="width: 100%; border-collapse: collapse; font-size: 0.9375rem;">
           <thead>
             <tr style="border-bottom: 2px solid var(--color-border);">
-              <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;">Framework</th>
+              <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;">Platform</th>
               <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;">How</th>
             </tr>
           </thead>
           <tbody>
             <tr style="border-bottom: 1px solid var(--color-border);">
-              <td style="padding: 0.75rem 1rem; font-weight: 500;">OpenClaw</td>
-              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);"><code style="font-family: var(--font-mono); font-size: 0.8125rem; background: var(--color-surface-subtle); padding: 0.15em 0.4em; border-radius: 4px;">clawmark capture --openclaw</code> imports MEMORY.md + daily logs</td>
-            </tr>
-            <tr style="border-bottom: 1px solid var(--color-border);">
               <td style="padding: 0.75rem 1rem; font-weight: 500;">Claude Code</td>
-              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Signal from hooks or inline. Reads CLAUDE.md context.</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Signal from hooks or inline. Your agent calls it like any shell command.</td>
             </tr>
             <tr style="border-bottom: 1px solid var(--color-border);">
-              <td style="padding: 0.75rem 1rem; font-weight: 500;">Cursor / Windsurf / OpenCode</td>
-              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Any agent that can run a CLI command can signal and tune.</td>
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">OpenClaw</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);"><code style="font-family: var(--font-mono); font-size: 0.8125rem; background: var(--color-surface); padding: 0.15em 0.4em; border-radius: 4px;">clawmark capture --openclaw</code> imports your existing memory.</td>
             </tr>
             <tr style="border-bottom: 1px solid var(--color-border);">
-              <td style="padding: 0.75rem 1rem; font-weight: 500;">Aider</td>
-              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Shell commands in-session.</td>
+              <td style="padding: 0.75rem 1rem; font-weight: 500;">Cursor / Windsurf / Aider</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Any agent that can run a shell command can signal and tune.</td>
             </tr>
             <tr>
               <td style="padding: 0.75rem 1rem; font-weight: 500;">Custom agents</td>
@@ -120,84 +137,26 @@ import Footer from '../components/Footer.astro';
           </tbody>
         </table>
       </div>
-      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1.25rem;">No runtime dependency. No API key. No account. One binary.</p>
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1.25rem;">No cloud. No API key. No account. One binary. Your data stays on your machine.</p>
     </div>
   </section>
 
   <!-- Install -->
-  <section class="section" style="padding-top: 60px; padding-bottom: 60px; background: var(--color-surface-subtle);">
-    <div class="container-narrow">
-      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Install</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; max-width: 620px; margin: 0 auto;">
-        <div>
-          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Mac / Linux</div>
-          <div class="code-block">
-            <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | bash</div>
-          </div>
-        </div>
-        <div>
-          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">From source</div>
-          <div class="code-block">
-            <div><span style="color: #4ade80;">$</span> git clone https://github.com/jackccrawford/clawmark && cd clawmark</div>
-            <div><span style="color: #4ade80;">$</span> cargo build --release</div>
-          </div>
-        </div>
-      </div>
-      <div style="max-width: 620px; margin: 1.5rem auto 0;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Import existing knowledge</div>
-        <div class="code-block">
-          <div><span class="code-comment"># OpenClaw memory</span></div>
-          <div><span style="color: #4ade80;">$</span> clawmark capture --openclaw</div>
-          <div style="height: 0.5rem;"></div>
-          <div><span class="code-comment"># Any markdown files</span></div>
-          <div><span style="color: #4ade80;">$</span> clawmark capture ./docs/</div>
-          <div style="height: 0.5rem;"></div>
-          <div><span class="code-comment"># Enable semantic search</span></div>
-          <div><span style="color: #4ade80;">$</span> clawmark backfill</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fast mode -->
   <section class="section" style="padding-top: 60px; padding-bottom: 60px;">
     <div class="container-narrow">
-      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; text-align: center;">The slower the hardware, the bigger the win.</h2>
-      <p style="font-size: 1rem; color: var(--color-ink-secondary); text-align: center; margin-bottom: 2rem; max-width: 520px; margin-left: auto; margin-right: auto;">
-        <code style="font-family: var(--font-mono); font-size: 0.875rem; background: var(--color-surface-subtle); padding: 0.15em 0.4em; border-radius: 4px;">clawmark-embed</code> keeps the ONNX model warm in memory. First signal loads the model. Every signal after that is instant.
-      </p>
-      <div style="overflow-x: auto; max-width: 520px; margin: 0 auto;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 0.9375rem;">
-          <thead>
-            <tr style="border-bottom: 2px solid var(--color-border);">
-              <th style="text-align: left; padding: 0.75rem 1rem; font-weight: 600;"></th>
-              <th style="text-align: center; padding: 0.75rem 1rem; font-weight: 600;">Mac (Apple Silicon)</th>
-              <th style="text-align: center; padding: 0.75rem 1rem; font-weight: 600;">Raspberry Pi 5</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 1px solid var(--color-border);">
-              <td style="padding: 0.75rem 1rem; font-weight: 500; color: var(--color-ink-tertiary);">Without embed server</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-ink-secondary);">712ms</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-ink-secondary);">1,580ms</td>
-            </tr>
-            <tr style="border-bottom: 1px solid var(--color-border);">
-              <td style="padding: 0.75rem 1rem; font-weight: 500; color: var(--color-accent);">With embed server</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-ink);">109ms</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-ink); font-weight: 700;">40ms</td>
-            </tr>
-            <tr>
-              <td style="padding: 0.75rem 1rem; font-weight: 500;">Speedup</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-ink);">6.5x</td>
-              <td style="padding: 0.75rem 1rem; text-align: center; color: var(--color-accent); font-weight: 700;">39.5x</td>
-            </tr>
-          </tbody>
-        </table>
+      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Install in 10 seconds</h2>
+      <div class="code-block" style="max-width: 620px; margin: 0 auto;">
+        <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | bash</div>
       </div>
-      <div class="code-block" style="max-width: 520px; margin: 1.5rem auto 0;">
-        <div><span style="color: #4ade80;">$</span> clawmark-embed &amp;</div>
-        <div style="color: #71717a;"># Auto-exits after 5 min idle. No stale processes.</div>
-        <div style="color: #71717a;"># clawmark signal detects it automatically. No config.</div>
+      <p style="font-size: 0.875rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1rem;">Mac (Apple Silicon &amp; Intel), Linux, Raspberry Pi. Auto-detects your platform.</p>
+
+      <div style="max-width: 620px; margin: 2rem auto 0;">
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Already have notes? Import them.</div>
+        <div class="code-block">
+          <div><span style="color: #4ade80;">$</span> clawmark capture ./my-notes/</div>
+          <div><span style="color: #4ade80;">$</span> clawmark capture --openclaw</div>
+          <div><span style="color: #4ade80;">$</span> clawmark backfill</div>
+        </div>
       </div>
     </div>
   </section>
@@ -207,28 +166,22 @@ import Footer from '../components/Footer.astro';
     <div class="container-narrow">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-align: center;">How it works</h2>
       <div style="max-width: 600px; margin: 0 auto;">
-        <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; margin-bottom: 1.25rem;">
-          Clawmark is a compiled Rust binary backed by SQLite. No Node.js. No runtime dependencies. No background services. No account. No cloud.
-        </p>
-        <div class="code-block" style="margin-bottom: 1.5rem;">
-          <div style="color: #a1a1aa;">Agent &rarr; clawmark (Rust binary) &rarr; SQLite</div>
-        </div>
         <ul style="list-style: none; padding: 0; display: grid; gap: 1rem;">
           <li style="display: flex; gap: 0.75rem; align-items: baseline;">
             <span style="color: var(--color-accent); font-weight: 700; flex-shrink: 0;">01</span>
-            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Signals</strong> store insights with a gist (compressed index) and content (full detail). Content can be inline, from a file (<code style="font-family: var(--font-mono); font-size: 0.8125rem;">-c @path</code>), or piped from stdin (<code style="font-family: var(--font-mono); font-size: 0.8125rem;">-c -</code>).</span>
+            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Your agent saves what it learned.</strong> A signal is a note with a gist (for finding it later) and content (the full detail). One command.</span>
           </li>
           <li style="display: flex; gap: 0.75rem; align-items: baseline;">
             <span style="color: var(--color-accent); font-weight: 700; flex-shrink: 0;">02</span>
-            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Semantic search</strong> uses a built-in BERT model (384 dimensions, 50+ languages). Auto-downloads on first use. No API keys.</span>
+            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Search finds things by meaning.</strong> "Client budget priorities" matches a signal about "retention focus, $40K." The concepts overlap, even when the words don't. That's semantic search, running locally.</span>
           </li>
           <li style="display: flex; gap: 0.75rem; align-items: baseline;">
             <span style="color: var(--color-accent); font-weight: 700; flex-shrink: 0;">03</span>
-            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Threads</strong> link signals together. Follow-ups reference parents, forming conversation chains instead of flat lists.</span>
+            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Signals thread into chains.</strong> A follow-up references its parent. The story builds over time &mdash; prospect to client, draft to final, problem to solution.</span>
           </li>
           <li style="display: flex; gap: 0.75rem; align-items: baseline;">
             <span style="color: var(--color-accent); font-weight: 700; flex-shrink: 0;">04</span>
-            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Runs on anything.</strong> Pi 4, Pi 5, Mac, Linux server. Single static binary. Framework-independent &mdash; your memory is in SQLite, not any framework's format.</span>
+            <span style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;"><strong style="color: var(--color-ink);">Everything stays on your machine.</strong> No cloud. No API key. No account. One binary, one SQLite file. Your data never leaves your computer.</span>
           </li>
         </ul>
       </div>
@@ -240,7 +193,7 @@ import Footer from '../components/Footer.astro';
     <div class="container-narrow" style="text-align: center;">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem;">Two lines. Any agent.</h2>
       <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 520px; margin: 0 auto 1.5rem;">
-        Clawmark doesn't replace your agent framework. Add two lines to your agent's instructions and it knows how to remember:
+        Add two lines to your agent's instructions and it knows how to remember:
       </p>
       <div class="code-block" style="max-width: 560px; margin: 0 auto; text-align: left;">
         <div style="color: #71717a;">When you learn something worth keeping:</div>
@@ -270,7 +223,7 @@ import Footer from '../components/Footer.astro';
           View on GitHub
         </a>
       </div>
-      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Rust &middot; Single binary &middot; Runs on Pi 5 at 40ms</p>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Rust + SQLite &middot; Runs on Mac, Linux, and Raspberry Pi</p>
     </div>
   </section>
 
