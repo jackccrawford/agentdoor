@@ -29,17 +29,22 @@ import Footer from '../components/Footer.astro';
 
   <!-- The round trip -->
   <section class="section" style="padding-top: 40px; padding-bottom: 60px;">
-    <div class="container-narrow">
-      <div class="code-block" style="max-width: 640px; margin: 0 auto;">
-        <div><span style="color: #4ade80;">$</span> clawmark signal -c "Maria prefers retention over acquisition in Q2. Budget is $40K. The board pushed back on expansion." -g "client: Maria &mdash; Q2 priorities, retention focus"</div>
-        <div style="color: #4ade80;">&#x2705; Signal 7A3B29F1 saved</div>
+    <div class="container-narrow" style="max-width: 600px; margin: 0 auto;">
+      <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;">
+        <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-ink-quaternary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem;">Your agent saves this</div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink); line-height: 1.6; margin: 0;">Maria prefers retention over acquisition in Q2. Budget is $40K. The board pushed back on expansion.</p>
+        <div style="font-size: 0.75rem; color: var(--color-accent); margin-top: 0.75rem; font-weight: 500;">client: Maria &mdash; Q2 priorities, retention focus</div>
       </div>
-      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1rem;">Three weeks later, different session:</p>
-      <div class="code-block" style="max-width: 640px; margin: 0.75rem auto 0;">
-        <div><span style="color: #4ade80;">$</span> clawmark tune "Maria's budget priorities"</div>
-        <div style="color: #a1a1aa;">7A3B29F1 | 2026-03-05 14:23 | client: Maria &mdash; Q2 priorities, retention focus (0.52)</div>
+
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin: 1.25rem 0;">Three weeks later, different session:</p>
+
+      <div style="background: var(--color-surface-subtle); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.25rem 1.5rem;">
+        <div style="font-size: 0.75rem; font-weight: 600; color: var(--color-ink-quaternary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem;">Your agent searches &ldquo;Maria's budget priorities&rdquo;</div>
+        <p style="font-size: 0.9375rem; color: var(--color-ink); line-height: 1.6; margin: 0;">Maria prefers retention over acquisition in Q2. Budget is $40K. The board pushed back on expansion.</p>
+        <div style="font-size: 0.75rem; color: var(--color-ink-tertiary); margin-top: 0.75rem;">Saved 3 weeks ago &middot; matched by meaning, not keywords</div>
       </div>
-      <p style="font-size: 1rem; font-weight: 600; text-align: center; margin-top: 1rem;">The agent already knows. No re-asking.</p>
+
+      <p style="font-size: 1rem; font-weight: 600; text-align: center; margin-top: 1.25rem;">The agent already knows. No re-asking.</p>
     </div>
   </section>
 
@@ -48,33 +53,51 @@ import Footer from '../components/Footer.astro';
     <div class="container-narrow">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">What this actually looks like</h2>
 
-      <div style="margin-bottom: 2.5rem;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Tuesday &mdash; Client call</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent just helped you prepare for a 90-minute call with a new client. Before the session ends:</p>
-        <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark signal -c "David runs a 12-person landscaping company in Austin. Wants to automate scheduling and client follow-ups. Currently uses spreadsheets. Budget around $500/mo. Wife handles the books. Mentioned he loses 2-3 jobs a week from slow responses." -g "prospect: David &mdash; landscaping, scheduling automation, $500/mo budget"</div>
-          <div style="color: #4ade80;">&#x2705; Signal C4D891A3 saved</div>
-        </div>
-      </div>
+      <div style="max-width: 600px; margin: 0 auto;">
 
-      <div style="margin-bottom: 2.5rem;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Thursday &mdash; Follow-up prep</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Different session. You ask your agent to draft a follow-up email:</p>
-        <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark tune "David landscaping"</div>
-          <div style="color: #a1a1aa;">C4D891A3 | 2026-03-18 16:45 | prospect: David &mdash; landscaping, scheduling automation, $500/mo budget (0.61)</div>
+        <div style="margin-bottom: 2.5rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Tuesday &mdash; Client call</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent just helped you through a 90-minute call with a new client. Before the session ends, it saves what it learned:</p>
+          <div style="background: white; border: 1px solid var(--color-border); border-radius: 12px; padding: 1.25rem 1.5rem;">
+            <p style="font-size: 0.9375rem; color: var(--color-ink); line-height: 1.65; margin: 0;">David runs a 12-person landscaping company in Austin. Wants to automate scheduling and client follow-ups. Currently uses spreadsheets. Budget around $500/mo. Wife handles the books. Mentioned he loses 2&ndash;3 jobs a week from slow responses.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-border);">
+              <span style="font-size: 0.75rem; color: var(--color-accent); font-weight: 500;">prospect: David &mdash; landscaping, $500/mo</span>
+              <span style="font-size: 0.75rem; color: var(--color-ink-quaternary);">Saved &#x2713;</span>
+            </div>
+          </div>
         </div>
-        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">The agent finds Tuesday's notes by meaning. It drafts the email knowing David's budget, pain point, and company size. No re-briefing.</p>
-      </div>
 
-      <div>
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Next month &mdash; David becomes a client</div>
-        <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent threads the update to the original signal:</p>
-        <div class="code-block">
-          <div><span style="color: #4ade80;">$</span> clawmark signal -c "David signed. Starting with scheduling module. Onboarding call set for April 3. His wife Elena will join &mdash; she manages invoicing." -g "client: David &mdash; signed, onboarding April 3" -p C4D891A3</div>
-          <div style="color: #4ade80;">&#x2705; Signal F8E2B174 saved</div>
+        <div style="margin-bottom: 2.5rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Thursday &mdash; Follow-up prep</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Different session. You ask your agent to draft a follow-up email. It searches for context:</p>
+          <div style="background: white; border: 1px solid var(--color-border); border-radius: 12px; padding: 1.25rem 1.5rem;">
+            <div style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Found by searching <strong style="color: var(--color-ink);">&ldquo;David landscaping&rdquo;</strong></div>
+            <p style="font-size: 0.9375rem; color: var(--color-ink); line-height: 1.65; margin: 0;">David runs a 12-person landscaping company in Austin. Wants to automate scheduling and client follow-ups. Currently uses spreadsheets. Budget around $500/mo&hellip;</p>
+            <div style="font-size: 0.75rem; color: var(--color-ink-quaternary); margin-top: 0.75rem;">Saved Tuesday &middot; matched by meaning</div>
+          </div>
+          <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.75rem;">The agent drafts the email knowing David's budget, pain point, and company size. No re-briefing.</p>
         </div>
-        <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">Threaded to the original signal. The full client history &mdash; from prospect to signed &mdash; is one chain. Any future session finds the whole story.</p>
+
+        <div>
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Next month &mdash; David becomes a client</div>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin-bottom: 0.75rem;">Your agent threads the update to the original note:</p>
+          <div style="background: white; border: 1px solid var(--color-border); border-radius: 12px; overflow: hidden;">
+            <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--color-border);">
+              <div style="font-size: 0.75rem; color: var(--color-ink-quaternary); margin-bottom: 0.5rem;">Original &middot; Tuesday</div>
+              <p style="font-size: 0.875rem; color: var(--color-ink-tertiary); line-height: 1.5; margin: 0;">David runs a 12-person landscaping company in Austin. Budget around $500/mo&hellip;</p>
+            </div>
+            <div style="padding: 1.25rem 1.5rem; background: var(--color-surface);">
+              <div style="font-size: 0.75rem; color: var(--color-ink-quaternary); margin-bottom: 0.5rem;">Follow-up &middot; Today</div>
+              <p style="font-size: 0.9375rem; color: var(--color-ink); line-height: 1.65; margin: 0;">David signed. Starting with scheduling module. Onboarding call set for April 3. His wife Elena will join &mdash; she manages invoicing.</p>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--color-border);">
+                <span style="font-size: 0.75rem; color: var(--color-accent); font-weight: 500;">client: David &mdash; signed, onboarding April 3</span>
+                <span style="font-size: 0.75rem; color: var(--color-ink-quaternary);">Saved &#x2713;</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.75rem;">The full client history &mdash; from prospect to signed &mdash; is one thread. Any future session finds the whole story.</p>
+        </div>
+
       </div>
     </div>
   </section>
