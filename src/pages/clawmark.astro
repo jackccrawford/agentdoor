@@ -120,7 +120,7 @@ import Footer from '../components/Footer.astro';
           </tbody>
         </table>
       </div>
-      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1.25rem;">No runtime dependency. No API key. No account. One 31MB binary.</p>
+      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); text-align: center; margin-top: 1.25rem;">No runtime dependency. No API key. No account. One binary.</p>
     </div>
   </section>
 
@@ -138,7 +138,8 @@ import Footer from '../components/Footer.astro';
         <div>
           <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">From source</div>
           <div class="code-block">
-            <div><span style="color: #4ade80;">$</span> cargo install clawmark</div>
+            <div><span style="color: #4ade80;">$</span> git clone https://github.com/jackccrawford/clawmark && cd clawmark</div>
+            <div><span style="color: #4ade80;">$</span> cargo build --release</div>
           </div>
         </div>
       </div>
@@ -269,7 +270,7 @@ import Footer from '../components/Footer.astro';
           View on GitHub
         </a>
       </div>
-      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Rust &middot; 31MB binary &middot; Runs on Pi 5 at 40ms</p>
+      <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Rust &middot; Single binary &middot; Runs on Pi 5 at 40ms</p>
     </div>
   </section>
 
