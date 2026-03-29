@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'clawmark' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
+  currentPage?: 'home' | 'geniuz' | 'clawmark' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
 }
 const { currentPage = 'home' } = Astro.props;
 ---
@@ -11,6 +11,7 @@ const { currentPage = 'home' } = Astro.props;
     <a href="/" class="nav-brand">agent<span>door</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
+      <a href="/geniuz" class="nav-link" style={currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Geniuz</a>
       <a href="/clawmark" class="nav-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
       <a href="/token-scout" class="nav-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
       <a href="/sendblue" class="nav-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
@@ -30,6 +31,7 @@ const { currentPage = 'home' } = Astro.props;
   </div>
   <div class="nav-mobile-links">
     <a href="/" class="nav-mobile-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
+    <a href="/geniuz" class="nav-mobile-link" style={currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Geniuz</a>
     <a href="/clawmark" class="nav-mobile-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
     <a href="/token-scout" class="nav-mobile-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
     <a href="/sendblue" class="nav-mobile-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
