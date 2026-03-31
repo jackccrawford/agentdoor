@@ -11,10 +11,10 @@ const { currentPage = 'home' } = Astro.props;
     <a href="/" class="nav-brand">agent<span>door</span></a>
     <div class="nav-links">
       <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
-      <a href="/geniuz" class="nav-link" style={currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Geniuz</a>
-      <a href="/clawmark" class="nav-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
-      <a href="/token-scout" class="nav-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
-      <a href="/sendblue" class="nav-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
+      <a href="/geniuz" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/geniuz-icon-mono.svg" alt="" style="height: 16px; width: 16px; opacity: 0.7;" />Geniuz</a>
+      <a href="/clawmark" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}>Clawmark</a>
+      <a href="/token-scout" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}>Token Scout</a>
+      <a href="/sendblue" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}>Sendblue</a>
     </div>
     <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
