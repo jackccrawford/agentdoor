@@ -22,8 +22,11 @@ import Footer from '../components/Footer.astro';
         Close Claude. Reopen it tomorrow. Ask about something from last week. It knows. Not because you pasted a prompt &mdash; because it actually remembers.
       </p>
       <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-        <a href="#install" class="btn btn-accent" style="padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">Install Geniuz</a>
-        <a href="https://github.com/jackccrawford/clawmark" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 1rem; font-weight: 500; transition: border-color 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+        <a href="https://github.com/jackccrawford/Geniuz/releases/latest/download/Geniuz.dmg" class="btn btn-accent" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for Mac
+        </a>
+        <a href="https://github.com/jackccrawford/Geniuz" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 1rem; font-weight: 500; transition: border-color 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           GitHub
         </a>
@@ -109,32 +112,39 @@ import Footer from '../components/Footer.astro';
   <section id="install" class="section" style="padding-top: 60px; padding-bottom: 60px; background: var(--color-surface-subtle);">
     <div class="container-narrow">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.75rem; text-align: center;">Install in 2 minutes</h2>
-      <p style="font-size: 1rem; color: var(--color-ink-secondary); text-align: center; margin-bottom: 2rem;">You need a Mac and <a href="https://claude.ai/download" style="color: var(--color-accent); text-decoration: underline;">Claude Desktop</a>. That's it.</p>
+      <p style="font-size: 1rem; color: var(--color-ink-secondary); text-align: center; margin-bottom: 2rem;">You need <a href="https://claude.ai/download" style="color: var(--color-accent); text-decoration: underline;">Claude Desktop</a>. That's it.</p>
 
       <div style="max-width: 560px; margin: 0 auto;">
-        <div style="margin-bottom: 2rem;">
-          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Step 1 &mdash; Install Clawmark</div>
-          <div class="code-block">
-            <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | bash</div>
+
+        <!-- Mac -->
+        <div style="margin-bottom: 2.5rem;">
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Mac &mdash; one-click install</div>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <a href="https://github.com/jackccrawford/Geniuz/releases/latest/download/Geniuz.dmg" class="btn btn-accent" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-size: 1rem; text-decoration: none;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download Geniuz.dmg
+            </a>
           </div>
+          <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">Open the DMG, run the installer. Configures Claude Desktop automatically. Signed and notarized.</p>
         </div>
 
+        <!-- Linux / CLI -->
         <div style="margin-bottom: 2rem;">
-          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Step 2 &mdash; Connect to Claude Desktop</div>
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Linux / Mac CLI &mdash; two commands</div>
           <div class="code-block">
+            <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh</div>
             <div><span style="color: #4ade80;">$</span> clawmark mcp install</div>
           </div>
-          <p style="font-size: 0.8125rem; color: var(--color-ink-tertiary); margin-top: 0.5rem;">This adds Geniuz to your Claude Desktop config automatically.</p>
         </div>
 
         <div style="margin-bottom: 2rem;">
-          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Step 3 &mdash; Restart Claude Desktop</div>
+          <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Then &mdash; restart Claude Desktop</div>
           <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6;">Quit Claude Desktop and reopen it. You'll see the Geniuz tools available. Start a conversation. Say something worth remembering. Close the session. Open a new one. Ask about it.</p>
         </div>
 
         <div style="background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center;">
           <p style="font-size: 1rem; font-weight: 600; color: var(--color-ink); margin: 0 0 0.25rem;">That's it.</p>
-          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); margin: 0;">Two commands. One restart. Your Claude remembers now.</p>
+          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); margin: 0;">Your Claude remembers now.</p>
         </div>
       </div>
     </div>
@@ -195,16 +205,16 @@ import Footer from '../components/Footer.astro';
         Stop re-explaining yourself<br/>to your own AI.
       </h2>
       <p style="font-size: 1rem; color: var(--color-ink-secondary); margin-bottom: 2rem;">
-        Two commands. One restart. Free forever.
+        Free forever. Your data stays local.
       </p>
-      <div class="code-block" style="max-width: 560px; margin: 0 auto 2rem; text-align: left;">
-        <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | bash</div>
-        <div><span style="color: #4ade80;">$</span> clawmark mcp install</div>
-      </div>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="https://github.com/jackccrawford/clawmark" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; background: var(--color-surface-dark); color: white; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: opacity 0.15s;" onmouseenter="this.style.opacity='0.85'" onmouseleave="this.style.opacity='1'">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          View on GitHub
+        <a href="https://github.com/jackccrawford/Geniuz/releases/latest/download/Geniuz.dmg" id="cta-download" class="btn btn-accent" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download for Mac
+        </a>
+        <a href="https://github.com/jackccrawford/Geniuz" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 1.75rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 1rem; font-weight: 500; transition: border-color 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
         </a>
       </div>
       <p style="font-size: 0.8125rem; color: var(--color-ink-quaternary); margin-top: 1.5rem;">MIT License &middot; Free forever &middot; Your data stays local</p>
@@ -212,5 +222,20 @@ import Footer from '../components/Footer.astro';
   </section>
 
   <Footer />
+
+  <script>
+    // Platform detection — show the right install path
+    const isMac = navigator.platform.toUpperCase().includes('MAC') || navigator.userAgent.includes('Macintosh');
+    const macSections = document.querySelectorAll('[data-platform="mac"]');
+    const linuxSections = document.querySelectorAll('[data-platform="linux"]');
+
+    if (!isMac) {
+      // Non-Mac: swap hero and CTA download buttons to point to CLI install
+      document.querySelectorAll('a[href*="Geniuz.dmg"]').forEach(el => {
+        el.href = '#install';
+        el.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg> Install via CLI';
+      });
+    }
+  </script>
 
 </Layout>
