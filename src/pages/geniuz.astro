@@ -134,9 +134,10 @@ import Footer from '../components/Footer.astro';
         <!-- Linux / CLI -->
         <div style="margin-bottom: 2rem;">
           <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Linux / Mac CLI &mdash; two commands</div>
-          <div class="code-block">
-            <div><span style="color: #4ade80;">$</span> curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh</div>
-            <div><span style="color: #4ade80;">$</span> clawmark mcp install</div>
+          <div class="code-block" style="position: relative;">
+            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-1">curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh</span></div>
+            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-2">clawmark mcp install</span></div>
+            <button onclick="navigator.clipboard.writeText('curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh\nclawmark mcp install');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; transition: all 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">Copy</button>
           </div>
         </div>
 
