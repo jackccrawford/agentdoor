@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 
 <Layout
   title="Token Scout | Free and cheap LLM inference, found live."
-  description="28+ free LLM models right now. Token Scout discovers them in real time across OpenRouter, Ollama, and local networks. Dynamic pricing, compatibility filtering, cost control. Stop paying for inference your agent can get for free."
+  description="Free LLM models exist right now — your agent just doesn't know about them. Token Scout discovers them live across OpenRouter, Ollama, and local networks. Dynamic pricing, compatibility filtering, cost control."
 >
 
   <Nav currentPage="token-scout" />
@@ -22,10 +22,10 @@ import Footer from '../components/Footer.astro';
         Free and cheap LLM inference.<br/><span style="color: var(--color-accent);">Found live. Routed safely.</span>
       </h1>
       <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.6; max-width: 560px; margin: 0 auto 1.25rem;">
-        There are 28+ free models on OpenRouter right now &mdash; including Qwen3 Coder 480B, Nemotron 120B, and a 1M-context Qwen3.6 Plus. Tomorrow the list will be different. Token Scout discovers them in real time so your agent always routes to the cheapest safe option.
+        Free LLM models exist right now. Tomorrow the list will be different. Token Scout discovers what's free and cheap in real time &mdash; across OpenRouter, Groq, Cerebras, and your local Ollama GPUs &mdash; so your agent always routes to the cheapest safe option.
       </p>
       <p style="font-size: 1rem; color: var(--color-ink-tertiary); line-height: 1.6; max-width: 560px; margin: 0 auto 2rem;">
-        600+ models across OpenRouter, Groq, Cerebras, Mistral, GitHub, Google, and your local Ollama network. Dynamic pricing. Compatibility filtering. One tool.
+        Dynamic pricing. Compatibility filtering. Cost ceiling. One tool you wire in once &mdash; your agent does the rest.
       </p>
       <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
         <a href="https://github.com/jackccrawford/token-scout" class="btn btn-accent" style="padding: 0.875rem 1.75rem; font-size: 1rem; text-decoration: none;">View on GitHub</a>
@@ -39,12 +39,12 @@ import Footer from '../components/Footer.astro';
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 2rem; text-align: center;">Stop paying for inference your agent can get for free.</h2>
 
       <div style="margin-bottom: 2rem;">
-        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Find free models &mdash; right now, not last week</div>
+        <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Find what's free &mdash; right now, not last week</div>
         <div class="code-block">
           <div><span style="color: #4ade80;">token_scout</span>(query="reasoning code")</div>
-          <div style="color: #a1a1aa;">&rarr; Qwen3 Coder 480B (free), Qwen3.6 Plus 1M context (free), DeepSeek R1 (free)...</div>
+          <div style="color: #a1a1aa;">&rarr; live results: free and cheap models matching your query, with pricing</div>
           <div style="height: 0.5rem;"></div>
-          <div style="color: #71717a;">Live results. These models are free today. Tomorrow the list changes.</div>
+          <div style="color: #71717a;">Results change as providers add, remove, and reprice models.</div>
         </div>
       </div>
 
@@ -62,7 +62,7 @@ import Footer from '../components/Footer.astro';
         <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Route safely &mdash; compatibility filtering prevents broken calls</div>
         <div class="code-block">
           <div><span style="color: #4ade80;">token_scout</span>(query="reasoning", require={'{"reasoning_format": "inline_tags", "min_context": 32000}'})</div>
-          <div style="color: #a1a1aa;">&rarr; 33 compatible models. No context clipping. No tag corruption.</div>
+          <div style="color: #a1a1aa;">&rarr; only models that match your constraints. No context clipping. No tag corruption.</div>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ import Footer from '../components/Footer.astro';
         <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-ink-tertiary); margin-bottom: 0.75rem;">Your local GPUs count too</div>
         <div class="code-block">
           <div><span style="color: #4ade80;">token_scout</span>(query="fast", prefer="speed")</div>
-          <div style="color: #a1a1aa;">&rarr; Llama 3.1 8B on Groq (free), Qwen3 8B on your GPU (free, unlimited)...</div>
+          <div style="color: #a1a1aa;">&rarr; fastest available models across cloud providers and your local GPUs</div>
           <div style="height: 0.5rem;"></div>
           <div style="color: #71717a;">Ollama instances on your network are discovered automatically. Zero cost.</div>
         </div>
@@ -95,7 +95,7 @@ import Footer from '../components/Footer.astro';
           <tbody>
             <tr style="border-bottom: 1px solid var(--color-border);">
               <td style="padding: 0.75rem 1rem; font-weight: 500;">OpenRouter Live</td>
-              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">600+ models with real-time pricing. 28+ free right now.</td>
+              <td style="padding: 0.75rem 1rem; color: var(--color-ink-secondary);">Hundreds of models with real-time pricing. Free tiers come and go &mdash; Token Scout catches them.</td>
               <td style="padding: 0.75rem 1rem; color: var(--color-ink-tertiary);">GET /api/v1/models &mdash; no key needed</td>
             </tr>
             <tr style="border-bottom: 1px solid var(--color-border);">
@@ -196,7 +196,7 @@ import Footer from '../components/Footer.astro';
     <div class="container-narrow" style="text-align: center;">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem;">The free tier changes every hour.</h2>
       <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 540px; margin: 0 auto;">
-        A 480B model that's free right now costs $2.20/M tokens tomorrow. A new model drops with a 48-hour promotional window. Groq adds Kimi K2 at 1 trillion parameters &mdash; free. If your agent is hardcoding model IDs or reading from a static config, it's paying for inference it could get for free.
+        A model that's free today gets priced tomorrow. A new model drops with a 48-hour promotional window. A provider quietly adds a trillion-parameter model to their free tier. If your agent is hardcoding model IDs or reading from a static config, it's missing these windows entirely.
       </p>
       <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 540px; margin: 1.25rem auto 0;">
         Token Scout checks the market on every query. Your agent always routes to the cheapest option that's compatible with the task. The savings compound &mdash; 50 subagent calls a day on free models instead of paid ones adds up fast.
