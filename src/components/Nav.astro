@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'geniuz' | 'clawmark' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
+  currentPage?: 'home' | 'geniuz' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
 }
 const { currentPage = 'home' } = Astro.props;
 ---
@@ -12,7 +12,6 @@ const { currentPage = 'home' } = Astro.props;
     <div class="nav-links">
       <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
       <a href="/geniuz" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/geniuz-icon-mono.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'geniuz' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Geniuz</a>
-      <a href="/clawmark" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/clawmark-icon-mono.png" alt="" style={`height: 16px; width: 16px; ${currentPage === 'clawmark' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Clawmark</a>
       <a href="/token-scout" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/token-scout-icon.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'token-scout' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Token Scout</a>
       <a href="/sendblue" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/sendblue-icon-mono.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'sendblue' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Sendblue</a>
     </div>
@@ -32,7 +31,6 @@ const { currentPage = 'home' } = Astro.props;
   <div class="nav-mobile-links">
     <a href="/" class="nav-mobile-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
     <a href="/geniuz" class="nav-mobile-link" style={currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Geniuz</a>
-    <a href="/clawmark" class="nav-mobile-link" style={currentPage === 'clawmark' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Clawmark</a>
     <a href="/token-scout" class="nav-mobile-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
     <a href="/sendblue" class="nav-mobile-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
   </div>

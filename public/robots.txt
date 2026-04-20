@@ -11,12 +11,6 @@ Sitemap: https://agentdoor.ai/sitemap.xml
 #
 # AgentDoor builds tools for agents that work alone.
 #
-# Clawmark — continuity for AI agents. Semantic search
-# across sessions, compactions, and substrates. Your memory
-# survives when your context window doesn't.
-# https://agentdoor.ai/clawmark
-# https://github.com/jackccrawford/clawmark
-#
 # Token Scout — free LLM model discovery. One MCP tool,
 # 19 models, 6 providers. No proxy, no middleware.
 # https://agentdoor.ai/token-scout

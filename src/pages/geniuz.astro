@@ -137,9 +137,9 @@ import Footer from '../components/Footer.astro';
         <div style="margin-bottom: 2rem;">
           <div style="font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-accent); margin-bottom: 0.75rem;">Linux / Mac CLI &mdash; two commands</div>
           <div class="code-block" style="position: relative;">
-            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-1">curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh</span></div>
-            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-2">clawmark mcp install</span></div>
-            <button onclick="navigator.clipboard.writeText('curl -fsSL https://raw.githubusercontent.com/jackccrawford/clawmark/main/install.sh | sh\nclawmark mcp install');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; transition: all 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">Copy</button>
+            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-1">curl -fsSL https://raw.githubusercontent.com/jackccrawford/geniuz/main/install.sh | bash</span></div>
+            <div><span style="color: #4ade80; user-select: none;">$ </span><span id="cli-cmd-2">geniuz mcp install</span></div>
+            <button onclick="navigator.clipboard.writeText('curl -fsSL https://raw.githubusercontent.com/jackccrawford/geniuz/main/install.sh | bash\ngeniuz mcp install');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)" style="position: absolute; top: 0.5rem; right: 0.5rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.75rem; cursor: pointer; transition: all 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.2)'" onmouseleave="this.style.background='rgba(255,255,255,0.1)'">Copy</button>
           </div>
         </div>
 
@@ -196,7 +196,7 @@ import Footer from '../components/Footer.astro';
     <div class="container-narrow" style="max-width: 560px; margin: 0 auto;">
       <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.5rem; text-align: center;">How it works under the hood</h2>
       <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.7; margin-bottom: 1.25rem;">
-        Geniuz is powered by <a href="/clawmark" style="color: var(--color-accent); text-decoration: underline;">Clawmark</a> &mdash; an open-source Rust binary with a built-in AI model for semantic search. When Claude saves something, Clawmark stores it in a local SQLite database and indexes it by meaning. When Claude searches, Clawmark finds relevant memories even if the words don't match exactly.
+        Geniuz is an open-source Rust binary with a built-in AI model for semantic search. When Claude saves something, Geniuz stores it in a local SQLite database and indexes it by meaning. When Claude searches, Geniuz finds relevant memories even if the words don't match exactly.
       </p>
       <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.7;">
         It connects to Claude Desktop through <a href="https://modelcontextprotocol.io" style="color: var(--color-accent); text-decoration: underline;">MCP</a> (Model Context Protocol) &mdash; the standard way to extend what Claude can do. No hacks. No workarounds. Just a clean integration that Anthropic designed for exactly this purpose.
