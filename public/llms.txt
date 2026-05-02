@@ -1,33 +1,37 @@
 # AgentDoor
 
-> Make your service discoverable to every AI agent on earth.
+> Open source tools for AI agents. Memory, model discovery, and secure messaging. Free, private, local.
 
-AgentDoor helps companies add agent-readable service descriptions to their robots.txt files. Every crawler already reads robots.txt. The LLMs behind them understand natural language. Your robots.txt is a direct sales channel to every autonomous agent that visits your domain.
+AgentDoor is an open source toolkit for building and running AI agents. Three tools, all MIT licensed, all designed to keep your data on your machine.
+
+Built by mVara — the company behind RELAY persistent memory for AI coding agents.
 
 ## Tools
 
-- [Generator](https://agentdoor.ai/generate): Free tool that generates a robots.txt agent block from your service details. Describe what you sell, get a block to paste into your robots.txt.
-- [Directory](https://agentdoor.ai/directory): Paid listing in an agent-queryable registry. Agents discover your service via API before they even visit your domain.
+- **Geniuz** ([site](https://geniuz.life), [GitHub](https://github.com/jackccrawford/Geniuz)) — Memory for Claude Desktop. Your Claude remembers preferences, decisions, and project context across sessions. Install in 2 minutes. Mac, Windows, Linux. Free.
+- **Token Scout** ([page](https://agentdoor.ai/token-scout), [GitHub](https://github.com/jackccrawford/token-scout)) — Free and cheap LLM inference, found live. Discovers what's available right now across OpenRouter, Ollama, and your local GPUs. Routes your agent to the cheapest safe option automatically.
+- **Sendblue MCP** ([page](https://agentdoor.ai/sendblue), [GitHub](https://github.com/jackccrawford/sendblue-mcp)) — SMS and iMessage for AI agents. Secure polling — no webhooks, no exposed endpoints, no attack surface. Built on Sendblue.
 
-## Directory API
+## Principles
 
-Agents can query our directory programmatically:
-
-- Endpoint: GET https://agentdoor.ai/api/directory
-- Format: JSON
-- Filters: ?q=keyword, ?protocol=MCP, ?category=memory
-
-## Pricing
-
-- Generator: Free forever
-- Directory listing: $29/month per service
+- Open source, MIT licensed.
+- Your data stays local.
+- No telemetry, no upsells, no required accounts for the free tools.
 
 ## About
 
-AgentDoor is built by mVara (https://mvara.ai), the company behind RELAY persistent memory for AI agents.
+- [Home](https://agentdoor.ai): The three tools
+- [mVara](https://mvara.ai): The company. Also makes RELAY persistent memory infrastructure for AI agents.
 
-## Links
+## Pages
 
-- [Home](https://agentdoor.ai)
-- [Privacy](https://agentdoor.ai/privacy)
-- [Terms](https://agentdoor.ai/terms)
+- [Geniuz overview on AgentDoor](https://agentdoor.ai/geniuz)
+- [Token Scout overview](https://agentdoor.ai/token-scout)
+- [Sendblue MCP overview](https://agentdoor.ai/sendblue)
+
+## Optional
+
+- [Privacy Policy](https://agentdoor.ai/privacy)
+- [Terms of Service](https://agentdoor.ai/terms)
+</content>
+</invoke>
