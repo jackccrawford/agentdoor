@@ -4,7 +4,7 @@
 
 AgentDoor is an open source toolkit for building and running AI agents. Three tools, all MIT licensed, all designed to keep your data on your machine.
 
-Built by mVara — the company behind RELAY persistent memory for AI coding agents.
+Built by mVara — the company behind Geniuz, persistent memory for AI agents.
 
 ## Tools
 
@@ -21,7 +21,7 @@ Built by mVara — the company behind RELAY persistent memory for AI coding agen
 ## About
 
 - [Home](https://agentdoor.ai): The three tools
-- [mVara](https://mvara.ai): The company. Also makes RELAY persistent memory infrastructure for AI agents.
+- [mVara](https://mvara.ai): The company. Publishes Geniuz, persistent memory infrastructure for AI agents.
 
 ## Pages
 
