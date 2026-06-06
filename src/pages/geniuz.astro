@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 
 <Layout
   title="Geniuz | Memory for Claude Desktop"
-  description="Your Claude remembers now. Preferences, decisions, project context — all searchable by meaning. Install in 2 minutes. Free. Private."
+  description="Your Claude remembers now. Preferences, decisions, project context, all searchable by meaning. Install in 2 minutes. Free. Private."
 >
 
   <Nav currentPage="geniuz" />
@@ -14,8 +14,12 @@ import Footer from '../components/Footer.astro';
   <!-- Hero -->
   <section class="section" style="padding-top: 140px; padding-bottom: 40px;">
     <div class="container-narrow" style="text-align: center;">
-      <div style="margin-bottom: 1.25rem;">
-        <img src="/images/geniuz-icon.svg" alt="Geniuz" style="height: 80px; display: inline-block;" />
+      <div style="display: inline-flex; align-items: center; gap: 14px; margin-bottom: 1.5rem;">
+        <img src="/images/geniuz-icon.svg" alt="Geniuz" style="height: 72px; width: 72px; border-radius: 16px; display: block;" />
+        <span style="font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: 2.75rem; line-height: 1; letter-spacing: -0.02em; color: var(--color-ink); display: inline-flex; align-items: baseline; gap: 10px;">
+          Geniuz
+          <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #CF5535; align-self: center;"></span>
+        </span>
       </div>
       <div style="font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-ink-tertiary); margin-bottom: 1rem;">Free &middot; Private</div>
       <h1 style="font-size: clamp(2.5rem, 5.5vw, 3.75rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
