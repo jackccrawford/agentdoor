@@ -20,6 +20,8 @@
     border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;transition:background .2s;}
   .cbtn:hover{background:rgba(255,255,255,.14);}
   .cbtn.on{background:#FFC56F;color:#27314a;border-color:#FFC56F;}
+  .lft{display:flex;align-items:center;gap:14px;}
+  a.cbtn{text-decoration:none;pointer-events:auto;display:inline-block;}
   .hint{position:fixed;bottom:22px;left:0;right:0;text-align:center;z-index:5;pointer-events:none;
     color:rgba(255,255,255,.75);font-family:"Newsreader",serif;font-style:italic;font-size:15px;
     text-shadow:0 1px 8px rgba(15,20,40,.6);transition:opacity .8s;}
@@ -31,7 +33,7 @@
 <body>
 <canvas id="cv"></canvas>
 <div class="top">
-  <div class="wm"><span class="n">Alpenglow</span><span class="tag">draw a mountain, hear it sing</span></div>
+  <div class="lft"><a class="cbtn" href="/">← the door</a><div class="wm"><span class="n">Alpenglow</span><span class="tag">draw a mountain, hear it sing</span></div></div>
   <div class="ctrls">
     <button class="cbtn" id="bScale">scale: alpine</button>
     <button class="cbtn" id="bTempo">tempo: drift</button>

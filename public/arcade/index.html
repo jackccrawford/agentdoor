@@ -37,9 +37,15 @@
   .new-best{color:#FFC56F;font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-top:10px;}
   .mute{position:fixed;bottom:16px;right:16px;z-index:6;background:rgba(20,28,46,.55);color:#fff;
     border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;}
+  .back{position:fixed;top:16px;left:16px;z-index:11;background:rgba(20,28,46,.55);color:#fff;
+    border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 14px;font-size:12px;font-weight:700;
+    text-decoration:none;transition:background .2s;}
+  .back:hover{background:rgba(255,255,255,.14);}
 </style>
 </head>
 <body>
+
+<a class="back" href="/">← the door</a>
 
 <div class="hud" id="hud" style="display:none;">
   <div class="cell"><div class="v" id="hDist">0</div><div class="k">meters</div></div>
