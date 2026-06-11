@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>Alpenglow — draw a mountain, hear it sing</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;overflow:hidden;background:#1B2238;}
+  body{font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-user-select:none;user-select:none;}
+  canvas{display:block;touch-action:none;cursor:crosshair;}
+  .top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;pointer-events:none;}
+  .wm{color:#fff;display:flex;align-items:baseline;gap:10px;text-shadow:0 1px 10px rgba(15,20,40,.5);}
+  .wm .n{font-weight:800;font-size:19px;letter-spacing:-.01em;}
+  .wm .tag{font-family:"Newsreader",serif;font-style:italic;font-size:13.5px;opacity:.75;}
+  .ctrls{display:flex;gap:10px;pointer-events:auto;}
+  .cbtn{background:rgba(18,24,46,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .cbtn:hover{background:rgba(255,255,255,.14);}
+  .cbtn.on{background:#FFC56F;color:#27314a;border-color:#FFC56F;}
+  .hint{position:fixed;bottom:22px;left:0;right:0;text-align:center;z-index:5;pointer-events:none;
+    color:rgba(255,255,255,.75);font-family:"Newsreader",serif;font-style:italic;font-size:15px;
+    text-shadow:0 1px 8px rgba(15,20,40,.6);transition:opacity .8s;}
+  .hint.hide{opacity:0;}
+  .hint b{font-family:"Hanken Grotesk",sans-serif;font-style:normal;font-weight:700;font-size:12px;
+    background:rgba(255,255,255,.14);border-radius:5px;padding:2px 8px;letter-spacing:.04em;}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="top">
+  <div class="wm"><span class="n">Alpenglow</span><span class="tag">draw a mountain, hear it sing</span></div>
+  <div class="ctrls">
+    <button class="cbtn" id="bScale">scale: alpine</button>
+    <button class="cbtn" id="bTempo">tempo: drift</button>
+    <button class="cbtn" id="bClear">new range</button>
+    <button class="cbtn on" id="bPlay">listening…</button>
+  </div>
+</div>
+<div class="hint" id="hint">draw your ridgeline across the sky · drag the <b>sun</b> to change the light and the voice</div>
+<script src="glow.js"></script>
+</body>
+</html>

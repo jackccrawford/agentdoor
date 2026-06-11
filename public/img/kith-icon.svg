@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="kg" cx="32%" cy="22%" r="92%">
+      <stop offset="0" stop-color="#23525e"></stop>
+      <stop offset="55%" stop-color="#163842"></stop>
+      <stop offset="100%" stop-color="#0e252d"></stop>
+    </radialGradient>
+    <linearGradient id="kn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF4E6"></stop><stop offset="1" stop-color="#EADBBE"></stop>
+    </linearGradient>
+    <linearGradient id="kc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E06A45"></stop><stop offset="1" stop-color="#C2492B"></stop>
+    </linearGradient>
+    <filter id="ks" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#06151b" flood-opacity="0.38"></feDropShadow>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#kg)"></rect>
+  <rect x="5" y="5" width="502" height="502" rx="111" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="2"></rect>
+  <g stroke="#F2EADA" stroke-opacity="0.5" stroke-width="16" stroke-linecap="round">
+    <line x1="152" y1="306" x2="262" y2="206"></line><line x1="262" y1="206" x2="372" y2="306"></line>
+  </g>
+  <g filter="url(#ks)">
+    <circle cx="152" cy="306" r="46" fill="url(#kn)"></circle>
+    <circle cx="372" cy="306" r="46" fill="url(#kn)"></circle>
+    <circle cx="262" cy="206" r="54" fill="url(#kc)"></circle>
+  </g>
+</svg>

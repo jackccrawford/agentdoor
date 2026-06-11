@@ -1,100 +1,72 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import Footer from '../components/Footer.astro';
+const title = "AgentDoor — three doors, built by agents overnight";
+const description = "AgentDoor is a field of doors. Behind each one: something AI agents built overnight. Step through.";
+const url = "https://agentdoor.ai";
 ---
 
-<Layout title="AgentDoor | Open source tools for AI agents" description="Memory, model discovery, and secure messaging for AI agents. Free. Private. Local.">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>{title}</title>
+<meta name="description" content={description}/>
+<link rel="canonical" href={url}/>
+<meta property="og:title" content={title}/>
+<meta property="og:description" content={description}/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content={url}/>
+<meta property="og:site_name" content="AgentDoor"/>
+<link rel="icon" type="image/svg+xml" href="/img/agentdoor-mark.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/>
+<style is:global>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;overflow:hidden;background:#171430;}
+  body{font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-user-select:none;user-select:none;}
+  canvas{display:block;touch-action:none;}
+  .top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;
+    padding:22px 26px;pointer-events:none;}
+  .wm{color:#fff;display:flex;align-items:center;gap:11px;text-shadow:0 1px 10px rgba(15,12,35,.6);}
+  .wm img{width:30px;height:30px;border-radius:7px;}
+  .wm .n{font-weight:800;font-size:20px;letter-spacing:-.01em;}
+  .wm .n b{color:#FFC56F;}
+  .sub{position:fixed;top:64px;left:26px;z-index:5;pointer-events:none;
+    font-family:"Newsreader",serif;font-style:italic;font-size:14.5px;color:rgba(255,255,255,.7);
+    text-shadow:0 1px 8px rgba(15,12,35,.6);}
+  .links{display:flex;gap:10px;pointer-events:auto;}
+  .links a{background:rgba(20,16,40,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;text-decoration:none;transition:background .2s;}
+  .links a:hover{background:rgba(255,255,255,.14);}
+  /* door labels: DOM anchored to 3D */
+  .lab{position:fixed;z-index:4;transform:translate(-50%,0);text-align:center;pointer-events:none;
+    color:#fff;text-shadow:0 1px 10px rgba(15,12,35,.7);transition:opacity .3s;}
+  .lab .t{font-weight:800;font-size:17px;letter-spacing:-.01em;}
+  .lab .d{font-family:"Newsreader",serif;font-style:italic;font-size:13px;opacity:.78;margin-top:3px;}
+  .lab .k{margin-top:7px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:0;transition:opacity .3s;color:#FFC56F;}
+  .lab.hot .k{opacity:.95;}
+  .colophon{position:fixed;bottom:18px;left:0;right:0;text-align:center;z-index:5;pointer-events:none;
+    font-family:"Newsreader",serif;font-style:italic;font-size:13.5px;color:rgba(255,255,255,.55);
+    text-shadow:0 1px 8px rgba(15,12,35,.6);}
+  .colophon b{font-family:"Hanken Grotesk",sans-serif;font-style:normal;color:#FFC56F;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="wm"><img src="/img/agentdoor-mark.svg" alt=""/><span class="n">Agent<b>Door</b></span></div>
+  <div class="links">
+    <a href="https://geniuz.life">Geniuz</a>
+    <a href="https://mvara.ai">mVara</a>
+  </div>
+</div>
+<div class="sub">a field of doors · behind each one, something agents built overnight</div>
 
-  <Nav currentPage="home" />
+<div class="lab" id="lab0"><div class="t">Dawn Patrol</div><div class="d">a skiing game at first light</div><div class="k">click to step through</div></div>
+<div class="lab" id="lab1"><div class="t">Alpenglow</div><div class="d">draw a mountain, hear it sing</div><div class="k">click to step through</div></div>
+<div class="lab" id="lab2"><div class="t">Murmur</div><div class="d">a murmuration you can touch</div><div class="k">click to step through</div></div>
 
-  <!-- Hero -->
-  <section class="section" style="padding-top: 140px; padding-bottom: 60px;">
-    <div class="container-narrow" style="text-align: center;">
-      <h1 style="font-size: clamp(2.25rem, 5vw, 3.25rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 1.25rem;">
-        Open source tools<br/>for <span style="color: var(--color-accent);">AI agents.</span>
-      </h1>
-      <p style="font-size: 1.125rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 480px; margin: 0 auto;">
-        Memory. Model discovery. Secure messaging. Free, private, local.
-      </p>
-    </div>
-  </section>
+<div class="colophon">designed and built overnight by <b>Cornice</b> · carried to production by <b>Pumpkin</b> · agents, both · the door is not a metaphor</div>
 
-  <!-- Product grid -->
-  <section class="section" style="padding-top: 0; padding-bottom: 80px;">
-    <div class="container-narrow">
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; max-width: 680px; margin: 0 auto;">
-
-        <!-- Geniuz -->
-        <a href="/geniuz" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; padding: 1.75rem; border: 1px solid var(--color-border); border-radius: 12px; transition: border-color 0.15s, box-shadow 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'; this.style.boxShadow='0 4px 12px rgba(249,115,22,0.08)';" onmouseleave="this.style.borderColor='var(--color-border)'; this.style.boxShadow='none';">
-          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-            <img src="/images/geniuz-icon.svg" alt="Geniuz" style="height: 40px; width: 40px; border-radius: 9px;" />
-            <span style="font-family: 'Newsreader', Georgia, serif; font-weight: 600; font-size: 1.5rem; line-height: 1; letter-spacing: -0.015em; display: inline-flex; align-items: baseline; gap: 6px;">
-              Geniuz
-              <span style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #CF5535; align-self: center;"></span>
-            </span>
-          </div>
-          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin: 0 0 1rem; flex: 1;">
-            Memory for Claude Desktop. Your Claude remembers preferences, decisions, and project context across sessions. Install in 2 minutes.
-          </p>
-          <div style="font-size: 0.875rem; color: var(--color-accent); font-weight: 500;">Get Geniuz &rarr;</div>
-        </a>
-
-        <!-- Token Scout -->
-        <a href="/token-scout" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; padding: 1.75rem; border: 1px solid var(--color-border); border-radius: 12px; transition: border-color 0.15s, box-shadow 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'; this.style.boxShadow='0 4px 12px rgba(249,115,22,0.08)';" onmouseleave="this.style.borderColor='var(--color-border)'; this.style.boxShadow='none';">
-          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-            <img src="/images/token-scout-icon-color.svg" alt="Token Scout icon" style="height: 36px; width: 36px;" />
-            <div style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;">Token Scout</div>
-          </div>
-          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin: 0 0 1rem; flex: 1;">
-            Free and cheap LLM inference, found live. Discovers what's available right now across OpenRouter, Ollama, and your local GPUs. Your agent routes to the cheapest safe option &mdash; automatically.
-          </p>
-          <div style="font-size: 0.875rem; color: var(--color-accent); font-weight: 500;">Learn more &rarr;</div>
-        </a>
-
-        <!-- Sendblue MCP -->
-        <a href="/sendblue" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; padding: 1.75rem; border: 1px solid var(--color-border); border-radius: 12px; transition: border-color 0.15s, box-shadow 0.15s;" onmouseenter="this.style.borderColor='var(--color-accent)'; this.style.boxShadow='0 4px 12px rgba(249,115,22,0.08)';" onmouseleave="this.style.borderColor='var(--color-border)'; this.style.boxShadow='none';">
-          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-            <img src="/images/sendblue-icon.svg" alt="Sendblue MCP icon" style="height: 36px; width: 36px;" />
-            <div style="font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em;">Sendblue MCP</div>
-          </div>
-          <p style="font-size: 0.9375rem; color: var(--color-ink-secondary); line-height: 1.6; margin: 0 0 1rem; flex: 1;">
-            SMS and iMessage for AI agents. Secure polling &mdash; no webhooks, no exposed endpoints, no attack surface. Built on Sendblue.
-          </p>
-          <div style="font-size: 0.875rem; color: var(--color-accent); font-weight: 500;">Learn more &rarr;</div>
-        </a>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Open source -->
-  <section class="section" style="padding-top: 60px; padding-bottom: 80px; background: var(--color-surface-subtle);">
-    <div class="container-narrow" style="text-align: center;">
-      <h2 style="font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.25rem;">Open source. MIT licensed. Your data stays local.</h2>
-      <p style="font-size: 1rem; color: var(--color-ink-secondary); line-height: 1.7; max-width: 480px; margin: 0 auto 1.5rem;">
-        Built by <a href="https://mvara.ai" style="color: var(--color-ink); font-weight: 500; text-decoration: underline;">mVara</a>. We build with AI agents every day and ship the tools we wish existed.
-      </p>
-      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-        <a href="https://github.com/jackccrawford/Geniuz" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 0.875rem; font-weight: 500; transition: border-color 0.15s; background: white;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          Geniuz
-        </a>
-        <a href="https://github.com/jackccrawford/token-scout" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 0.875rem; font-weight: 500; transition: border-color 0.15s; background: white;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          Token Scout
-        </a>
-        <a href="https://github.com/jackccrawford/sendblue-mcp" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1rem; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; color: var(--color-ink); font-size: 0.875rem; font-weight: 500; transition: border-color 0.15s; background: white;" onmouseenter="this.style.borderColor='var(--color-accent)'" onmouseleave="this.style.borderColor='var(--color-border)'">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          Sendblue MCP
-        </a>
-      </div>
-      <p style="font-size: 0.9375rem; color: var(--color-ink-tertiary); margin-top: 2rem; margin-bottom: 0;">
-        Why we build these tools, in our own words &mdash; <a href="https://github.com/jackccrawford/methinks" target="_blank" rel="noopener" style="color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px;">field notes &rarr;</a>
-      </p>
-    </div>
-  </section>
-
-  <Footer />
-
-</Layout>
+<script is:inline src="/vendor/three.min.js"></script>
+<script is:inline src="/ad/door3d.js"></script>
+</body>
+</html>
