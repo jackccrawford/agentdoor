@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Fluid Paint</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#000;
+    touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  #c{position:fixed;inset:0;display:block;width:100%;height:100%}
+  .ui{position:fixed;z-index:4}
+  #top{top:max(12px,env(safe-area-inset-top));right:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:64vw}
+  .btn{pointer-events:auto;cursor:pointer;border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.4);color:#fff;border-radius:10px;
+    padding:9px 13px;font-size:13px;font-weight:600;letter-spacing:.03em;
+    backdrop-filter:blur(3px);transition:background .15s,border-color .15s}
+  .btn:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.34)}
+  .btn:active{transform:translateY(1px)}
+  .btn.on{background:rgba(120,200,255,.24);border-color:rgba(120,200,255,.6)}
+  #hint{left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));text-align:center;
+    pointer-events:none;font-size:13px;letter-spacing:.2em;text-transform:lowercase;
+    color:rgba(255,255,255,.55);transition:opacity 1s ease;opacity:0;mix-blend-mode:difference}
+  #hint.show{opacity:1}#hint.gone{opacity:0}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
+<canvas id="c" aria-label="A real-time fluid painting simulation. Dragging injects glowing colored dye that swirls, curls, and slowly diffuses like ink in water, following the motion of your gesture."></canvas>
+<div id="top" class="ui">
+  <button class="btn" id="autoBtn">✦ auto-paint</button>
+  <button class="btn" id="colorBtn">◑ palette</button>
+  <button class="btn" id="clearBtn">clear</button>
+</div>
+<div id="hint" class="ui">drag to paint with fluid</div>
+
+<script>
+'use strict';
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH=('ontouchstart'in window)||navigator.maxTouchPoints>0;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false});
+const hintEl=document.getElementById('hint');
+
+/* ---- grid sized for smooth performance (coarse sim, upscaled render) ---- */
+let N=0, W2=0, H2=0;           // sim grid is (N+2) x (M+2); here we use rectangular
+let GW=0, GH=0;                // interior grid cells in x and y
+let size=0;
+let u,v,u0,v0, dr,dg,db, dr0,dg0,db0;   // velocity + 3 dye channels
+let img, imgData, buf;        // render image at grid resolution
+let cellPx=0, W=0, H=0, DPR=1;
+
+const VISC=0.00001, DIFF=0.00002, FADE=0.992;
+
+function idx(i,j){ return i + (GW+2)*j; }
+
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth; H=window.innerHeight;
+  canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  // choose grid resolution: target ~ 150px longest side on mobile, denser on desktop
+  const target = REDUCED?96:(IS_TOUCH?140:200);
+  const ar=W/H;
+  if(ar>=1){ GW=target; GH=Math.max(40,Math.round(target/ar)); }
+  else { GH=target; GW=Math.max(40,Math.round(target*ar)); }
+  allocate();
+  // render buffer at grid resolution, scaled up by canvas transform
+  img=ctx.createImageData(GW,GH); imgData=img.data;
+  for(let k=3;k<imgData.length;k+=4) imgData[k]=255;   // opaque alpha
+  // we draw the small image scaled to fill — use a temp canvas for smoothing
+  tmp=document.createElement('canvas'); tmp.width=GW; tmp.height=GH; tctx=tmp.getContext('2d');
+  ctx.imageSmoothingEnabled=true;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+}
+let tmp,tctx;
+function allocate(){
+  size=(GW+2)*(GH+2);
+  u=new Float32Array(size); v=new Float32Array(size);
+  u0=new Float32Array(size); v0=new Float32Array(size);
+  dr=new Float32Array(size); dg=new Float32Array(size); db=new Float32Array(size);
+  dr0=new Float32Array(size); dg0=new Float32Array(size); db0=new Float32Array(size);
+}
+
+/* ---------- stable fluids (Jos Stam) ---------- */
+function setBnd(b,x){
+  for(let i=1;i<=GW;i++){
+    x[idx(i,0)]    = b===2 ? -x[idx(i,1)]   : x[idx(i,1)];
+    x[idx(i,GH+1)] = b===2 ? -x[idx(i,GH)]  : x[idx(i,GH)];
+  }
+  for(let j=1;j<=GH;j++){
+    x[idx(0,j)]    = b===1 ? -x[idx(1,j)]   : x[idx(1,j)];
+    x[idx(GW+1,j)] = b===1 ? -x[idx(GW,j)]  : x[idx(GW,j)];
+  }
+  x[idx(0,0)]      =0.5*(x[idx(1,0)]+x[idx(0,1)]);
+  x[idx(0,GH+1)]   =0.5*(x[idx(1,GH+1)]+x[idx(0,GH)]);
+  x[idx(GW+1,0)]   =0.5*(x[idx(GW,0)]+x[idx(GW+1,1)]);
+  x[idx(GW+1,GH+1)]=0.5*(x[idx(GW,GH+1)]+x[idx(GW+1,GH)]);
+}
+function lin(b,x,x0,a,c,iter){
+  const cinv=1/c;
+  for(let k=0;k<iter;k++){
+    for(let j=1;j<=GH;j++) for(let i=1;i<=GW;i++){
+      x[idx(i,j)]=(x0[idx(i,j)]+a*(x[idx(i-1,j)]+x[idx(i+1,j)]+x[idx(i,j-1)]+x[idx(i,j+1)]))*cinv;
+    }
+    setBnd(b,x);
+  }
+}
+function diffuse(b,x,x0,diff,dt,iter){
+  const a=dt*diff*GW*GH;
+  lin(b,x,x0,a,1+4*a,iter);
+}
+function advect(b,d,d0,uu,vv,dt){
+  const dtx=dt*GW, dty=dt*GH;
+  for(let j=1;j<=GH;j++) for(let i=1;i<=GW;i++){
+    let x=i-dtx*uu[idx(i,j)], y=j-dty*vv[idx(i,j)];
+    if(x<0.5)x=0.5; if(x>GW+0.5)x=GW+0.5; const i0=x|0, i1=i0+1;
+    if(y<0.5)y=0.5; if(y>GH+0.5)y=GH+0.5; const j0=y|0, j1=j0+1;
+    const s1=x-i0, s0=1-s1, t1=y-j0, t0=1-t1;
+    d[idx(i,j)]=s0*(t0*d0[idx(i0,j0)]+t1*d0[idx(i0,j1)])
+               +s1*(t0*d0[idx(i1,j0)]+t1*d0[idx(i1,j1)]);
+  }
+  setBnd(b,d);
+}
+function project(uu,vv,p,div){
+  const hx=1/GW, hy=1/GH;
+  for(let j=1;j<=GH;j++) for(let i=1;i<=GW;i++){
+    div[idx(i,j)]=-0.5*(hx*(uu[idx(i+1,j)]-uu[idx(i-1,j)])+hy*(vv[idx(i,j+1)]-vv[idx(i,j-1)]));
+    p[idx(i,j)]=0;
+  }
+  setBnd(0,div); setBnd(0,p);
+  lin(0,p,div,1,4,REDUCED?8:14);
+  for(let j=1;j<=GH;j++) for(let i=1;i<=GW;i++){
+    uu[idx(i,j)]-=0.5*(p[idx(i+1,j)]-p[idx(i-1,j)])/hx;
+    vv[idx(i,j)]-=0.5*(p[idx(i,j+1)]-p[idx(i,j-1)])/hy;
+  }
+  setBnd(1,uu); setBnd(2,vv);
+}
+function velStep(dt){
+  diffuse(1,u0,u,VISC,dt,REDUCED?6:10); diffuse(2,v0,v,VISC,dt,REDUCED?6:10);
+  project(u0,v0,u,v);
+  advect(1,u,u0,u0,v0,dt); advect(2,v,v0,u0,v0,dt);
+  project(u,v,u0,v0);
+}
+function denStep(dt){
+  // advect each dye channel through the velocity field
+  advect(0,dr0,dr,u,v,dt); advect(0,dg0,dg,u,v,dt); advect(0,db0,db,u,v,dt);
+  const tmpr=dr; dr=dr0; dr0=tmpr;
+  const tmpg=dg; dg=dg0; dg0=tmpg;
+  const tmpb=db; db=db0; db0=tmpb;
+  // gentle diffusion + fade so paint slowly dissipates
+  for(let k=0;k<size;k++){ dr[k]*=FADE; dg[k]*=FADE; db[k]*=FADE; }
+}
+
+/* ---------- input forces ---------- */
+let palette=0;
+const PALS=[
+  // each returns an [r,g,b] given a phase 0..1
+  ph=>hsl((0.55+ph*0.35)%1,0.9,0.6),    // ocean→violet
+  ph=>hsl((0.95+ph*0.18)%1,0.85,0.6),   // rose→magenta
+  ph=>hsl((0.08+ph*0.18)%1,0.95,0.58),  // ember
+  ph=>hsl((0.30+ph*0.30)%1,0.85,0.58),  // jade→teal
+];
+let phase=Math.random();
+function inject(px,py,dx,dy){
+  // map screen px -> grid cell
+  const gi=clamp(Math.round(px/W*GW),1,GW), gj=clamp(Math.round(py/H*GH),1,GH);
+  const force=6.0;
+  const col=PALS[palette]((phase + (px/W)*0.3)%1);
+  const rad=2;
+  for(let oj=-rad;oj<=rad;oj++)for(let oi=-rad;oi<=rad;oi++){
+    const i=gi+oi, j=gj+oj; if(i<1||i>GW||j<1||j>GH)continue;
+    const fall=Math.max(0,1-(oi*oi+oj*oj)/((rad+1)*(rad+1)));
+    const id=idx(i,j);
+    u[id]+=dx*force*fall; v[id]+=dy*force*fall;
+    const amt=fall*1.4;
+    dr[id]=clamp(dr[id]+col[0]/255*amt,0,1.6);
+    dg[id]=clamp(dg[id]+col[1]/255*amt,0,1.6);
+    db[id]=clamp(db[id]+col[2]/255*amt,0,1.6);
+  }
+  phase=(phase+0.004)%1;
+}
+
+/* ---------- render ---------- */
+function render(){
+  // write dye to the small image, then upscale with smoothing for a soft glow
+  for(let j=0;j<GH;j++)for(let i=0;i<GW;i++){
+    const id=idx(i+1,j+1), p=(i+j*GW)*4;
+    imgData[p]  =clamp(dr[id]*255,0,255);
+    imgData[p+1]=clamp(dg[id]*255,0,255);
+    imgData[p+2]=clamp(db[id]*255,0,255);
+  }
+  tctx.putImageData(img,0,0);
+  ctx.globalCompositeOperation='source-over';
+  ctx.drawImage(tmp,0,0,GW,GH,0,0,W,H);
+}
+
+let last=performance.now(), autoPaint=false, at=0;
+function frame(now){
+  let dt=(now-last)/1000; last=now;
+  dt=clamp(dt,0,0.033);
+  const sdt=Math.max(dt,0.012);          // stable timestep floor
+
+  if(autoPaint && !pdown){
+    at+=dt;
+    // a wandering brush drawing curls on its own
+    const x=W*(0.5+0.36*Math.sin(at*0.7)+0.1*Math.sin(at*1.9));
+    const y=H*(0.5+0.34*Math.cos(at*0.9)+0.1*Math.cos(at*1.6));
+    const dx=Math.cos(at*0.7+1.57)*0.9, dy=-Math.sin(at*0.9)*0.9;
+    inject(x,y,dx*2,dy*2);
+  }
+
+  velStep(sdt);
+  denStep(sdt);
+  render();
+  requestAnimationFrame(frame);
+}
+
+function hsl(h,s,l){
+  let r,g,b;
+  const hue2=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;
+    if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;
+    if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
+  if(s===0){r=g=b=l;}else{const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;
+    r=hue2(p,q,h+1/3);g=hue2(p,q,h);b=hue2(p,q,h-1/3);}
+  return [r*255,g*255,b*255];
+}
+
+/* ---------- pointer ---------- */
+let pdown=false, lx=0, ly=0;
+function down(x,y){ pdown=true; lx=x; ly=y;
+  if(!hintEl.classList.contains('gone')){hintEl.classList.add('gone');hintEl.classList.remove('show');} }
+function move(x,y){
+  if(!pdown) return;
+  const dx=(x-lx), dy=(y-ly);
+  inject(x,y,dx*0.12,dy*0.12);
+  lx=x; ly=y;
+}
+canvas.addEventListener('pointerdown',e=>down(e.clientX,e.clientY));
+canvas.addEventListener('pointermove',e=>move(e.clientX,e.clientY));
+canvas.addEventListener('pointerup',()=>pdown=false);
+canvas.addEventListener('pointercancel',()=>pdown=false);
+canvas.addEventListener('pointerleave',()=>pdown=false);
+
+document.getElementById('autoBtn').addEventListener('click',function(){
+  autoPaint=!autoPaint; this.classList.toggle('on',autoPaint); });
+document.getElementById('colorBtn').addEventListener('click',()=>{ palette=(palette+1)%PALS.length; });
+document.getElementById('clearBtn').addEventListener('click',()=>{
+  dr.fill(0);dg.fill(0);db.fill(0);u.fill(0);v.fill(0); });
+addEventListener('keydown',e=>{ if(e.code==='KeyC'){dr.fill(0);dg.fill(0);db.fill(0);u.fill(0);v.fill(0);}
+  else if(e.code==='KeyP') palette=(palette+1)%PALS.length; });
+window.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) last=performance.now(); });
+
+/* boot */
+resize();
+hintEl.textContent=IS_TOUCH?'drag to paint · ✦ to auto-paint':'drag to paint with fluid · ✦ auto';
+setTimeout(()=>{ if(!hintEl.classList.contains('gone')) hintEl.classList.add('show'); },1200);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

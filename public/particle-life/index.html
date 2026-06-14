@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Particle Life</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#0a0b16;
+    touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  #c{position:fixed;inset:0;display:block}
+  .ui{position:fixed;z-index:4}
+  #top{top:max(12px,env(safe-area-inset-top));right:12px;display:flex;gap:8px}
+  .btn{pointer-events:auto;cursor:pointer;border:1px solid rgba(255,255,255,.16);
+    background:rgba(14,16,30,.55);color:#e7e9ff;border-radius:10px;
+    padding:9px 14px;font-size:13px;font-weight:600;letter-spacing:.04em;
+    backdrop-filter:blur(3px);transition:background .15s,border-color .15s}
+  .btn:hover{background:rgba(40,44,70,.7);border-color:rgba(255,255,255,.3)}
+  .btn:active{transform:translateY(1px)}
+  .btn .k{color:#8ea0ff}
+  #name{top:max(50px,calc(env(safe-area-inset-top) + 38px));left:14px;pointer-events:none;
+    font-size:12px;letter-spacing:.16em;color:rgba(210,214,255,.62);text-transform:uppercase}
+  #name b{color:#fff;font-weight:700;letter-spacing:.1em}
+  #hint{left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));text-align:center;
+    pointer-events:none;font-size:13px;font-weight:400;letter-spacing:.22em;
+    text-transform:lowercase;color:rgba(226,228,255,.5);
+    transition:opacity 1s ease;opacity:0}
+  #hint.show{opacity:1}#hint.gone{opacity:0}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
+<canvas id="c" aria-label="A simulation of many small colored particles. A hidden table of attraction and repulsion rules between five colors makes them self-organize into lifelike clusters that move, chase, and pulse. Drag to stir them; press the button to generate a new rule set."></canvas>
+<div id="name" class="ui">species: <b id="nameVal">—</b></div>
+<div id="top" class="ui">
+  <button class="btn" id="newBtn">✦ new life <span class="k">(space)</span></button>
+  <button class="btn" id="resetBtn">↺ reset</button>
+</div>
+<div id="hint" class="ui">drag to stir</div>
+
+<script>
+'use strict';
+const TAU = Math.PI*2;
+const clamp = (v,a,b)=> v<a?a:v>b?b:v;
+const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH = ('ontouchstart' in window) || navigator.maxTouchPoints>0;
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d',{alpha:false});
+const hintEl = document.getElementById('hint');
+const nameVal = document.getElementById('nameVal');
+
+/* five species — same warm/cool family used throughout */
+const K = 5;
+const COLORS = [[255,84,112],[255,179,0],[25,195,125],[0,229,255],[177,76,255]];
+let A = [];                                   // K x K interaction matrix, values in [-1,1]
+
+let W=0,H=0,DPR=1,R=95;                        // R = interaction radius (px)
+let N=0;
+let px,py,vx,vy,type;                          // particle state (typed arrays)
+let buckets=[];                                // indices grouped by type (for fast drawing)
+let head,next,cols,rows,cellW,cellH;           // spatial grid (linked list)
+
+const pointer={x:0,y:0,down:false};
+
+/* short-range force: hard repulsion up close, tunable attraction band beyond */
+function force(r,a){
+  const beta=0.3;
+  if(r<beta) return r/beta - 1;                // -1..0  (keeps them from collapsing)
+  if(r<1)    return a*(1 - Math.abs(2*r-1-beta)/(1-beta));
+  return 0;
+}
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1,2);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = Math.round(W*DPR); canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  R = Math.round(clamp(Math.min(W,H)*0.15, 64, 110));
+  const area = W*H;
+  N = REDUCED ? clamp(Math.round(area*0.0009),300,600)
+              : clamp(Math.round(area*0.0016),420,1150);
+  cols = Math.max(1,Math.floor(W/R)); rows = Math.max(1,Math.floor(H/R));
+  cellW = W/cols; cellH = H/rows;
+  head = new Int32Array(cols*rows);
+  next = new Int32Array(N);
+  allocate(); spawn();
+  ctx.fillStyle='#0a0b16'; ctx.fillRect(0,0,W,H);
+}
+function allocate(){
+  px=new Float32Array(N); py=new Float32Array(N);
+  vx=new Float32Array(N); vy=new Float32Array(N);
+  type=new Uint8Array(N);
+  buckets=Array.from({length:K},()=>[]);
+}
+function spawn(){
+  for(let i=0;i<K;i++) buckets[i].length=0;
+  for(let i=0;i<N;i++){
+    px[i]=Math.random()*W; py[i]=Math.random()*H;
+    vx[i]=0; vy[i]=0;
+    const t=i%K; type[i]=t; buckets[t].push(i);
+  }
+}
+const SYL=['ka','vo','zen','rix','lu','mor','tau','nyx','el','dra','sol','qui','ar','om','ven','kor','ix','ula','phi','os'];
+function randomizeMatrix(){
+  A=[];
+  for(let i=0;i<K;i++){ A[i]=[]; for(let j=0;j<K;j++) A[i][j]=Math.round((Math.random()*2-1)*100)/100; }
+  let n=''; const parts=2+Math.floor(Math.random()*2);
+  for(let i=0;i<parts;i++) n+=SYL[Math.floor(Math.random()*SYL.length)];
+  nameVal.textContent=n.toUpperCase()+'-'+(1+Math.floor(Math.random()*99));
+}
+
+function buildGrid(){
+  head.fill(-1);
+  for(let i=0;i<N;i++){
+    let cx=Math.floor(px[i]/cellW); if(cx<0)cx=0; else if(cx>=cols)cx=cols-1;
+    let cy=Math.floor(py[i]/cellH); if(cy<0)cy=0; else if(cy>=rows)cy=rows-1;
+    const c=cy*cols+cx;
+    next[i]=head[c]; head[c]=i;
+  }
+}
+
+function step(dt){
+  const fHalf=Math.pow(0.5, dt/0.040);         // velocity half-life ~40ms
+  const FF=8;                                   // force -> acceleration scale
+  const R2=R*R, maxV=R*9, maxV2=maxV*maxV;
+  const stirR=R*2.4, stirR2=stirR*stirR;
+  const hw=W*0.5, hh=H*0.5;
+  buildGrid();
+
+  for(let i=0;i<N;i++){
+    const xi=px[i], yi=py[i], ti=type[i];
+    let fx=0, fy=0;
+    let cx=Math.floor(xi/cellW); if(cx<0)cx=0; else if(cx>=cols)cx=cols-1;
+    let cy=Math.floor(yi/cellH); if(cy<0)cy=0; else if(cy>=rows)cy=rows-1;
+    for(let oy=-1;oy<=1;oy++){
+      const ncy=(cy+oy+rows)%rows;
+      for(let ox=-1;ox<=1;ox++){
+        const ncx=(cx+ox+cols)%cols;
+        let j=head[ncy*cols+ncx];
+        while(j!==-1){
+          if(j!==i){
+            let dx=px[j]-xi, dy=py[j]-yi;       // toroidal nearest image
+            if(dx>hw)dx-=W; else if(dx<-hw)dx+=W;
+            if(dy>hh)dy-=H; else if(dy<-hh)dy+=H;
+            const d2=dx*dx+dy*dy;
+            if(d2>0 && d2<R2){
+              const d=Math.sqrt(d2);
+              const f=force(d/R, A[ti][type[j]]);
+              fx+=dx/d*f; fy+=dy/d*f;
+            }
+          }
+          j=next[j];
+        }
+      }
+    }
+    fx*=R*FF; fy*=R*FF;
+
+    if(pointer.down){                            // drag = gentle vortex
+      let dx=pointer.x-xi, dy=pointer.y-yi;
+      if(dx>hw)dx-=W; else if(dx<-hw)dx+=W;
+      if(dy>hh)dy-=H; else if(dy<-hh)dy+=H;
+      const d2=dx*dx+dy*dy;
+      if(d2<stirR2 && d2>1){
+        const d=Math.sqrt(d2), f=1-d/stirR;
+        const ix=dx/d, iy=dy/d;
+        fx += (ix*700 - iy*1500)*f;              // inward + tangential
+        fy += (iy*700 + ix*1500)*f;
+      }
+    }
+
+    let nvx=vx[i]*fHalf + fx*dt;
+    let nvy=vy[i]*fHalf + fy*dt;
+    const sp2=nvx*nvx+nvy*nvy;
+    if(sp2>maxV2){ const s=maxV/Math.sqrt(sp2); nvx*=s; nvy*=s; }
+    vx[i]=nvx; vy[i]=nvy;
+  }
+
+  for(let i=0;i<N;i++){                           // integrate + wrap
+    let x=px[i]+vx[i]*dt, y=py[i]+vy[i]*dt;
+    if(x<0)x+=W; else if(x>=W)x-=W;
+    if(y<0)y+=H; else if(y>=H)y-=H;
+    px[i]=x; py[i]=y;
+  }
+}
+
+function render(){
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='rgba(10,11,22,0.26)';           // short trails
+  ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation='lighter';
+  for(let t=0;t<K;t++){
+    const idx=buckets[t], col=COLORS[t], n=idx.length;
+    // halo
+    ctx.fillStyle='rgba('+col[0]+','+col[1]+','+col[2]+',0.10)';
+    for(let k=0;k<n;k++){ const i=idx[k]; ctx.beginPath(); ctx.arc(px[i],py[i],4.6,0,TAU); ctx.fill(); }
+    // core
+    ctx.fillStyle='rgba('+col[0]+','+col[1]+','+col[2]+',0.95)';
+    for(let k=0;k<n;k++){ const i=idx[k]; ctx.beginPath(); ctx.arc(px[i],py[i],1.7,0,TAU); ctx.fill(); }
+  }
+  ctx.globalCompositeOperation='source-over';
+  drawMatrix();
+}
+
+/* the rule table, rendered as a small grid of cells (red = repel, teal = attract) */
+function drawMatrix(){
+  if(!A.length) return;
+  const cs=Math.max(13,Math.min(18,Math.round(Math.min(W,H)*0.028)));
+  const pad=8, gx=12+pad+cs, gy=H - (cs*K) - Math.max(20,(IS_TOUCH?40:24)) - pad;
+  ctx.save();
+  ctx.fillStyle='rgba(8,9,18,.45)';
+  ctx.fillRect(gx-cs-pad, gy-pad-14, cs*K+cs+pad*2, cs*K+pad*2+14);
+  ctx.fillStyle='rgba(210,214,255,.55)';
+  ctx.font='10px ui-sans-serif,Arial'; ctx.textBaseline='alphabetic';
+  ctx.fillText('RULES', gx-cs+2, gy-pad-2);
+  for(let r=0;r<K;r++){
+    // row + column type swatches
+    const c1=COLORS[r];
+    ctx.fillStyle='rgb('+c1[0]+','+c1[1]+','+c1[2]+')';
+    ctx.fillRect(gx-cs+3, gy+r*cs+3, cs-6, cs-6);
+    ctx.fillRect(gx+r*cs+3, gy-cs+3, cs-6, cs-6);
+    for(let c=0;c<K;c++){
+      const v=A[r][c];
+      const a=0.14+0.86*Math.min(1,Math.abs(v));
+      ctx.fillStyle = v>=0 ? 'rgba(0,205,180,'+a.toFixed(2)+')' : 'rgba(255,92,112,'+a.toFixed(2)+')';
+      ctx.fillRect(gx+c*cs+1, gy+r*cs+1, cs-2, cs-2);
+    }
+  }
+  ctx.restore();
+}
+
+let last=performance.now();
+function frame(now){
+  let dt=(now-last)/1000; last=now;
+  dt=clamp(dt,0,0.025);
+  if(dt>0) step(dt);
+  render();
+  requestAnimationFrame(frame);
+}
+
+/* input */
+function moveTo(x,y){ pointer.x=x; pointer.y=y;
+  if(!hintEl.classList.contains('gone')){ hintEl.classList.add('gone'); hintEl.classList.remove('show'); } }
+canvas.addEventListener('pointerdown',e=>{ pointer.down=true; moveTo(e.clientX,e.clientY); });
+canvas.addEventListener('pointermove',e=>moveTo(e.clientX,e.clientY));
+canvas.addEventListener('pointerup',  ()=>pointer.down=false);
+canvas.addEventListener('pointercancel',()=>pointer.down=false);
+canvas.addEventListener('pointerleave', ()=>pointer.down=false);
+document.getElementById('newBtn').addEventListener('click',()=>randomizeMatrix());
+document.getElementById('resetBtn').addEventListener('click',()=>spawn());
+addEventListener('keydown',e=>{ if(e.code==='Space'){e.preventDefault();randomizeMatrix();} else if(e.code==='KeyR') spawn(); });
+window.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) last=performance.now(); });
+
+/* boot */
+randomizeMatrix();
+resize();
+hintEl.textContent = IS_TOUCH ? 'drag to stir · ✦ for new life' : 'drag to stir';
+setTimeout(()=>{ if(!hintEl.classList.contains('gone')) hintEl.classList.add('show'); },1400);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

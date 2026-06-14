@@ -4,9 +4,14 @@
 "use strict";
 
 const DOORS = [
-  {name:"Dawn Patrol", href:"/arcade/",    glow:0xFFC56F, x:-9},
-  {name:"Alpenglow",   href:"/alpenglow/", glow:0xF0876A, x:0},
-  {name:"Murmur",      href:"/murmur/",    glow:0xB58BD9, x:9}
+  {name:"Dawn Patrol",   href:"/arcade/",        glow:0xFFC56F, x:-31.5},
+  {name:"Alpenglow",     href:"/alpenglow/",     glow:0xF0876A, x:-22.5},
+  {name:"Murmur",        href:"/murmur/",        glow:0xB58BD9, x:-13.5},
+  {name:"Hyperlap",      href:"/hyperlap/",      glow:0x6AD0FF, x:-4.5},
+  {name:"Particle Life", href:"/particle-life/", glow:0x86E08A, x:4.5},
+  {name:"Gravity",       href:"/gravity/",       glow:0x9FA8FF, x:13.5},
+  {name:"Aurora",        href:"/aurora/",        glow:0xC98BE0, x:22.5},
+  {name:"Fluid",         href:"/fluid/",         glow:0x5BD0E0, x:31.5}
 ];
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -184,15 +189,23 @@ function render(){
     v3.set(d.grp.position.x, 5.85, 0).project(camera);
     const sx=(v3.x*.5+.5)*innerWidth, sy=(-v3.y*.5+.5)*innerHeight;
     d.label.style.left = sx+"px"; d.label.style.top = sy+"px";
-    d.label.style.opacity = v3.z<1 ? 1 : 0;
+    const near = 1 - Math.min(1, Math.abs(d.grp.position.x - camera.position.x)/24);
+    d.label.style.opacity = (v3.z<1 ? 1 : 0) * Math.max(0, near);
   });
 
-  // camera parallax drift
-  if (!RM){
-    camera.position.x += ((mxN*1.6) - camera.position.x)*Math.min(1,2*dt);
-    camera.position.y += ((3.1 + myN*.7 + Math.sin(t*.4)*.12) - camera.position.y)*Math.min(1,2*dt);
+  // camera drifts slowly along the field; mouse adds parallax
+  {
+    const span = 31.5;                 // half-width of the field
+    if (!RM){
+      const panX = Math.sin(t*0.045) * (span*0.84);
+      camera.position.x += ((panX + mxN*3.0) - camera.position.x)*Math.min(1,2*dt);
+      camera.position.y += ((3.1 + myN*.7 + Math.sin(t*.4)*.12) - camera.position.y)*Math.min(1,2*dt);
+      camera.lookAt(panX, 2.6, 0);
+    } else {
+      camera.position.x += ((mxN*span*0.9) - camera.position.x)*Math.min(1,2*dt);
+      camera.lookAt(camera.position.x, 2.6, 0);
+    }
   }
-  camera.lookAt(0, 2.6, 0);
 
   // motes drift
   {

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Gravity Sandbox</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#05060f;
+    touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  #c{position:fixed;inset:0;display:block}
+  .ui{position:fixed;z-index:4}
+  #top{top:max(12px,env(safe-area-inset-top));right:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:62vw}
+  .btn{pointer-events:auto;cursor:pointer;border:1px solid rgba(255,255,255,.16);
+    background:rgba(12,14,28,.55);color:#e7e9ff;border-radius:10px;
+    padding:9px 13px;font-size:13px;font-weight:600;letter-spacing:.03em;
+    backdrop-filter:blur(3px);transition:background .15s,border-color .15s}
+  .btn:hover{background:rgba(40,44,70,.7);border-color:rgba(255,255,255,.3)}
+  .btn:active{transform:translateY(1px)}
+  .btn.on{background:rgba(255,196,90,.22);border-color:rgba(255,196,90,.6);color:#ffe7c2}
+  #stat{top:max(50px,calc(env(safe-area-inset-top) + 38px));left:14px;pointer-events:none;
+    font-size:12px;letter-spacing:.14em;color:rgba(210,214,255,.6);text-transform:uppercase}
+  #stat b{color:#fff;font-weight:700}
+  #hint{left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));text-align:center;
+    pointer-events:none;font-size:13px;letter-spacing:.2em;text-transform:lowercase;
+    color:rgba(226,228,255,.5);transition:opacity 1s ease;opacity:0}
+  #hint.show{opacity:1}#hint.gone{opacity:0}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
+<canvas id="c" aria-label="A gravity simulation. Drag to fling glowing bodies into space; they pull on each other, fall into orbits, and merge into larger bodies when they collide. A central star can be toggled on or off."></canvas>
+<div id="stat" class="ui">bodies: <b id="count">0</b></div>
+<div id="top" class="ui">
+  <button class="btn" id="starBtn">★ star</button>
+  <button class="btn" id="sysBtn">⟳ system</button>
+  <button class="btn" id="clearBtn">clear</button>
+</div>
+<div id="hint" class="ui">drag to fling a world</div>
+
+<script>
+'use strict';
+const TAU=Math.PI*2;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH=('ontouchstart'in window)||navigator.maxTouchPoints>0;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false});
+const hintEl=document.getElementById('hint');
+const countEl=document.getElementById('count');
+
+let W=0,H=0,DPR=1;
+const G=42;                     // gravitational constant (tuned)
+const SOFT=18;                  // softening, avoids singular slingshots
+let bodies=[];
+let stars=[];                   // background starfield
+let starOn=true;
+
+const PAL=[[255,196,110],[255,138,120],[233,120,170],[121,196,205],[150,160,235],[120,210,170]];
+let hueIdx=0;
+
+function rad(m){ return Math.cbrt(m)*1.7 + 1.6; }   // visual radius from mass
+
+function makeBody(x,y,vx,vy,m,col,isStar){
+  return {x,y,vx,vy,m,col:col||PAL[(hueIdx++)%PAL.length],star:!!isStar,
+          trail:[], glow:0};
+}
+
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth; H=window.innerHeight;
+  canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  makeStarfield();
+  ctx.fillStyle='#05060f'; ctx.fillRect(0,0,W,H);
+}
+function makeStarfield(){
+  stars=[]; const n=Math.round(W*H*0.00018);
+  for(let i=0;i<n;i++) stars.push({x:Math.random()*W,y:Math.random()*H,
+    r:Math.random()*1.1+0.2, a:Math.random()*0.5+0.15});
+}
+
+function centralStar(){
+  return makeBody(W/2,H/2,0,0,2600,[255,214,150],true);
+}
+function clearAll(keepStar){
+  bodies=[];
+  if(keepStar && starOn) bodies.push(centralStar());
+  countEl.textContent=bodies.length;
+}
+
+/* a tidy preset: a star with a few circular orbits + a moon */
+function presetSystem(){
+  bodies=[]; starOn=true; document.getElementById('starBtn').classList.add('on');
+  const star=centralStar(); bodies.push(star);
+  const rings=4+Math.floor(Math.random()*3);
+  for(let i=0;i<rings;i++){
+    const r=70+i*Math.min(W,H)*0.07 + Math.random()*20;
+    const ang=Math.random()*TAU;
+    const x=W/2+Math.cos(ang)*r, y=H/2+Math.sin(ang)*r;
+    const m=18+Math.random()*60;
+    const v=Math.sqrt(G*star.m/r);                 // circular-orbit speed
+    const dir=Math.random()<0.5?1:-1;
+    const vx=-Math.sin(ang)*v*dir, vy=Math.cos(ang)*v*dir;
+    const planet=makeBody(x,y,vx,vy,m);
+    bodies.push(planet);
+    if(Math.random()<0.4){                          // a moon
+      const mr=rad(m)+6+Math.random()*6;
+      const mv=Math.sqrt(G*m/mr);
+      bodies.push(makeBody(x+mr,y,vx,vy+mv*dir,Math.max(2,m*0.08)));
+    }
+  }
+  countEl.textContent=bodies.length;
+}
+
+function step(dt){
+  const n=bodies.length;
+  // pairwise gravity
+  for(let i=0;i<n;i++){
+    const a=bodies[i];
+    for(let j=i+1;j<n;j++){
+      const b=bodies[j];
+      let dx=b.x-a.x, dy=b.y-a.y;
+      const d2=dx*dx+dy*dy+SOFT*SOFT;
+      const inv=1/Math.sqrt(d2);
+      const f=G/d2;
+      const fx=dx*inv*f, fy=dy*inv*f;
+      a.vx+=fx*b.m*dt; a.vy+=fy*b.m*dt;
+      b.vx-=fx*a.m*dt; b.vy-=fy*a.m*dt;
+    }
+  }
+  // integrate
+  for(let i=0;i<n;i++){
+    const a=bodies[i];
+    if(a.star && starOn){ a.vx=0; a.vy=0; continue; }   // anchor the star
+    a.x+=a.vx*dt; a.y+=a.vy*dt;
+    if(a.glow>0) a.glow-=dt*2.4;
+  }
+  // collisions -> merge (conserve mass + momentum)
+  for(let i=0;i<bodies.length;i++){
+    for(let j=i+1;j<bodies.length;j++){
+      const a=bodies[i], b=bodies[j];
+      const dx=b.x-a.x, dy=b.y-a.y;
+      const rr=rad(a.m)+rad(b.m);
+      if(dx*dx+dy*dy < rr*rr*0.55){
+        const M=a.m+b.m;
+        const big = a.m>=b.m?a:b, small = a.m>=b.m?b:a;
+        big.x=(a.x*a.m+b.x*b.m)/M;
+        big.y=(a.y*a.m+b.y*b.m)/M;
+        big.vx=(a.vx*a.m+b.vx*b.m)/M;
+        big.vy=(a.vy*a.m+b.vy*b.m)/M;
+        big.m=M; big.glow=1; big.star=a.star||b.star;
+        bodies.splice(bodies.indexOf(small),1);
+        countEl.textContent=bodies.length;
+        i=Math.max(0,i-1); break;
+      }
+    }
+  }
+  // trails
+  for(const a of bodies){
+    a.trail.push(a.x,a.y);
+    const max = a.star?0:48;
+    while(a.trail.length>max*2) a.trail.splice(0,2);
+  }
+}
+
+function render(){
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='rgba(5,6,15,0.34)';
+  ctx.fillRect(0,0,W,H);
+
+  // starfield (subtle, behind everything)
+  ctx.globalCompositeOperation='lighter';
+  for(const s of stars){ ctx.fillStyle='rgba(180,200,255,'+s.a.toFixed(2)+')';
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,TAU); ctx.fill(); }
+
+  // trails
+  for(const a of bodies){
+    const t=a.trail, L=t.length;
+    if(L>=4){
+      const c=a.col;
+      ctx.lineWidth=Math.min(2.2,rad(a.m)*0.4);
+      ctx.strokeStyle='rgba('+c[0]+','+c[1]+','+c[2]+',0.22)';
+      ctx.beginPath(); ctx.moveTo(t[0],t[1]);
+      for(let k=2;k<L;k+=2) ctx.lineTo(t[k],t[k+1]);
+      ctx.stroke();
+    }
+  }
+
+  // bodies with glow
+  for(const a of bodies){
+    const c=a.col, r=rad(a.m);
+    const halo = r*(a.star?5:3.0) + a.glow*30;
+    const g=ctx.createRadialGradient(a.x,a.y,0,a.x,a.y,halo);
+    g.addColorStop(0,'rgba('+c[0]+','+c[1]+','+c[2]+','+(a.star?0.5:0.32+a.glow*0.4).toFixed(3)+')');
+    g.addColorStop(0.4,'rgba('+c[0]+','+c[1]+','+c[2]+',0.10)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(a.x,a.y,halo,0,TAU); ctx.fill();
+    ctx.fillStyle='rgba('+Math.min(255,c[0]+60)+','+Math.min(255,c[1]+60)+','+Math.min(255,c[2]+60)+',0.98)';
+    ctx.beginPath(); ctx.arc(a.x,a.y,r,0,TAU); ctx.fill();
+  }
+
+  // aiming line while dragging
+  if(drag.active){
+    ctx.globalCompositeOperation='source-over';
+    ctx.strokeStyle='rgba(255,255,255,0.5)';
+    ctx.setLineDash([4,5]); ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(drag.sx,drag.sy); ctx.lineTo(drag.x,drag.y); ctx.stroke();
+    ctx.setLineDash([]);
+    const m=drag.mass();
+    ctx.fillStyle='rgba(255,255,255,0.85)';
+    ctx.beginPath(); ctx.arc(drag.sx,drag.sy,rad(m),0,TAU); ctx.fill();
+    // arrowhead
+    const ang=Math.atan2(drag.y-drag.sy,drag.x-drag.sx);
+    ctx.beginPath(); ctx.moveTo(drag.x,drag.y);
+    ctx.lineTo(drag.x-Math.cos(ang-0.4)*10,drag.y-Math.sin(ang-0.4)*10);
+    ctx.lineTo(drag.x-Math.cos(ang+0.4)*10,drag.y-Math.sin(ang+0.4)*10);
+    ctx.closePath(); ctx.fill();
+  }
+}
+
+let last=performance.now();
+function frame(now){
+  let dt=(now-last)/1000; last=now;
+  dt=clamp(dt,0,0.030);
+  // a couple of substeps for stability when things get fast
+  const steps=2; const sdt=dt/steps;
+  for(let s=0;s<steps;s++) if(sdt>0) step(sdt);
+  render();
+  requestAnimationFrame(frame);
+}
+
+/* input: press to set spawn point, drag to set velocity, release to launch */
+const drag={active:false,sx:0,sy:0,x:0,y:0,t0:0,
+  mass(){ return clamp(8 + (performance.now()-this.t0)*0.06, 8, 140); }};
+function down(x,y){ drag.active=true; drag.sx=x; drag.sy=y; drag.x=x; drag.y=y; drag.t0=performance.now();
+  if(!hintEl.classList.contains('gone')){hintEl.classList.add('gone');hintEl.classList.remove('show');} }
+function move(x,y){ if(drag.active){ drag.x=x; drag.y=y; } }
+function up(){
+  if(!drag.active) return; drag.active=false;
+  const m=drag.mass();
+  const vx=(drag.x-drag.sx)*0.9, vy=(drag.y-drag.sy)*0.9;   // sling opposite of drag? -> drag points launch dir
+  bodies.push(makeBody(drag.sx,drag.sy,vx,vy,m));
+  countEl.textContent=bodies.length;
+}
+canvas.addEventListener('pointerdown',e=>down(e.clientX,e.clientY));
+canvas.addEventListener('pointermove',e=>move(e.clientX,e.clientY));
+canvas.addEventListener('pointerup',  ()=>up());
+canvas.addEventListener('pointercancel',()=>{drag.active=false;});
+
+document.getElementById('starBtn').addEventListener('click',function(){
+  starOn=!starOn; this.classList.toggle('on',starOn);
+  if(starOn){ if(!bodies.some(b=>b.star)) bodies.unshift(centralStar()); }
+  else { bodies=bodies.filter(b=>!b.star); }
+  countEl.textContent=bodies.length;
+});
+document.getElementById('sysBtn').addEventListener('click',presetSystem);
+document.getElementById('clearBtn').addEventListener('click',()=>clearAll(true));
+addEventListener('keydown',e=>{ if(e.code==='KeyC') clearAll(true); else if(e.code==='KeyS') presetSystem(); });
+window.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) last=performance.now(); });
+
+/* boot */
+resize();
+document.getElementById('starBtn').classList.toggle('on',starOn);
+presetSystem();
+hintEl.textContent=IS_TOUCH?'drag to fling a world · ⟳ for a system':'drag to fling · ⟳ system · ★ star';
+setTimeout(()=>{ if(!hintEl.classList.contains('gone')) hintEl.classList.add('show'); },1400);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

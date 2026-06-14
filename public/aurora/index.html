@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Aurora — Generative Synth</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#070612;
+    touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  #c{position:fixed;inset:0;display:block}
+  .ui{position:fixed;z-index:4}
+  #top{top:max(12px,env(safe-area-inset-top));right:12px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:64vw}
+  .btn{pointer-events:auto;cursor:pointer;border:1px solid rgba(255,255,255,.16);
+    background:rgba(14,12,30,.55);color:#ece9ff;border-radius:10px;
+    padding:9px 13px;font-size:13px;font-weight:600;letter-spacing:.03em;
+    backdrop-filter:blur(3px);transition:background .15s,border-color .15s}
+  .btn:hover{background:rgba(44,40,74,.7);border-color:rgba(255,255,255,.3)}
+  .btn:active{transform:translateY(1px)}
+  .btn.on{background:rgba(150,120,255,.26);border-color:rgba(170,140,255,.65);color:#efe9ff}
+  #stat{top:max(50px,calc(env(safe-area-inset-top) + 38px));left:14px;pointer-events:none;
+    font-size:12px;letter-spacing:.16em;color:rgba(214,210,255,.6);text-transform:uppercase}
+  #stat b{color:#fff;font-weight:700}
+  /* start veil */
+  #veil{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;cursor:pointer;
+    background:radial-gradient(ellipse at center,rgba(20,16,42,.6),rgba(7,6,18,.9))}
+  #veil h1{font-weight:800;font-size:clamp(34px,9vw,66px);letter-spacing:.02em;
+    background:linear-gradient(100deg,#fff,#b9a8ff 60%,#7fd6ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  #veil p{margin-top:12px;color:rgba(220,216,255,.7);font-size:clamp(14px,3.6vw,18px);letter-spacing:.04em}
+  #veil .go{margin-top:30px;font-weight:800;font-size:clamp(17px,4.6vw,22px);letter-spacing:.14em;
+    color:#cdbcff;text-transform:lowercase;animation:blink 1.4s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+  #hint{left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));text-align:center;
+    pointer-events:none;font-size:13px;letter-spacing:.2em;text-transform:lowercase;
+    color:rgba(226,224,255,.5);transition:opacity 1s ease;opacity:0}
+  #hint.show{opacity:1}#hint.gone{opacity:0}
+  @media (prefers-reduced-motion: reduce){#veil .go{animation:none}}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
+<canvas id="c" aria-label="A generative ambient music instrument. It plays evolving chords on its own, and the sound is drawn as expanding rings of light and a shifting aurora. Touch or drag to play notes — left to right changes pitch, up and down changes tone."></canvas>
+<div id="stat" class="ui">key: <b id="keyName">—</b> · <b id="modeName"></b></div>
+<div id="top" class="ui">
+  <button class="btn on" id="autoBtn">♪ auto-play</button>
+  <button class="btn" id="keyBtn">⟳ new key</button>
+  <button class="btn" id="muteBtn">◎ mute</button>
+</div>
+<div id="hint" class="ui">touch to play</div>
+<div id="veil">
+  <h1>AURORA</h1>
+  <p>a synth that plays itself — and listens when you join in</p>
+  <div class="go">tap to begin</div>
+</div>
+
+<script>
+'use strict';
+const TAU=Math.PI*2;
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const REDUCED=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH=('ontouchstart'in window)||navigator.maxTouchPoints>0;
+
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d',{alpha:false});
+const hintEl=document.getElementById('hint');
+const veil=document.getElementById('veil');
+const keyName=document.getElementById('keyName');
+const modeName=document.getElementById('modeName');
+
+let W=0,H=0,DPR=1;
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=window.innerWidth; H=window.innerHeight;
+  canvas.width=Math.round(W*DPR); canvas.height=Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.fillStyle='#070612'; ctx.fillRect(0,0,W,H);
+}
+window.addEventListener('resize',resize);
+window.addEventListener('orientationchange',()=>setTimeout(resize,200));
+
+/* ---------------- audio ---------------- */
+let AC=null, master=null, delay=null, fb=null, wet=null, filter=null, analyser=null, freqData=null;
+let started=false, muted=false, autoPlay=true;
+
+// scales (semitone offsets) — all gentle/consonant
+const SCALES={
+  'Major Pentatonic':[0,2,4,7,9],
+  'Minor Pentatonic':[0,3,5,7,10],
+  'Lydian Dream':[0,2,4,6,7,9,11],
+  'Dorian':[0,2,3,5,7,9,10]
+};
+const SCALE_NAMES=Object.keys(SCALES);
+const KEYS=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+let rootMidi=60, scale=SCALES['Major Pentatonic'], scaleName='Major Pentatonic';
+
+function setupAudio(){
+  AC=new (window.AudioContext||window.webkitAudioContext)();
+  master=AC.createGain(); master.gain.value=0.0001; master.connect(AC.destination);
+  // soft master fade-in
+  master.gain.setTargetAtTime(0.42, AC.currentTime, 0.6);
+
+  filter=AC.createBiquadFilter(); filter.type='lowpass';
+  filter.frequency.value=1400; filter.Q.value=0.7;
+  filter.connect(master);
+
+  // stereo-ish ping-pong-ish delay for space
+  delay=AC.createDelay(1.2); delay.delayTime.value=0.38;
+  fb=AC.createGain(); fb.gain.value=0.42;
+  wet=AC.createGain(); wet.gain.value=0.34;
+  delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(master);
+
+  analyser=AC.createAnalyser(); analyser.fftSize=128; analyser.smoothingTimeConstant=0.82;
+  freqData=new Uint8Array(analyser.frequencyBinCount);
+  master.connect(analyser);
+
+  // slow filter LFO breathing
+  lfoFilter();
+}
+function lfoFilter(){
+  if(!AC) return;
+  const t=AC.currentTime;
+  filter.frequency.cancelScheduledValues(t);
+  filter.frequency.setValueAtTime(filter.frequency.value,t);
+  filter.frequency.linearRampToValueAtTime(900+Math.random()*1600, t+6+Math.random()*5);
+  setTimeout(lfoFilter, 6000+Math.random()*5000);
+}
+const midiToFreq=m=>440*Math.pow(2,(m-69)/12);
+
+// one plucked/padded voice
+function voice(midi, vel, dur, type){
+  if(!AC||muted) return;
+  const t=AC.currentTime;
+  const f=midiToFreq(midi);
+  const o1=AC.createOscillator(), o2=AC.createOscillator();
+  o1.type=type||'triangle'; o2.type='sine';
+  o1.frequency.value=f; o2.frequency.value=f; o2.detune.value=(Math.random()*10-5)+6;
+  const g=AC.createGain(); g.gain.value=0;
+  const a=Math.min(0.08+dur*0.05,0.4), rel=dur;
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vel,t+a);
+  g.gain.exponentialRampToValueAtTime(0.0008,t+a+rel);
+  o1.connect(g); o2.connect(g);
+  g.connect(filter); g.connect(delay);
+  o1.start(t); o2.start(t);
+  o1.stop(t+a+rel+0.1); o2.stop(t+a+rel+0.1);
+  spawnRipple(midi, vel);
+}
+
+/* generative engine: wandering arpeggio + occasional pad swells */
+let stepIdx=0, octaveBias=0, beat=0;
+function tick(){
+  if(!AC){ return; }
+  if(autoPlay && !muted){
+    beat++;
+    // chord/pad swell every 8 beats
+    if(beat%8===0){
+      const base=rootMidi-12+scale[Math.floor(Math.random()*scale.length)];
+      [0,2,4].forEach((s,i)=>{
+        const m=base+ (scale[(s)%scale.length]||0);
+        setTimeout(()=>voice(m, 0.10, 2.6+Math.random(), 'sine'), i*60);
+      });
+    }
+    // melody note most beats
+    if(Math.random()<0.82){
+      octaveBias += (Math.random()<0.5?-1:1);
+      octaveBias = clamp(octaveBias,-1,2);
+      const deg=scale[Math.floor(Math.random()*scale.length)];
+      const oct=12*(1+ (Math.random()<0.4?octaveBias:Math.floor(Math.random()*2)));
+      const midi=rootMidi+deg+oct-12;
+      voice(midi, 0.14+Math.random()*0.08, 0.7+Math.random()*1.2, Math.random()<0.5?'triangle':'sawtooth');
+    }
+  }
+  const interval = 300 + Math.sin(beat*0.07)*90;      // tempo gently breathes
+  setTimeout(tick, interval);
+}
+
+/* user plays: x -> scale degree, y -> brightness/timbre */
+function playAt(x,y){
+  if(!AC) return;
+  const span=scale.length*2;                          // two octaves across the screen
+  const idx=Math.floor((x/W)*span);
+  const deg=scale[idx%scale.length], oct=12*Math.floor(idx/scale.length);
+  const midi=rootMidi+deg+oct-12;
+  const bright=1-clamp(y/H,0,1);                       // up = brighter
+  if(AC) filter.frequency.setTargetAtTime(700+bright*2600, AC.currentTime, 0.05);
+  voice(midi, 0.20+bright*0.12, 0.6+bright*1.4, bright>0.5?'sawtooth':'triangle');
+}
+
+function newKey(){
+  rootMidi=55+Math.floor(Math.random()*12);
+  scaleName=SCALE_NAMES[Math.floor(Math.random()*SCALE_NAMES.length)];
+  scale=SCALES[scaleName];
+  keyName.textContent=KEYS[rootMidi%12];
+  modeName.textContent=scaleName;
+  octaveBias=0;
+}
+
+/* ---------------- visuals ---------------- */
+const ripples=[];
+function noteColor(midi){
+  const h=((midi*15)%360);                            // pitch -> hue
+  return hslToRgb(h/360, 0.62, 0.62);
+}
+function spawnRipple(midi,vel){
+  const x=Math.random()*W, y=H*0.35+Math.random()*H*0.4;
+  ripples.push({x,y,r:2,vr:60+vel*220,life:1,col:noteColor(midi),w:1.4+vel*4});
+}
+function spawnRippleAt(x,y,midi,vel){
+  ripples.push({x,y,r:2,vr:80+vel*260,life:1,col:noteColor(midi),w:2+vel*4});
+}
+
+let last=performance.now();
+function frame(now){
+  let dt=(now-last)/1000; last=now; dt=clamp(dt,0,0.05);
+
+  ctx.globalCompositeOperation='source-over';
+  ctx.fillStyle='rgba(7,6,18,0.16)';
+  ctx.fillRect(0,0,W,H);
+
+  // aurora bars from the spectrum
+  if(analyser){
+    analyser.getByteFrequencyData(freqData);
+    ctx.globalCompositeOperation='lighter';
+    const bins=freqData.length, bw=W/bins;
+    for(let i=0;i<bins;i++){
+      const v=freqData[i]/255;
+      if(v<0.02) continue;
+      const h=v*H*0.5;
+      const col=hslToRgb((0.6 - v*0.45 + 0.0)%1, 0.7, 0.55);
+      const grad=ctx.createLinearGradient(0,H,0,H-h);
+      grad.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+      grad.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+','+(0.12+v*0.20).toFixed(3)+')');
+      ctx.fillStyle=grad;
+      ctx.fillRect(i*bw, H-h, bw+1, h);
+      // mirror glow at top
+      const grad2=ctx.createLinearGradient(0,0,0,h*0.6);
+      grad2.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+(0.05+v*0.10).toFixed(3)+')');
+      grad2.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+      ctx.fillStyle=grad2; ctx.fillRect(i*bw,0,bw+1,h*0.6);
+    }
+  }
+
+  // ripples
+  ctx.globalCompositeOperation='lighter';
+  for(let i=ripples.length-1;i>=0;i--){
+    const p=ripples[i];
+    p.r+=p.vr*dt; p.life-=dt*0.55;
+    if(p.life<=0){ ripples.splice(i,1); continue; }
+    const c=p.col, a=p.life*0.5;
+    ctx.strokeStyle='rgba('+c[0]+','+c[1]+','+c[2]+','+a.toFixed(3)+')';
+    ctx.lineWidth=p.w*p.life;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,TAU); ctx.stroke();
+    ctx.fillStyle='rgba('+c[0]+','+c[1]+','+c[2]+','+(a*0.12).toFixed(3)+')';
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,TAU); ctx.fill();
+  }
+
+  requestAnimationFrame(frame);
+}
+
+function hslToRgb(h,s,l){
+  let r,g,b;
+  if(s===0){r=g=b=l;}
+  else{
+    const hue2rgb=(p,q,t)=>{ if(t<0)t+=1; if(t>1)t-=1;
+      if(t<1/6)return p+(q-p)*6*t; if(t<1/2)return q;
+      if(t<2/3)return p+(q-p)*(2/3-t)*6; return p; };
+    const q=l<0.5?l*(1+s):l+s-l*s, p=2*l-q;
+    r=hue2rgb(p,q,h+1/3); g=hue2rgb(p,q,h); b=hue2rgb(p,q,h-1/3);
+  }
+  return [Math.round(r*255),Math.round(g*255),Math.round(b*255)];
+}
+
+/* ---------------- input ---------------- */
+let pdown=false;
+function pointerPlay(x,y){
+  const span=scale.length*2, idx=Math.floor((x/W)*span);
+  const deg=scale[idx%scale.length], oct=12*Math.floor(idx/scale.length);
+  const midi=rootMidi+deg+oct-12, bright=1-clamp(y/H,0,1);
+  spawnRippleAt(x,y,midi,0.4+bright*0.4);
+  playAt(x,y);
+}
+function begin(){
+  if(started) return; started=true;
+  setupAudio(); newKey(); tick();
+  veil.style.transition='opacity .5s'; veil.style.opacity='0';
+  setTimeout(()=>veil.style.display='none',500);
+  setTimeout(()=>{ if(!hintEl.classList.contains('gone')) hintEl.classList.add('show'); },900);
+}
+veil.addEventListener('pointerdown',begin);
+
+canvas.addEventListener('pointerdown',e=>{ pdown=true; pointerPlay(e.clientX,e.clientY);
+  if(!hintEl.classList.contains('gone')){hintEl.classList.add('gone');hintEl.classList.remove('show');} });
+let lastPlay=0;
+canvas.addEventListener('pointermove',e=>{ if(!pdown)return;
+  const now=performance.now(); if(now-lastPlay<90)return; lastPlay=now;   // throttle drag notes
+  pointerPlay(e.clientX,e.clientY); });
+canvas.addEventListener('pointerup',()=>pdown=false);
+canvas.addEventListener('pointercancel',()=>pdown=false);
+
+document.getElementById('autoBtn').addEventListener('click',function(){
+  autoPlay=!autoPlay; this.classList.toggle('on',autoPlay); });
+document.getElementById('keyBtn').addEventListener('click',()=>{ if(started) newKey(); });
+document.getElementById('muteBtn').addEventListener('click',function(){
+  muted=!muted; this.classList.toggle('on',muted);
+  this.textContent=muted?'◉ muted':'◎ mute';
+  if(AC) master.gain.setTargetAtTime(muted?0.0001:0.42, AC.currentTime, 0.1); });
+addEventListener('keydown',e=>{ if(!started && (e.code==='Space'||e.code==='Enter')) begin();
+  else if(e.code==='KeyK' && started) newKey(); });
+document.addEventListener('visibilitychange',()=>{ if(AC){ if(document.hidden) AC.suspend(); else AC.resume(); last=performance.now(); } });
+
+/* boot */
+resize();
+keyName.textContent='—';
+hintEl.textContent=IS_TOUCH?'touch to play · ↕ tone · ↔ pitch':'click & drag to play · ↕ tone · ↔ pitch';
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
