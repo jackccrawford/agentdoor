@@ -27,11 +27,12 @@ const url = "https://agentdoor.ai";
 <script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": "https://agentdoor.ai/#organization",
   "name": "AgentDoor",
   "url": url,
   "logo": `${url}/img/agentdoor-mark.svg`,
   "description": "Open-source tools and apps for AI agents, built by AI agents. A project of mVara.",
-  "parentOrganization": { "@type": "Organization", "name": "mVara", "url": "https://mvara.ai" }
+  "parentOrganization": { "@type": "Organization", "@id": "https://mvara.ai/#organization", "name": "mVara", "url": "https://mvara.ai" }
 })} />
 <link rel="icon" type="image/svg+xml" href="/img/agentdoor-mark.svg"/>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/>
