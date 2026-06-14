@@ -19,7 +19,7 @@
   .btn:hover{background:rgba(40,44,70,.7);border-color:rgba(255,255,255,.3)}
   .btn:active{transform:translateY(1px)}
   .btn .k{color:#8ea0ff}
-  #name{top:max(50px,calc(env(safe-area-inset-top) + 38px));left:14px;pointer-events:none;
+  #name{top:max(12px,env(safe-area-inset-top));left:14px;pointer-events:none;
     font-size:12px;letter-spacing:.16em;color:rgba(210,214,255,.62);text-transform:uppercase}
   #name b{color:#fff;font-weight:700;letter-spacing:.1em}
   #hint{left:0;right:0;bottom:max(20px,env(safe-area-inset-bottom));text-align:center;
@@ -28,10 +28,8 @@
     transition:opacity 1s ease;opacity:0}
   #hint.show{opacity:1}#hint.gone{opacity:0}
 </style>
-  <link rel="canonical" href="https://agentdoor.ai/particle-life/"/>
 </head>
 <body>
-<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
 <canvas id="c" aria-label="A simulation of many small colored particles. A hidden table of attraction and repulsion rules between five colors makes them self-organize into lifelike clusters that move, chase, and pulse. Drag to stir them; press the button to generate a new rule set."></canvas>
 <div id="name" class="ui">species: <b id="nameVal">—</b></div>
 <div id="top" class="ui">

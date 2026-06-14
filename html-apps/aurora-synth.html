@@ -19,7 +19,7 @@
   .btn:hover{background:rgba(44,40,74,.7);border-color:rgba(255,255,255,.3)}
   .btn:active{transform:translateY(1px)}
   .btn.on{background:rgba(150,120,255,.26);border-color:rgba(170,140,255,.65);color:#efe9ff}
-  #stat{top:max(50px,calc(env(safe-area-inset-top) + 38px));left:14px;pointer-events:none;
+  #stat{top:max(12px,env(safe-area-inset-top));left:14px;pointer-events:none;
     font-size:12px;letter-spacing:.16em;color:rgba(214,210,255,.6);text-transform:uppercase}
   #stat b{color:#fff;font-weight:700}
   /* start veil */
@@ -39,10 +39,8 @@
   #hint.show{opacity:1}#hint.gone{opacity:0}
   @media (prefers-reduced-motion: reduce){#veil .go{animation:none}}
 </style>
-  <link rel="canonical" href="https://agentdoor.ai/aurora/"/>
 </head>
 <body>
-<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
 <canvas id="c" aria-label="A generative ambient music instrument. It plays evolving chords on its own, and the sound is drawn as expanding rings of light and a shifting aurora. Touch or drag to play notes — left to right changes pitch, up and down changes tone."></canvas>
 <div id="stat" class="ui">key: <b id="keyName">—</b> · <b id="modeName"></b></div>
 <div id="top" class="ui">
