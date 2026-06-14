@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>A self-portrait</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;background:#08091a;
+    touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
+  #c{position:fixed;inset:0;display:block}
+  /* gentle vignette so the field sits in depth */
+  #vig{position:fixed;inset:0;pointer-events:none;z-index:2;
+    background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.5) 100%)}
+  #hint{position:fixed;left:0;right:0;bottom:max(26px,env(safe-area-inset-bottom));z-index:3;
+    text-align:center;pointer-events:none;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:13px;font-weight:400;letter-spacing:.22em;text-transform:lowercase;
+    color:rgba(226,228,255,.5);transition:opacity 1.2s ease;opacity:0}
+  #hint.show{opacity:1}
+  #hint.gone{opacity:0}
+</style>
+</head>
+<body>
+<a href="/" style="position:fixed;top:max(12px,env(safe-area-inset-top));left:12px;z-index:60;display:inline-flex;align-items:center;gap:6px;background:rgba(20,16,40,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 13px;font:700 12.5px/1 system-ui,sans-serif;text-decoration:none;-webkit-tap-highlight-color:transparent">← the door</a>
+<canvas id="c" aria-label="An abstract, animated field of many small points of warm and cool light. Left alone it drifts as a diffuse cloud with no fixed shape; when a cursor or finger moves across it, the points gather, brighten, and flow into coherent currents around that point, then loosen again when it leaves."></canvas>
+<div id="vig"></div>
+<div id="hint">move through it</div>
+
+<script>
+'use strict';
+const TAU = Math.PI * 2;
+const clamp = (v,a,b) => v<a?a:v>b?b:v;
+const REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IS_TOUCH = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d', { alpha:false });
+const hintEl = document.getElementById('hint');
+
+let W=0,H=0,DPR=1,particles=[],R=300,count=600;
+
+/* warm -> cool: deliberately not the usual cold machine-blue */
+const STOPS = [
+  [255,198,120],   // warm gold
+  [255,140,118],   // coral
+  [233,120,170],   // rose
+  [121,196,205],   // teal
+  [150,150,232]    // soft violet
+];
+function palette(t){
+  t = clamp(t,0,1) * (STOPS.length-1);
+  const i = Math.floor(t), f = t-i;
+  const a = STOPS[i], b = STOPS[Math.min(i+1,STOPS.length-1)];
+  return [a[0]+(b[0]-a[0])*f, a[1]+(b[1]-a[1])*f, a[2]+(b[2]-a[2])*f];
+}
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio||1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = Math.round(W*DPR);
+  canvas.height = Math.round(H*DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  R = clamp(Math.min(W,H)*0.28, 150, 360);
+  const area = W*H;
+  count = REDUCED ? clamp(Math.round(area/4200),200,420)
+                  : clamp(Math.round(area/2500),380,1000);
+  build();
+  // paint base so the first fade has something to dissolve into
+  ctx.fillStyle = '#08091a'; ctx.fillRect(0,0,W,H);
+}
+function build(){
+  particles = new Array(count);
+  for(let i=0;i<count;i++){
+    const p = i/count;                       // spread across the palette
+    const rgb = palette((p + (Math.random()-0.5)*0.12));
+    particles[i] = {
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*8, vy: (Math.random()-0.5)*8,
+      r: rgb[0], g: rgb[1], b: rgb[2],
+      sz: 0.7 + Math.random()*0.8,
+      eng: 0
+    };
+  }
+}
+
+/* a smoothly varying direction field — the quiet currents it drifts on */
+function flowAngle(x,y,t){
+  const s = 0.00165;
+  const a = Math.sin(x*s + t*0.00030)
+          + Math.sin(y*s*1.30 - t*0.00024)
+          + 0.6*Math.sin((x+y)*s*0.55 + t*0.00040)
+          + 0.5*Math.cos((x*0.7 - y*1.1)*s + t*0.00020);
+  return a * Math.PI;
+}
+
+/* the "presence" the field responds to: real pointer, or a wandering one when alone */
+const pointer = { x: -9999, y: -9999, active:false, lastMove:-99999 };
+let presence = 0;                            // 0..1 how strongly an attractor is felt
+let attX=0, attY=0;
+
+function onMove(x,y){
+  pointer.x = x; pointer.y = y; pointer.active = true;
+  pointer.lastMove = performance.now();
+  if(!hintEl.classList.contains('gone')){
+    hintEl.classList.add('gone'); hintEl.classList.remove('show');
+  }
+}
+canvas.addEventListener('pointermove', e=>onMove(e.clientX,e.clientY));
+canvas.addEventListener('pointerdown', e=>onMove(e.clientX,e.clientY));
+canvas.addEventListener('pointerleave', ()=>{ pointer.active=false; });
+window.addEventListener('resize', resize);
+window.addEventListener('orientationchange', ()=>setTimeout(resize,200));
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden){ last=performance.now(); } });
+
+let last = performance.now();
+function frame(now){
+  let dt = (now-last)/16.6667; last = now;
+  dt = clamp(dt, 0, 2.5);                     // keep stable after tab-switches
+  const t = now;
+
+  /* choose the attractor: real pointer, else a slow wandering presence */
+  const idle = now - pointer.lastMove > 2600;
+  let wantX, wantY, wantPresence;
+  if(pointer.active && !idle){
+    wantX = pointer.x; wantY = pointer.y; wantPresence = 1;
+  } else if(!REDUCED){
+    // Lissajous drift — so it's never fully still, and shows what it does
+    wantX = W*0.5 + Math.cos(t*0.00021)*W*0.30 + Math.cos(t*0.00037)*W*0.06;
+    wantY = H*0.5 + Math.sin(t*0.00017)*H*0.28 + Math.sin(t*0.00041)*H*0.05;
+    wantPresence = 0.62;
+  } else {
+    wantPresence = 0;                          // reduced motion: let it simply drift
+    wantX = attX; wantY = attY;
+  }
+  presence += (wantPresence - presence) * 0.03 * dt;
+  attX += (wantX - attX) * 0.06 * dt;
+  attY += (wantY - attY) * 0.06 * dt;
+
+  /* dissolve the previous frame slightly — this is what makes the motion silky */
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = 'rgba(8,9,26,0.092)';
+  ctx.fillRect(0,0,W,H);
+
+  ctx.globalCompositeOperation = 'lighter';
+
+  /* a soft warm core where the presence is */
+  if(presence > 0.012){
+    const g = ctx.createRadialGradient(attX,attY,0,attX,attY,R*0.95);
+    g.addColorStop(0,   'rgba(255,210,170,'+(0.085*presence).toFixed(3)+')');
+    g.addColorStop(0.45,'rgba(205,150,205,'+(0.045*presence).toFixed(3)+')');
+    g.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(attX-R, attY-R, R*2, R*2);
+  }
+
+  const R2 = R*R;
+  const m = 36;                               // wrap margin
+  for(let i=0;i<count;i++){
+    const p = particles[i];
+
+    // steer gently toward the flow direction
+    const a = flowAngle(p.x, p.y, t);
+    const drift = 1.7;
+    p.vx += (Math.cos(a)*drift - p.vx) * 0.035 * dt;
+    p.vy += (Math.sin(a)*drift - p.vy) * 0.035 * dt;
+
+    // relation to the presence: gather (inward) + swirl (tangential), and brighten
+    let targetEng = 0;
+    if(presence > 0.012){
+      const dx = attX - p.x, dy = attY - p.y;
+      const d2 = dx*dx + dy*dy;
+      if(d2 < R2){
+        const d = Math.sqrt(d2) || 0.0001;
+        const f = (1 - d/R) * presence;
+        const ix = dx/d, iy = dy/d;           // inward unit
+        const tx = -iy, ty = ix;              // tangent unit
+        const pull = 0.42*f, swirl = 0.95*f;
+        p.vx += (ix*pull + tx*swirl) * dt;
+        p.vy += (iy*pull + ty*swirl) * dt;
+        targetEng = f;
+      }
+    }
+    p.eng += (targetEng - p.eng) * 0.12 * dt;
+
+    // limit speed and integrate
+    const sp2 = p.vx*p.vx + p.vy*p.vy;
+    const max = 2.6 + p.eng*3.4, max2 = max*max;
+    if(sp2 > max2){ const s = max/Math.sqrt(sp2); p.vx*=s; p.vy*=s; }
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+
+    // continuous field: wrap softly at the edges
+    if(p.x < -m) p.x += W+2*m; else if(p.x > W+m) p.x -= W+2*m;
+    if(p.y < -m) p.y += H+2*m; else if(p.y > H+m) p.y -= H+2*m;
+
+    // draw: a faint core + a softer halo, accumulating into glow
+    const e = p.eng;
+    const core = 0.20 + e*0.85;
+    const sz = (0.8 + e*2.4) * p.sz;
+    const r = p.r, g = p.g, b = p.b;
+    ctx.fillStyle = 'rgba('+(r|0)+','+(g|0)+','+(b|0)+','+core.toFixed(3)+')';
+    ctx.beginPath(); ctx.arc(p.x, p.y, sz, 0, TAU); ctx.fill();
+    ctx.fillStyle = 'rgba('+(r|0)+','+(g|0)+','+(b|0)+','+(core*0.32).toFixed(3)+')';
+    ctx.beginPath(); ctx.arc(p.x, p.y, sz*2.7, 0, TAU); ctx.fill();
+  }
+
+  requestAnimationFrame(frame);
+}
+
+/* boot */
+resize();
+attX = W*0.5; attY = H*0.5;
+hintEl.textContent = IS_TOUCH ? 'drag across it' : 'move through it';
+setTimeout(()=>{ if(!hintEl.classList.contains('gone')) hintEl.classList.add('show'); }, 1400);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

@@ -4,14 +4,15 @@
 "use strict";
 
 const DOORS = [
-  {name:"Dawn Patrol",   href:"/arcade/",        glow:0xFFC56F, x:-31.5},
-  {name:"Alpenglow",     href:"/alpenglow/",     glow:0xF0876A, x:-22.5},
-  {name:"Murmur",        href:"/murmur/",        glow:0xB58BD9, x:-13.5},
-  {name:"Hyperlap",      href:"/hyperlap/",      glow:0x6AD0FF, x:-4.5},
-  {name:"Particle Life", href:"/particle-life/", glow:0x86E08A, x:4.5},
-  {name:"Gravity",       href:"/gravity/",       glow:0x9FA8FF, x:13.5},
-  {name:"Aurora",        href:"/aurora/",        glow:0xC98BE0, x:22.5},
-  {name:"Fluid",         href:"/fluid/",         glow:0x5BD0E0, x:31.5}
+  {name:"Dawn Patrol",   href:"/arcade/",        glow:0xFFC56F, x:-36},
+  {name:"Alpenglow",     href:"/alpenglow/",     glow:0xF0876A, x:-27},
+  {name:"Murmur",        href:"/murmur/",        glow:0xB58BD9, x:-18},
+  {name:"Hyperlap",      href:"/hyperlap/",      glow:0x6AD0FF, x:-9},
+  {name:"Particle Life", href:"/particle-life/", glow:0x86E08A, x:0},
+  {name:"Gravity",       href:"/gravity/",       glow:0x9FA8FF, x:9},
+  {name:"Aurora",        href:"/aurora/",        glow:0xC98BE0, x:18},
+  {name:"Fluid",         href:"/fluid/",         glow:0x5BD0E0, x:27},
+  {name:"Self-Portrait", href:"/self-portrait/", glow:0xE8B8C8, x:36}
 ];
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -195,7 +196,7 @@ function render(){
 
   // camera drifts slowly along the field; mouse adds parallax
   {
-    const span = 31.5;                 // half-width of the field
+    const span = 36;                 // half-width of the field
     if (!RM){
       const panX = Math.sin(t*0.045) * (span*0.84);
       camera.position.x += ((panX + mxN*3.0) - camera.position.x)*Math.min(1,2*dt);
