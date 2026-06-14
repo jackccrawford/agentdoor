@@ -15,13 +15,6 @@
   to = "/sitemap-index.xml"
   status = 200
 
-# Trailing slash removal
-[[redirects]]
-  from = "/:splat/"
-  to = "/:splat"
-  status = 301
-  force = false
-
 # Security headers
 [[headers]]
   for = "/*"
