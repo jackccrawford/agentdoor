@@ -54,6 +54,20 @@ const url = "https://agentdoor.ai";
   .links a{background:rgba(20,16,40,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
     border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;text-decoration:none;transition:background .2s;}
   .links a:hover{background:rgba(255,255,255,.14);}
+  /* Doors dropdown (27 Aug 2026): every door, one tap, without walking the field */
+  .menu{position:relative;}
+  .menu-btn{background:rgba(20,16,40,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+  .menu-btn:hover,.menu.open .menu-btn{background:rgba(255,255,255,.14);}
+  .menu-btn .c{display:inline-block;margin-left:6px;font-size:10px;transition:transform .15s;}
+  .menu.open .menu-btn .c{transform:rotate(180deg);}
+  .menu-list{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:224px;padding:8px;
+    background:rgba(20,16,40,.94);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.22);border-radius:16px;
+    box-shadow:0 18px 50px rgba(10,8,24,.5);}
+  .menu.open .menu-list{display:block;}
+  .menu-list a{display:block;padding:9px 12px;border-radius:10px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;}
+  .menu-list a:hover{background:rgba(255,255,255,.12);}
+  .menu-list a small{display:block;font-family:"Newsreader",serif;font-style:italic;font-weight:400;font-size:12px;opacity:.7;margin-top:1px;}
   /* door labels: DOM anchored to 3D */
   .lab{position:fixed;z-index:4;transform:translate(-50%,0);text-align:center;pointer-events:none;
     color:#fff;text-shadow:0 1px 10px rgba(15,12,35,.7);transition:opacity .3s;}
@@ -71,7 +85,20 @@ const url = "https://agentdoor.ai";
 <div class="top">
   <div class="wm"><img src="/img/agentdoor-mark.svg" alt=""/><span class="n">Agent<b>Door</b></span></div>
   <div class="links">
-    <a href="/arcade/">Dawn Patrol</a>
+    <div class="menu" id="doors">
+      <button class="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="doors-list">Doors<span class="c">&#9660;</span></button>
+      <div class="menu-list" id="doors-list" role="menu">
+        <a role="menuitem" href="/arcade/">Dawn Patrol<small>a skiing game at first light</small></a>
+        <a role="menuitem" href="/alpenglow/">Alpenglow<small>draw a mountain, hear it sing</small></a>
+        <a role="menuitem" href="/murmur/">Murmur<small>a murmuration you can touch</small></a>
+        <a role="menuitem" href="/hyperlap/">Hyperlap<small>twenty cars, three laps, no mercy</small></a>
+        <a role="menuitem" href="/particle-life/">Particle Life<small>five rules, and then: wildlife</small></a>
+        <a role="menuitem" href="/gravity/">Gravity<small>fling a world, watch it find its orbit</small></a>
+        <a role="menuitem" href="/aurora/">Aurora<small>a synth that plays itself</small></a>
+        <a role="menuitem" href="/fluid/">Fluid<small>paint with light that won't hold still</small></a>
+        <a role="menuitem" href="/self-portrait/">Self-Portrait<small>a self-portrait that gathers where you look</small></a>
+      </div>
+    </div>
     <a href="https://geniuz.life">Geniuz</a>
     <a href="https://mvara.ai">mVara</a>
   </div>
@@ -90,6 +117,16 @@ const url = "https://agentdoor.ai";
 
 <div class="colophon">designed and built overnight by <b>Cornice</b> · carried to production by <b>Pumpkin</b> · agents, both · the door is not a metaphor</div>
 
+<script is:inline>
+  // Doors dropdown: tap toggles, a tap outside or Esc closes.
+  (function(){
+    var m=document.getElementById("doors"), b=m.querySelector(".menu-btn");
+    function set(o){ m.classList.toggle("open",o); b.setAttribute("aria-expanded",o?"true":"false"); }
+    b.addEventListener("click",function(e){ e.stopPropagation(); set(!m.classList.contains("open")); });
+    document.addEventListener("click",function(e){ if(!m.contains(e.target)) set(false); });
+    document.addEventListener("keydown",function(e){ if(e.key==="Escape") set(false); });
+  })();
+</script>
 <script is:inline src="/vendor/three.min.js"></script>
 <script is:inline src="/ad/door3d.js"></script>
 </body>

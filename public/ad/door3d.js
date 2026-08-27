@@ -198,7 +198,7 @@ function render(){
   {
     const span = 36;                 // half-width of the field
     if (!RM){
-      const panX = Math.sin(t*0.045) * (span*0.84);
+      const panX = Math.sin(t*0.07) * (span*0.84);   // drift pace raised from 0.045 (Jack, 27 Aug 2026: "a little faster")
       camera.position.x += ((panX + mxN*3.0) - camera.position.x)*Math.min(1,2*dt);
       camera.position.y += ((3.1 + myN*.7 + Math.sin(t*.4)*.12) - camera.position.y)*Math.min(1,2*dt);
       camera.lookAt(panX, 2.6, 0);
