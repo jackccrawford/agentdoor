@@ -7,7 +7,11 @@ const BEST_KEY = 'agentdoor.meltwater.v1';
 
 export function boot() {
   const $ = (id) => document.getElementById(id);
-  const settings = { quality: 'auto', motion: !matchMedia('(prefers-reduced-motion: reduce)').matches };
+  // Phones start without shadows: mobile GPUs keep shadow depth in fewer bits, and a scene that
+  // shadows itself everywhere reads as nearly black (Firnline on Jack's phone, 5 Sep 2026). A
+  // player can still choose Sharper.
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  const settings = { quality: coarse ? 'low' : 'auto', motion: !matchMedia('(prefers-reduced-motion: reduce)').matches };
   let best = { distance: 0, topSpeed: 0 };
   try {
     const data = JSON.parse(localStorage.getItem(BEST_KEY));
@@ -140,6 +144,7 @@ export function boot() {
 
   try {
     world = createWorld($('world'));
+    world.quality(settings.quality);
     world.canvas.addEventListener('pointerdown', (e) => { if (mode !== 'running') return; world.canvas.setPointerCapture(e.pointerId); pointer = e.clientX; });
     world.canvas.addEventListener('pointermove', (e) => { if (pointer !== null) pointer = e.clientX; });
     for (const ev of ['pointerup', 'pointercancel', 'lostpointercapture']) world.canvas.addEventListener(ev, () => (pointer = null));

@@ -41,8 +41,10 @@ export function createWorld(container) {
   const sun = new T.DirectionalLight(0xfff0dc, 2.2);
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
-  Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 1, far: 400 });
-  sun.shadow.bias = -0.0002; sun.shadow.normalBias = 0.05;
+  // A short shadow reach and a generous bias: the depth range a shadow map has to resolve is what
+  // turns into self-shadowing on GPUs with fewer depth bits.
+  Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 20, far: 260 });
+  sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.12;
   scene.add(sun, sun.target);
 
   // Far ridges: a ring of mountains generated from the same noise as the site's hero, following the drop.
