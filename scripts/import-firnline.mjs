@@ -36,6 +36,13 @@ console.log(`rewrote ${rewritten} bare /assets/ references`);
 const site = 'https://agentdoor.ai';
 const head = `
 <link rel="canonical" href="${site}/firnline/"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Firnline"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta property="og:site_name" content="AgentDoor"/>
 <meta property="og:type" content="website"/>
 <meta property="og:title" content="Firnline — Find your fall line"/>
