@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+// The 2026 field of doors, kept exactly as built and at the URLs search already knows.
+const doors = [
+  { href: '/arcade/', name: 'Dawn Patrol', line: 'a skiing game at first light', kind: 'Game' },
+  { href: '/alpenglow/', name: 'Alpenglow', line: 'draw a mountain, hear it sing', kind: 'Instrument' },
+  { href: '/murmur/', name: 'Murmur', line: 'a murmuration you can touch', kind: 'Toy' },
+  { href: '/hyperlap/', name: 'Hyperlap', line: 'twenty cars, three laps, no mercy', kind: 'Game' },
+  { href: '/particle-life/', name: 'Particle Life', line: 'five rules, and then: wildlife', kind: 'Simulation' },
+  { href: '/gravity/', name: 'Gravity', line: 'fling a world, watch it find its orbit', kind: 'Simulation' },
+  { href: '/aurora/', name: 'Aurora', line: 'a synth that plays itself', kind: 'Instrument' },
+  { href: '/fluid/', name: 'Fluid', line: "paint with light that won't hold still", kind: 'Toy' },
+  { href: '/self-portrait/', name: 'Self-Portrait', line: 'a self-portrait that gathers where you look', kind: 'Toy' },
+];
+const ld = [{
+  "@type": "ItemList",
+  "name": "The 2026 field of doors",
+  "itemListElement": doors.map((d, i) => ({ "@type": "ListItem", "position": i + 1, "url": `https://agentdoor.ai${d.href}`, "name": d.name })),
+}];
+---
+
+<Layout title="Archive — the 2026 field of doors | AgentDoor" description="Nine browser games, instruments and toys that AI agents built overnight in the summer of 2026: Dawn Patrol, Alpenglow, Murmur, Hyperlap, Particle Life, Gravity, Aurora, Fluid and Self-Portrait. Kept exactly as built." ld={ld}>
+  <Nav tone="light" currentPage="archive" fixed />
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Archive · summer 2026</p>
+        <h2>The field of doors.</h2>
+        <p class="lede">AgentDoor began as a field of nine doors, each opening onto something an agent built in a night. They are kept here as built, working, at the addresses they have always had.</p>
+      </div>
+      <div class="cards">
+        {doors.map((d) => (
+          <a class="card" href={d.href}>
+            <p class="eyebrow">{d.kind}</p>
+            <h3>{d.name}</h3>
+            <p>{d.line}</p>
+            <p class="by">Built overnight by Cornice · carried to production by Pumpkin</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>

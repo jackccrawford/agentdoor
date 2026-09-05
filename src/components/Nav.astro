@@ -1,37 +1,45 @@
 ---
+// The wordmark is two peaks and the col between them: a door in the mountains is called a pass.
 interface Props {
-  currentPage?: 'home' | 'geniuz' | 'token-scout' | 'sendblue' | 'privacy' | 'terms';
+  tone?: 'dark' | 'light';
+  currentPage?: string;
+  fixed?: boolean;
 }
-const { currentPage = 'home' } = Astro.props;
+const { tone = 'light', currentPage = '', fixed = false } = Astro.props;
+const links = [
+  { href: '/#descents', label: 'Descents', key: 'descents' },
+  { href: '/#tools', label: 'Tools', key: 'tools' },
+  { href: '/archive/', label: 'Archive', key: 'archive' },
+  { href: 'https://mvara.ai', label: 'mVara', key: 'mvara' },
+];
 ---
 
-<!-- Nav -->
-<nav class="nav">
+<nav class={`nav nav-${tone} ${fixed ? 'nav-fixed' : ''}`} aria-label="Site">
   <div class="nav-inner">
-    <a href="/" class="nav-brand">agent<span>door</span></a>
+    <a href="/" class="nav-brand" aria-label="AgentDoor home">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M2 28 11 9l6 11 6-11 9 19M11 9l6 11M17 20l6-11"/><path d="M13 28l4-6 4 6"/></svg>
+      AgentDoor
+    </a>
     <div class="nav-links">
-      <a href="/" class="nav-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
-      <a href="/geniuz/" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/geniuz-icon-mono.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'geniuz' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Geniuz</a>
-      <a href="/token-scout/" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/token-scout-icon.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'token-scout' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Token Scout</a>
-      <a href="/sendblue/" class="nav-link" style={`display: inline-flex; align-items: center; gap: 0.35rem; ${currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}`}><img src="/images/sendblue-icon-mono.svg" alt="" style={`height: 16px; width: 16px; ${currentPage === 'sendblue' ? 'opacity: 1; filter: brightness(0) saturate(100%) invert(52%) sepia(89%) saturate(1836%) hue-rotate(360deg) brightness(100%) contrast(96%);' : 'opacity: 0.5;'}`} />Sendblue</a>
+      {links.map((l) => (
+        <a href={l.href} class="nav-link" aria-current={currentPage === l.key ? 'page' : undefined} rel={l.href.startsWith('http') ? 'noopener' : undefined}>{l.label}</a>
+      ))}
     </div>
-    <button class="nav-hamburger" id="navOpen" aria-label="Open menu">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    <button class="nav-hamburger" id="navOpen" aria-label="Open menu" aria-controls="navMobile" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
     </button>
   </div>
 </nav>
 <div class="nav-overlay" id="navOverlay"></div>
 <div class="nav-mobile" id="navMobile">
   <div class="nav-mobile-header">
-    <a href="/" class="nav-brand">agent<span>door</span></a>
+    <a href="/" class="nav-brand">AgentDoor</a>
     <button class="nav-mobile-close" id="navClose" aria-label="Close menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
   <div class="nav-mobile-links">
-    <a href="/" class="nav-mobile-link" style={currentPage === 'home' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Home</a>
-    <a href="/geniuz/" class="nav-mobile-link" style={currentPage === 'geniuz' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Geniuz</a>
-    <a href="/token-scout/" class="nav-mobile-link" style={currentPage === 'token-scout' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Token Scout</a>
-    <a href="/sendblue/" class="nav-mobile-link" style={currentPage === 'sendblue' ? 'font-weight: 600; color: var(--color-accent);' : ''}>Sendblue</a>
+    <a href="/" class="nav-mobile-link">Home</a>
+    {links.map((l) => <a href={l.href} class="nav-mobile-link">{l.label}</a>)}
   </div>
 </div>

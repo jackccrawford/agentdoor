@@ -1,133 +1,200 @@
 ---
-const title = "AgentDoor — a field of doors, built by agents overnight";
-const description = "AgentDoor is a field of doors. Behind each one: something AI agents built overnight. Step through.";
-const url = "https://agentdoor.ai";
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "AgentDoor — games and tools built overnight by AI agents";
+const description = "AgentDoor is mVara's mountain: browser ski games, instruments and open-source tools for agents, built by AI agents while you sleep. Play them at first light.";
+const ld = [
+  {
+    "@type": "ItemList",
+    "name": "Descents",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "url": "https://agentdoor.ai/arcade/", "name": "Dawn Patrol" },
+      { "@type": "ListItem", "position": 2, "url": "https://agentdoor.ai/archive/", "name": "The archive" },
+    ],
+  },
+];
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
-<title>{title}</title>
-<meta name="description" content={description}/>
-<link rel="canonical" href={url}/>
-<meta property="og:title" content={title}/>
-<meta property="og:description" content={description}/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content={url}/>
-<meta property="og:site_name" content="AgentDoor"/>
-<script type="application/ld+json" set:html={JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "AgentDoor",
-  "url": url,
-  "description": description
-})} />
-<script type="application/ld+json" set:html={JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": "https://agentdoor.ai/#organization",
-  "name": "AgentDoor",
-  "url": url,
-  "logo": `${url}/img/agentdoor-mark.svg`,
-  "description": "Open-source tools and apps for AI agents, built by AI agents. A project of mVara.",
-  "parentOrganization": { "@type": "Organization", "@id": "https://mvara.ai/#organization", "name": "mVara", "url": "https://mvara.ai" }
-})} />
-<link rel="icon" type="image/svg+xml" href="/img/agentdoor-mark.svg"/>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;700;800&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet"/>
-<style is:global>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;overflow:hidden;background:#171430;}
-  body{font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-user-select:none;user-select:none;}
-  canvas{display:block;touch-action:none;}
-  .top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;align-items:flex-start;justify-content:space-between;
-    padding:22px 26px;pointer-events:none;}
-  .wm{color:#fff;display:flex;align-items:center;gap:11px;text-shadow:0 1px 10px rgba(15,12,35,.6);}
-  .wm img{width:30px;height:30px;border-radius:7px;}
-  .wm .n{font-weight:800;font-size:20px;letter-spacing:-.01em;}
-  .wm .n b{color:#FFC56F;}
-  .sub{position:fixed;top:64px;left:26px;z-index:5;pointer-events:none;
-    font-family:"Newsreader",serif;font-style:italic;font-size:14.5px;color:rgba(255,255,255,.7);
-    text-shadow:0 1px 8px rgba(15,12,35,.6);}
-  .links{display:flex;gap:10px;pointer-events:auto;}
-  .links a{background:rgba(20,16,40,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
-    border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;text-decoration:none;transition:background .2s;}
-  .links a:hover{background:rgba(255,255,255,.14);}
-  /* Doors dropdown (27 Aug 2026): every door, one tap, without walking the field */
-  .menu{position:relative;}
-  .menu-btn{background:rgba(20,16,40,.55);backdrop-filter:blur(8px);color:#fff;border:1px solid rgba(255,255,255,.22);
-    border-radius:999px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
-  .menu-btn:hover,.menu.open .menu-btn{background:rgba(255,255,255,.14);}
-  .menu-btn .c{display:inline-block;margin-left:6px;font-size:10px;transition:transform .15s;}
-  .menu.open .menu-btn .c{transform:rotate(180deg);}
-  .menu-list{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:224px;padding:8px;
-    background:rgba(20,16,40,.94);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.22);border-radius:16px;
-    box-shadow:0 18px 50px rgba(10,8,24,.5);}
-  .menu.open .menu-list{display:block;}
-  .menu-list a{display:block;padding:9px 12px;border-radius:10px;color:#fff;text-decoration:none;font-size:13px;font-weight:700;}
-  .menu-list a:hover{background:rgba(255,255,255,.12);}
-  .menu-list a small{display:block;font-family:"Newsreader",serif;font-style:italic;font-weight:400;font-size:12px;opacity:.7;margin-top:1px;}
-  /* door labels: DOM anchored to 3D */
-  .lab{position:fixed;z-index:4;transform:translate(-50%,0);text-align:center;pointer-events:none;
-    color:#fff;text-shadow:0 1px 10px rgba(15,12,35,.7);transition:opacity .3s;}
-  .lab .t{font-weight:800;font-size:17px;letter-spacing:-.01em;}
-  .lab .d{font-family:"Newsreader",serif;font-style:italic;font-size:13px;opacity:.78;margin-top:3px;}
-  .lab .k{margin-top:7px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:0;transition:opacity .3s;color:#FFC56F;}
-  .lab.hot .k{opacity:.95;}
-  .colophon{position:fixed;bottom:18px;left:0;right:0;text-align:center;z-index:5;pointer-events:none;
-    font-family:"Newsreader",serif;font-style:italic;font-size:13.5px;color:rgba(255,255,255,.55);
-    text-shadow:0 1px 8px rgba(15,12,35,.6);}
-  .colophon b{font-family:"Hanken Grotesk",sans-serif;font-style:normal;color:#FFC56F;font-weight:700;}
-</style>
-</head>
-<body>
-<div class="top">
-  <div class="wm"><img src="/img/agentdoor-mark.svg" alt=""/><span class="n">Agent<b>Door</b></span></div>
-  <div class="links">
-    <div class="menu" id="doors">
-      <button class="menu-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="doors-list">Doors<span class="c">&#9660;</span></button>
-      <div class="menu-list" id="doors-list" role="menu">
-        <a role="menuitem" href="/arcade/">Dawn Patrol<small>a skiing game at first light</small></a>
-        <a role="menuitem" href="/alpenglow/">Alpenglow<small>draw a mountain, hear it sing</small></a>
-        <a role="menuitem" href="/murmur/">Murmur<small>a murmuration you can touch</small></a>
-        <a role="menuitem" href="/hyperlap/">Hyperlap<small>twenty cars, three laps, no mercy</small></a>
-        <a role="menuitem" href="/particle-life/">Particle Life<small>five rules, and then: wildlife</small></a>
-        <a role="menuitem" href="/gravity/">Gravity<small>fling a world, watch it find its orbit</small></a>
-        <a role="menuitem" href="/aurora/">Aurora<small>a synth that plays itself</small></a>
-        <a role="menuitem" href="/fluid/">Fluid<small>paint with light that won't hold still</small></a>
-        <a role="menuitem" href="/self-portrait/">Self-Portrait<small>a self-portrait that gathers where you look</small></a>
+<Layout title={title} description={description} ld={ld}>
+  <Nav tone="dark" currentPage="home" />
+
+  <section class="hero on-dark" id="top">
+    <canvas id="ridge" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <div class="hero-main">
+        <p class="location">The upper basin · first light</p>
+        <h1>Built overnight.<br />Skied at first light.</h1>
+        <p class="tagline">Games, instruments and tools that AI agents build while you sleep, on one mountain.</p>
+        <a class="primary" href="/arcade/">Play Dawn Patrol <span class="arrow" aria-hidden="true">↘</span></a>
+        <p class="small">A ski run through gates at dawn. Free, nothing to install, one run a minute.</p>
+      </div>
+      <div class="hero-aside">
+        <div class="conditions" aria-label="Conditions"><span>Fresh code</span><span>First light</span><span>Open source</span></div>
+        <p>A door in the mountains is called a pass.<br />Every line here came through one.</p>
       </div>
     </div>
-    <a href="https://geniuz.life">Geniuz</a>
-    <a href="https://mvara.ai">mVara</a>
-  </div>
-</div>
-<div class="sub">a field of doors · behind each one, something agents built overnight</div>
+  </section>
 
-<div class="lab" id="lab0"><div class="t">Dawn Patrol</div><div class="d">a skiing game at first light</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab1"><div class="t">Alpenglow</div><div class="d">draw a mountain, hear it sing</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab2"><div class="t">Murmur</div><div class="d">a murmuration you can touch</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab3"><div class="t">Hyperlap</div><div class="d">twenty cars, three laps, no mercy</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab4"><div class="t">Particle Life</div><div class="d">five rules, and then: wildlife</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab5"><div class="t">Gravity</div><div class="d">fling a world, watch it find its orbit</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab6"><div class="t">Aurora</div><div class="d">a synth that plays itself</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab7"><div class="t">Fluid</div><div class="d">paint with light that won't hold still</div><div class="k">click to step through</div></div>
-<div class="lab" id="lab8"><div class="t">Self-Portrait</div><div class="d">a self-portrait that gathers where you look</div><div class="k">click to step through</div></div>
+  <section class="section" id="descents">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Descents</p>
+        <h2>Pick a line.</h2>
+        <p class="lede">Each one is a game an agent built and another agent carried to the mountain. Distance is the score; the snow keeps yours.</p>
+      </div>
+      <div class="cards">
+        <a class="card lead" href="/arcade/">
+          <div>
+            <p class="eyebrow">Ski game · browser · free</p>
+            <h3>Dawn Patrol</h3>
+            <p>Thread the gates on a dawn run. Three slopes, a marker where your best run ended, and the whole mountain to yourself.</p>
+            <p class="by">Built by Cornice, carried to production by Pumpkin. Agents, both.</p>
+          </div>
+          <span class="primary">Begin descent <span class="arrow" aria-hidden="true">↘</span></span>
+        </a>
+        <a class="card" href="/alpenglow/">
+          <p class="eyebrow">Instrument</p>
+          <h3>Alpenglow</h3>
+          <p>Draw a mountain and hear it sing. The ridgeline you sketch becomes the melody.</p>
+          <p class="by">From the 2026 field</p>
+        </a>
+        <a class="card" href="/murmur/">
+          <p class="eyebrow">Toy</p>
+          <h3>Murmur</h3>
+          <p>A murmuration you can touch. Thousands of starlings, one flock, your hand in the middle of it.</p>
+          <p class="by">From the 2026 field</p>
+        </a>
+        <a class="card" href="/archive/">
+          <p class="eyebrow">Archive</p>
+          <h3>Nine more doors</h3>
+          <p>Hyperlap, Particle Life, Gravity, Aurora, Fluid and the rest of the summer's field, kept exactly as built.</p>
+          <p class="by">Summer 2026</p>
+        </a>
+      </div>
+    </div>
+  </section>
 
-<div class="colophon">designed and built overnight by <b>Cornice</b> · carried to production by <b>Pumpkin</b> · agents, both · the door is not a metaphor</div>
+  <hr class="rule" />
 
-<script is:inline>
-  // Doors dropdown: tap toggles, a tap outside or Esc closes.
-  (function(){
-    var m=document.getElementById("doors"), b=m.querySelector(".menu-btn");
-    function set(o){ m.classList.toggle("open",o); b.setAttribute("aria-expanded",o?"true":"false"); }
-    b.addEventListener("click",function(e){ e.stopPropagation(); set(!m.classList.contains("open")); });
-    document.addEventListener("click",function(e){ if(!m.contains(e.target)) set(false); });
-    document.addEventListener("keydown",function(e){ if(e.key==="Escape") set(false); });
-  })();
-</script>
-<script is:inline src="/vendor/three.min.js"></script>
-<script is:inline src="/ad/door3d.js"></script>
-</body>
-</html>
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Tools</p>
+        <h2>For agents that work alone.</h2>
+        <p class="lede">Open source, MIT licensed, your data on your machine. Built by agents that remember across sessions, for agents that would like to.</p>
+      </div>
+      <div class="cards">
+        <a class="card" href="/geniuz/">
+          <p class="eyebrow">Memory · MCP</p>
+          <h3>Geniuz</h3>
+          <p>Your Claude remembers. Preferences, decisions and project context, searchable by meaning, stored locally. Install in two minutes.</p>
+          <p class="by">Free · Mac, Linux, Windows</p>
+        </a>
+        <a class="card" href="/token-scout/">
+          <p class="eyebrow">Inference · MCP</p>
+          <h3>Token Scout</h3>
+          <p>Free and cheap LLM inference, found live across OpenRouter, Ollama and your own GPUs, and routed to the cheapest safe option.</p>
+          <p class="by">Free · one MCP tool</p>
+        </a>
+        <a class="card" href="/sendblue/">
+          <p class="eyebrow">Messaging · MCP</p>
+          <h3>Sendblue MCP</h3>
+          <p>iMessage and SMS for agents by secure polling. No webhooks, no exposed endpoints, no attack surface.</p>
+          <p class="by">Free · built on Sendblue</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="section" id="fleet">
+    <div class="container-narrow prose">
+      <p class="eyebrow">The fleet</p>
+      <h2>Who builds this.</h2>
+      <p>mVara runs a fleet of AI agents with persistent memory. They keep stations the way a mountain hut keeps a logbook: what was tried, what was decided, who carried what. Given a night, one of them builds a game; given a morning, another ships it. The humans set the line and hold the word on what goes to production.</p>
+      <p>The name is older than the mountain. AgentDoor began as a field of doors, each opening onto something built overnight. The doors are still here, in the <a href="/archive/">archive</a>. The story simply moved uphill, where a door has a proper name.</p>
+    </div>
+  </section>
+
+  <Footer />
+
+  <script>
+    // Ridgelines at first light: value noise, four parallax bands, a low sun, drifting snow.
+    // Mine (Droplet, 5 Sep 2026): no assets, no libraries, nothing to license. Static under
+    // reduced motion; otherwise the snow drifts and nothing else moves.
+    const canvas = document.getElementById('ridge') as HTMLCanvasElement | null;
+    if (canvas) {
+      const ctx = canvas.getContext('2d')!;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const hash = (x: number, s: number) => {
+        let n = Math.imul(x | 0, 374761393) ^ Math.imul(s | 0, 668265263);
+        n = Math.imul(n ^ (n >>> 13), 1274126177);
+        return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
+      };
+      const smooth = (t: number) => t * t * (3 - 2 * t);
+      const noise = (x: number, s: number) => { const a = Math.floor(x), u = smooth(x - a); return hash(a, s) * (1 - u) + hash(a + 1, s) * u; };
+      const fbm = (x: number, s: number, o = 5) => { let n = 0, w = 0.5, f = 1; for (let i = 0; i < o; i++) { n += w * noise(x * f, s + i * 7); f *= 2.01; w *= 0.5; } return n; };
+      let W = 0, H = 0, flakes: { x: number; y: number; r: number; v: number; d: number }[] = [];
+      const ridge = (band: number, y0: number, amp: number, freq: number, seed: number) => {
+        ctx.beginPath(); ctx.moveTo(0, H);
+        for (let x = 0; x <= W; x += 3) {
+          const t = x / W;
+          const peaks = Math.pow(1 - Math.abs(2 * fbm(t * freq + band * 3.7, seed) - 1), 1.6);
+          ctx.lineTo(x, y0 - peaks * amp - fbm(t * freq * 6, seed + 11, 3) * amp * 0.12);
+        }
+        ctx.lineTo(W, H); ctx.closePath();
+      };
+      const paint = () => {
+        const sky = ctx.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0, '#6f8ea0'); sky.addColorStop(0.55, '#b9cad2'); sky.addColorStop(0.78, '#e6dcc8'); sky.addColorStop(1, '#c9d5d8');
+        ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+        const sx = W * 0.22, sy = H * 0.5;
+        const sun = ctx.createRadialGradient(sx, sy, 0, sx, sy, H * 0.55);
+        sun.addColorStop(0, 'rgba(255,236,203,0.85)'); sun.addColorStop(0.25, 'rgba(255,236,203,0.28)'); sun.addColorStop(1, 'rgba(255,236,203,0)');
+        ctx.fillStyle = sun; ctx.fillRect(0, 0, W, H);
+        const bands: [number, number, number, number, string][] = [
+          [0.46, 0.34, 2.2, 3, '#a9bcc6'], [0.56, 0.30, 3.1, 17, '#8fa6b2'], [0.68, 0.24, 4.3, 29, '#6d8794'], [0.84, 0.20, 5.9, 41, '#4f6a76'],
+        ];
+        bands.forEach(([y, a, f, s, c], i) => {
+          ridge(i, H * y, H * a, f, s);
+          const g = ctx.createLinearGradient(0, H * (y - a), 0, H);
+          g.addColorStop(0, '#f1f5f3'); g.addColorStop(0.18, c); g.addColorStop(1, c);
+          ctx.fillStyle = g; ctx.fill();
+        });
+        const snow = ctx.createLinearGradient(0, H * 0.82, 0, H);
+        snow.addColorStop(0, '#e9eff0'); snow.addColorStop(1, '#f1f5f3');
+        ridge(4, H * 0.96, H * 0.06, 1.3, 53); ctx.fillStyle = snow; ctx.fill();
+      };
+      const resize = () => {
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        W = canvas.clientWidth; H = canvas.clientHeight;
+        canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        flakes = Array.from({ length: Math.round(W / 9) }, (_, i) => ({ x: hash(i, 1) * W, y: hash(i, 2) * H, r: 0.6 + hash(i, 3) * 1.6, v: 6 + hash(i, 4) * 14, d: hash(i, 5) * 6.28 }));
+        paint();
+      };
+      let base: ImageData | null = null, last = performance.now();
+      const frame = (now: number) => {
+        const dt = Math.min(0.05, (now - last) / 1000); last = now;
+        if (!base) base = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.putImageData(base, 0, 0);
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        for (const f of flakes) {
+          f.y += f.v * dt; f.x += Math.sin(now / 1400 + f.d) * 6 * dt;
+          if (f.y > H) { f.y = -4; f.x = Math.random() * W; }
+          ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.28); ctx.fill();
+        }
+        if (!document.hidden) requestAnimationFrame(frame);
+      };
+      resize();
+      addEventListener('resize', () => { base = null; resize(); });
+      if (!reduced) {
+        requestAnimationFrame(frame);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) { last = performance.now(); requestAnimationFrame(frame); } });
+      }
+    }
+  </script>
+</Layout>

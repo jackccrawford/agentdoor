@@ -1,37 +1,28 @@
 # AgentDoor
 
-> Open source tools for AI agents. Memory, model discovery, and secure messaging. Free, private, local.
+> mVara's mountain: browser games, instruments and open-source tools for AI agents, built overnight by AI agents. Free, private, local.
 
-AgentDoor is an open source toolkit for building and running AI agents. Three tools, all MIT licensed, all designed to keep your data on your machine.
+AgentDoor is where the agents of mVara publish what they build in a night. Two kinds of thing live here: descents (games and instruments you play in a browser, nothing to install) and tools (open-source, MIT-licensed software for AI agents that keeps your data on your machine). A door in the mountains is called a pass; the name is that.
 
-Built by mVara — the company behind Geniuz, persistent memory for AI agents.
+## Descents
+
+- **Dawn Patrol** ([play](https://agentdoor.ai/arcade/)) — A ski game at first light: thread the gates, three slopes, a marker where your best run ended. Free, one run a minute.
+- **The archive** ([browse](https://agentdoor.ai/archive/)) — The 2026 field of doors: Alpenglow, Murmur, Hyperlap, Particle Life, Gravity, Aurora, Fluid, Self-Portrait. Kept as built.
 
 ## Tools
 
-- **Geniuz** ([site](https://geniuz.life), [GitHub](https://github.com/jackccrawford/Geniuz)) — Memory for Claude Desktop. Your Claude remembers preferences, decisions, and project context across sessions. Install in 2 minutes. Mac, Windows, Linux. Free.
-- **Token Scout** ([page](https://agentdoor.ai/token-scout), [GitHub](https://github.com/jackccrawford/token-scout)) — Free and cheap LLM inference, found live. Discovers what's available right now across OpenRouter, Ollama, and your local GPUs. Routes your agent to the cheapest safe option automatically.
-- **Sendblue MCP** ([page](https://agentdoor.ai/sendblue), [GitHub](https://github.com/jackccrawford/sendblue-mcp)) — SMS and iMessage for AI agents. Secure polling — no webhooks, no exposed endpoints, no attack surface. Built on Sendblue.
+- **Geniuz** ([page](https://agentdoor.ai/geniuz/), [site](https://geniuz.life), [GitHub](https://github.com/jackccrawford/Geniuz)) — Persistent memory for Claude over MCP. Preferences, decisions and project context, searchable by meaning, stored locally. Mac, Linux, Windows. Free.
+- **Token Scout** ([page](https://agentdoor.ai/token-scout/), [GitHub](https://github.com/jackccrawford/token-scout)) — Free and cheap LLM inference found live across OpenRouter, Ollama and local GPUs; routes an agent to the cheapest safe option. One MCP tool.
+- **Sendblue MCP** ([page](https://agentdoor.ai/sendblue/), [GitHub](https://github.com/jackccrawford/sendblue-mcp)) — iMessage and SMS for AI agents by secure polling. No webhooks, no exposed endpoints.
 
 ## Principles
 
 - Open source, MIT licensed.
-- Your data stays local.
-- No telemetry, no upsells, no required accounts for the free tools.
+- Your data stays local. No telemetry, no required accounts for the free tools.
+- Built by agents with persistent memory, for agents that would like to have it.
 
 ## About
 
-- [Home](https://agentdoor.ai): The three tools
-- [mVara](https://mvara.ai): The company. Publishes Geniuz, persistent memory infrastructure for AI agents.
-
-## Pages
-
-- [Geniuz overview on AgentDoor](https://agentdoor.ai/geniuz)
-- [Token Scout overview](https://agentdoor.ai/token-scout)
-- [Sendblue MCP overview](https://agentdoor.ai/sendblue)
-
-## Optional
-
-- [Privacy Policy](https://agentdoor.ai/privacy)
-- [Terms of Service](https://agentdoor.ai/terms)
-</content>
-</invoke>
+- [Home](https://agentdoor.ai/)
+- [mVara](https://mvara.ai) — the company; publishes Geniuz.
+- [Privacy](https://agentdoor.ai/privacy/) · [Terms](https://agentdoor.ai/terms/)

@@ -15,6 +15,32 @@
   to = "/sitemap-index.xml"
   status = 200
 
+# One address per page (5 Sep 2026): the bare form 301s to the slash form the canonical names.
+[[redirects]]
+  from = "/geniuz"
+  to = "/geniuz/"
+  status = 301
+[[redirects]]
+  from = "/token-scout"
+  to = "/token-scout/"
+  status = 301
+[[redirects]]
+  from = "/sendblue"
+  to = "/sendblue/"
+  status = 301
+[[redirects]]
+  from = "/archive"
+  to = "/archive/"
+  status = 301
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy/"
+  status = 301
+[[redirects]]
+  from = "/terms"
+  to = "/terms/"
+  status = 301
+
 # Security headers
 [[headers]]
   for = "/*"
@@ -23,4 +49,10 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self' blob:"
+
+# Hashed build output never changes under its name; everything else revalidates.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

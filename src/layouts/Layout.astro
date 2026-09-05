@@ -1,72 +1,83 @@
 ---
+// The one <head> every page shares. Title, description, a canonical with a trailing slash, an
+// og:url that names THIS page (until 5 Sep 2026 every page claimed the home), one share image,
+// one WebSite + Organization graph, and room for a page's own JSON-LD.
 import '../styles/global.css'
 
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  ld?: Record<string, unknown>[];
+  bodyClass?: string;
 }
 
 const {
   title,
-  description = "AgentDoor — a field of doors, each opening onto something AI agents built overnight. Open source, by mVara.",
+  description = "AgentDoor is mVara's mountain: games, instruments and open-source tools that AI agents build overnight. Play them at first light.",
+  ogImage = "/og/agentdoor.png",
+  ld = [],
+  bodyClass = "",
 } = Astro.props;
 const siteUrl = "https://agentdoor.ai";
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const pageUrl = `${siteUrl}${path === "//" ? "/" : path}`;
+const graph = [
+  {
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    "name": "AgentDoor",
+    "url": siteUrl,
+    "description": "Games, instruments and open-source tools built overnight by mVara's AI agents.",
+    "publisher": { "@id": `${siteUrl}/#organization` },
+    "inLanguage": "en",
+  },
+  {
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    "name": "AgentDoor",
+    "url": siteUrl,
+    "logo": `${siteUrl}/img/agentdoor-mark.svg`,
+    "description": "Games, instruments and open-source tools for AI agents, built by AI agents. A project of mVara.",
+    "parentOrganization": { "@type": "Organization", "@id": "https://mvara.ai/#organization", "name": "mVara", "url": "https://mvara.ai" },
+    "contactPoint": { "@type": "ContactPoint", "email": "legal@managedv.com", "contactType": "customer support" },
+  },
+  ...ld,
+];
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#213b3c" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <link rel="canonical" href={pageUrl} />
 
+  <meta property="og:site_name" content="AgentDoor" />
+  <meta property="og:type" content="website" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={siteUrl} />
-
+  <meta property="og:url" content={pageUrl} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ridgelines at first light, the AgentDoor wordmark above them." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={`${siteUrl}${ogImage}`} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet" />
 
-  <link rel="canonical" href={`${siteUrl}${Astro.url.pathname}`} />
-
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "AgentDoor",
-    "url": siteUrl,
-    "description": description
-  })} />
-
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://agentdoor.ai/#organization",
-    "name": "AgentDoor",
-    "url": "https://agentdoor.ai",
-    "logo": "https://agentdoor.ai/favicon.svg",
-    "description": "Open-source tools and apps for AI agents, built by AI agents. A project of mVara.",
-    "parentOrganization": {
-      "@type": "Organization",
-      "@id": "https://mvara.ai/#organization",
-      "name": "mVara",
-      "url": "https://mvara.ai"
-    },
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "email": "legal@managedv.com",
-      "contactType": "customer support"
-    }
-  })} />
+  <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph })} />
 </head>
-<body>
+<body class={bodyClass}>
   <slot />
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -75,21 +86,13 @@ const siteUrl = "https://agentdoor.ai";
       const overlay = document.getElementById('navOverlay');
       const mobile = document.getElementById('navMobile');
       if (!open || !close || !overlay || !mobile) return;
-
-      function show() {
-        overlay.classList.add('open');
-        mobile.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      function hide() {
-        overlay.classList.remove('open');
-        mobile.classList.remove('open');
-        document.body.style.overflow = '';
-      }
+      const show = () => { overlay.classList.add('open'); mobile.classList.add('open'); document.body.style.overflow = 'hidden'; };
+      const hide = () => { overlay.classList.remove('open'); mobile.classList.remove('open'); document.body.style.overflow = ''; };
       open.addEventListener('click', show);
       close.addEventListener('click', hide);
       overlay.addEventListener('click', hide);
-      mobile.querySelectorAll('.nav-mobile-link').forEach(a => a.addEventListener('click', hide));
+      mobile.querySelectorAll('.nav-mobile-link').forEach((a) => a.addEventListener('click', hide));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hide(); });
     });
   </script>
 </body>
