@@ -1,14 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <!-- Background circle (dark) -->
-  <circle cx="64" cy="64" r="60" fill="#18181B"/>
-  <!-- Door frame -->
-  <rect x="36" y="24" width="56" height="80" rx="3" fill="#27272A" stroke="#3F3F46" stroke-width="2"/>
-  <!-- Door panel (ajar - perspective) -->
-  <polygon points="48,28 84,31 84,100 48,103" fill="#3F3F46"/>
-  <!-- Light through the gap -->
-  <polygon points="38,27 48,28 48,103 38,101" fill="#F97316" opacity="0.9"/>
-  <!-- Glow spill onto floor/wall -->
-  <ellipse cx="40" cy="102" rx="8" ry="3" fill="#F97316" opacity="0.3"/>
-  <!-- Door handle -->
-  <circle cx="54" cy="66" r="3" fill="#F97316"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- AgentDoor: two peaks and the col between them. A door in the mountains is called a pass. -->
+  <rect width="64" height="64" rx="14" fill="#213b3c"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(10.75 9) scale(1.25)">
+    <path d="M2 28 11 9l6 11 6-11 9 19M11 9l6 11M17 20l6-11" stroke="#f1f5f3" stroke-width="3.4"/>
+    <path d="M13 28l4-6 4 6" stroke="#e0c897" stroke-width="3.4"/>
+  </g>
 </svg>
