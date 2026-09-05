@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#213b3c" />
+    <meta
+      name="description"
+      content="Find your fall line. A first-person alpine skiing game in the browser: one mountain, as far as you can go. Free, nothing to install, from mVara."
+    />
+    <title>Firnline — Find your fall line</title>
+    <script type="module" crossorigin src="/firnline/assets/index-C-wu8k5G.js"></script>
+    <link rel="stylesheet" crossorigin href="/firnline/assets/index-BbnMu8xD.css">
+  
+<link rel="canonical" href="https://agentdoor.ai/firnline/"/>
+<meta property="og:site_name" content="AgentDoor"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Firnline — Find your fall line"/>
+<meta property="og:description" content="A first-person alpine skiing game in the browser. One mountain, as far as you can go. Carve to control your speed; find a line through rocks and trees. Free, nothing to install."/>
+<meta property="og:url" content="https://agentdoor.ai/firnline/"/>
+<meta property="og:image" content="https://agentdoor.ai/og/firnline.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://agentdoor.ai/og/firnline.jpg"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","@id":"https://agentdoor.ai/firnline/#game","name":"Firnline","url":"https://agentdoor.ai/firnline/","description":"A first-person alpine skiing game in the browser. One continuous run with distance as the score: carve to control your speed and find a line through rocks and trees on a run that bends and narrows as you descend.","image":"https://agentdoor.ai/og/firnline.jpg","genre":["Sports","Skiing","Simulation"],"gamePlatform":"Web browser","playMode":"SinglePlayer","applicationCategory":"Game","operatingSystem":"Any modern browser with WebGL 2","inLanguage":"en","isAccessibleForFree":true,"author":{"@type":"Organization","name":"mVara","url":"https://mvara.ai"},"publisher":{"@id":"https://agentdoor.ai/#organization"}}</script>
+</head>
+  <body>
+    <main id="world" aria-label="Ski run"></main>
+    <div class="film" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="wordmark" href="/" aria-label="Firnline home"
+        ><svg viewBox="0 0 34 34" aria-hidden="true">
+          <path d="M4 29 17 4l13 25M10 20h14M17 4v25" /></svg
+        >Firnline</a
+      >
+      <div class="tools">
+        <button id="sound" aria-pressed="false">Sound off</button
+        ><button id="settings-button" aria-label="Open settings">
+          Settings</button
+        ><button id="pause-button" hidden>Pause</button>
+      </div>
+    </header>
+    <section id="intro" class="intro">
+      <div class="intro-main">
+        <p class="location">The upper basin</p>
+        <h1>Find your<br />fall line.</h1>
+        <p class="tagline">One mountain. As far as you can go.</p>
+        <button id="start" class="primary" disabled>
+          Preparing the mountain<span class="arrow" aria-hidden="true">↘</span>
+        </button>
+        <p id="load-status" class="small" role="status">
+          Loading snow and rock surfaces
+        </p>
+        <p id="intro-best" class="small record"></p>
+      </div>
+      <div class="intro-aside">
+        <div class="conditions">
+          <span>Fresh snow</span><span>First light</span
+          ><span>Open terrain</span>
+        </div>
+        <p>Carve to control your speed.<br />Keep your line to keep going.</p>
+      </div>
+      <footer class="intro-footer">
+        <span>Independent ski prototype</span
+        ><button id="controls-button">How to ski</button>
+      </footer>
+    </section>
+    <div id="hud" class="hud" hidden>
+      <div class="distance">
+        <strong id="distance">0</strong><span>meters</span>
+      </div>
+      <div class="speed"><strong id="speed">0</strong><span>km/h</span></div>
+      <div class="line-indicator" aria-hidden="true">
+        <span id="edge-indicator"></span>
+      </div>
+      <span id="surface">Fresh snow</span>
+    </div>
+    <p id="hint" class="hint" hidden>
+      ← → carve &nbsp; ↓ brake &nbsp; ↑ tuck &nbsp; P pause
+    </p>
+    <div id="touch-controls" class="touch-controls" hidden>
+      <button id="left" aria-label="Carve left">↶</button
+      ><button id="brake" aria-label="Brake">Brake</button
+      ><button id="right" aria-label="Carve right">↷</button>
+    </div>
+    <dialog id="panel">
+      <form method="dialog">
+        <button class="close" aria-label="Close dialog">×</button>
+      </form>
+      <div id="panel-content"></div>
+    </dialog>
+    <div id="results" class="results" hidden>
+      <div class="result-inner">
+        <p id="result-reason" class="location">Your line ends here.</p>
+        <h2>Another line<br />is waiting.</h2>
+        <div class="result-score">
+          <strong id="final-distance">0</strong><span>meters</span>
+        </div>
+        <p id="final-detail"></p>
+        <p id="new-best" class="record"></p>
+        <div class="result-actions">
+          <button id="retry" class="primary">
+            Go again<span class="arrow" aria-hidden="true">↘</span></button
+          ><button id="back" class="secondary">Back to the ridge</button>
+        </div>
+      </div>
+    </div>
+    <div id="paused" class="pause-overlay" hidden>
+      <p>Take a breath.</p>
+      <button id="resume" class="primary">Keep skiing</button
+      ><button id="restart" class="secondary">Start over</button>
+    </div>
+  </body>
+</html>

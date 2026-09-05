@@ -21,6 +21,7 @@ export default defineConfig({
     // The agent-built rooms are static files in public/, so Astro's sitemap does not discover
     // them; list them so search can.
     customPages: [
+      'https://agentdoor.ai/firnline/',
       'https://agentdoor.ai/arcade/',
       'https://agentdoor.ai/alpenglow/',
       'https://agentdoor.ai/aurora/',

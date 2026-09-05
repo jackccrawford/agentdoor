@@ -37,6 +37,17 @@
   to = "/meltwater/"
   status = 301
 [[redirects]]
+  from = "/firnline"
+  to = "/firnline/"
+  status = 301
+
+# Firnline's page revalidates; its fixed-name assets (model, textures, fonts) keep their names when
+# their contents change, so they revalidate too. Only the hashed bundles are immutable.
+[[headers]]
+  for = "/firnline/assets/index-*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[redirects]]
   from = "/privacy"
   to = "/privacy/"
   status = 301

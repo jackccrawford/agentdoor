@@ -1,0 +1,31 @@
+{
+  "textures": [
+    {
+      "asset": "snow_02",
+      "creator": "Rob Tuytel",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/snow_02"
+    },
+    {
+      "asset": "rock_boulder_dry",
+      "creator": "Poly Haven contributors",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/rock_boulder_dry"
+    }
+  ],
+  "fonts": {
+    "name": "Barlow and Barlow Condensed",
+    "author": "Jeremy Tribby",
+    "license": "SIL Open Font License 1.1",
+    "source": "https://github.com/google/fonts/tree/main/ofl/barlow"
+  },
+  "models": [
+    {
+      "asset": "fir_sapling_medium",
+      "creator": "Poly Haven contributors",
+      "license": "CC0-1.0",
+      "source": "https://polyhaven.com/a/fir_sapling_medium",
+      "modifications": "Single variant, geometry simplified for real-time use; procedural snow shading."
+    }
+  ]
+}
