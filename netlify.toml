@@ -33,6 +33,10 @@
   to = "/archive/"
   status = 301
 [[redirects]]
+  from = "/meltwater"
+  to = "/meltwater/"
+  status = 301
+[[redirects]]
   from = "/privacy"
   to = "/privacy/"
   status = 301

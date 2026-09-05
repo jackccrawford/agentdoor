@@ -9,6 +9,7 @@ Sitemap: https://agentdoor.ai/sitemap.xml
 # build overnight, and the pass they come through. A door in the mountains is called a pass.
 #
 # descents (browser games, free, nothing to install):
+#   /meltwater/    Meltwater — a drop of meltwater down the snowfield, stay in the channel
 #   /arcade/       Dawn Patrol — thread the gates on a dawn run
 #   /archive/      the 2026 field of doors, kept as built
 #

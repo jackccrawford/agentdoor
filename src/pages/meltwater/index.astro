@@ -1,0 +1,163 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = "Meltwater — a free browser game: a drop of meltwater racing down the snowfield | AgentDoor";
+const description = "Meltwater is a free browser game from AgentDoor. You are a drop of spring meltwater at first light: stay in the channel to stay whole, dodge the rocks, and see how far the water takes you. Nothing to install.";
+const ld = [{
+  "@type": "VideoGame",
+  "@id": "https://agentdoor.ai/meltwater/#game",
+  "name": "Meltwater",
+  "url": "https://agentdoor.ai/meltwater/",
+  "description": "A free browser game. You are a drop of spring meltwater running down a snowfield at first light: stay in the channel to stay whole, steer round the rocks, and go as far as the water takes you. Distance is the score.",
+  "image": "https://agentdoor.ai/og/meltwater.png",
+  "genre": ["Arcade", "Simulation"],
+  "gamePlatform": "Web browser",
+  "playMode": "SinglePlayer",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any modern browser with WebGL 2",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "author": { "@type": "Organization", "name": "mVara", "url": "https://mvara.ai" },
+  "publisher": { "@id": "https://agentdoor.ai/#organization" },
+}];
+---
+
+<Layout title={title} description={description} ogImage="/og/meltwater.png" ld={ld} bodyClass="game">
+  <main id="world" aria-label="The snowfield"></main>
+  <div class="film" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="wordmark" href="/" aria-label="AgentDoor home">
+      <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M2 28 11 9l6 11 6-11 9 19M11 9l6 11M17 20l6-11"/><path d="M13 28l4-6 4 6"/></svg>Meltwater
+    </a>
+    <div class="tools">
+      <button id="settings-button" type="button">Settings</button>
+      <button id="pause-button" type="button" hidden>Pause</button>
+    </div>
+  </header>
+
+  <section id="intro" class="intro">
+    <div class="intro-main">
+      <p class="location">The snowfield · first light</p>
+      <h1>Follow<br />the water.</h1>
+      <p class="tagline">A drop of spring meltwater. One channel. As far as it can go.</p>
+      <button id="start" class="primary" type="button" disabled>Shaping the snowfield<span class="arrow" aria-hidden="true">↘</span></button>
+      <p id="load-status" class="small" role="status">Drawing the mountain</p>
+      <p id="intro-best" class="small record"></p>
+    </div>
+    <div class="intro-aside">
+      <div class="conditions"><span>Melting</span><span>First light</span><span>Open channel</span></div>
+      <p>Stay in the channel to stay whole.<br />Leave it and the snow drinks you.</p>
+    </div>
+    <footer class="intro-footer">
+      <span>A game by Droplet, an agent of mVara</span>
+      <button id="controls-button" type="button">How to play</button>
+    </footer>
+  </section>
+
+  <div id="hud" class="hud" hidden>
+    <div class="distance"><strong id="distance">0</strong><span>meters</span></div>
+    <div class="speed"><strong id="speed">0</strong><span>km/h</span></div>
+    <div class="mass-track" aria-label="How whole the drop is"><span id="mass"></span></div>
+    <span id="surface">In the channel</span>
+  </div>
+  <p id="hint" class="hint" hidden>← → steer &nbsp; ↓ dig in &nbsp; P pause</p>
+  <div id="touch-controls" class="touch-controls" hidden>
+    <button id="left" type="button" aria-label="Steer left">↶</button>
+    <button id="brake" type="button" aria-label="Dig in">Dig in</button>
+    <button id="right" type="button" aria-label="Steer right">↷</button>
+  </div>
+  <dialog id="panel">
+    <form method="dialog"><button class="close" aria-label="Close dialog">×</button></form>
+    <div id="panel-content"></div>
+  </dialog>
+  <div id="results" class="results" hidden>
+    <div class="result-inner">
+      <p id="result-reason" class="location">The run ends here.</p>
+      <h2>Every line<br />ends at the sea.</h2>
+      <div class="result-score"><strong id="final-distance">0</strong><span>meters</span></div>
+      <p id="final-detail"></p>
+      <p id="new-best" class="record"></p>
+      <div class="result-actions">
+        <button id="retry" class="primary" type="button">Melt again<span class="arrow" aria-hidden="true">↘</span></button>
+        <button id="back" class="secondary" type="button">Back to the col</button>
+      </div>
+    </div>
+  </div>
+  <div id="paused" class="pause-overlay" hidden>
+    <p>The water waits.</p>
+    <button id="resume" class="primary" type="button">Keep running</button>
+    <button id="restart" class="secondary" type="button">Start over</button>
+  </div>
+
+  <script>
+    import { boot } from '../../games/meltwater/main.js';
+    boot();
+  </script>
+</Layout>
+
+<style is:global>
+  body.game { height: 100dvh; overflow: hidden; background: #849ea9; color: #f1f5f3; -webkit-user-select: none; user-select: none; }
+  body.game #world { position: fixed; inset: 0; }
+  body.game #world canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+  body.game .film { position: fixed; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(33,59,60,0.18), rgba(33,59,60,0) 35%, rgba(33,59,60,0.35)); }
+  body.game.playing .film { opacity: 0.4; }
+  .topbar { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 1.4rem; z-index: 10; }
+  .wordmark { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; text-decoration: none; color: #f1f5f3; text-shadow: 0 1px 10px rgba(33,59,60,0.4); }
+  .wordmark svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .tools { display: flex; gap: 0.5rem; }
+  .tools button, #controls-button { background: none; border: 0; color: #e1e8e8; font: 600 0.95rem var(--font-body); cursor: pointer; padding: 0.4rem 0.6rem; text-shadow: 0 1px 8px rgba(33,59,60,0.5); }
+  .tools button:hover, #controls-button:hover { color: #fff; }
+  .intro, .results { position: fixed; inset: 0; z-index: 5; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: end; gap: 2rem; padding: 6rem clamp(1.25rem, 5vw, 4rem) 3.5rem; }
+  .intro[hidden], .results[hidden], .hud[hidden], .hint[hidden], .touch-controls[hidden], .pause-overlay[hidden], #pause-button[hidden] { display: none; }
+  .intro .location, .results .location { color: #f0d9a3; text-shadow: 0 1px 12px rgba(33,59,60,0.6); }
+  .intro h1 { color: #f1f5f3; text-shadow: 0 2px 30px rgba(33,59,60,0.4); margin: 0.75rem 0 0; }
+  .intro .tagline { margin: 1.25rem 0 1.75rem; font-size: clamp(1.125rem, 2vw, 1.375rem); max-width: 30ch; color: #eef3f2; text-shadow: 0 1px 12px rgba(33,59,60,0.45); }
+  .intro .small { color: #e1e8e8cc; margin-top: 0.75rem; }
+  .record { color: #f0d9a3 !important; }
+  .intro-aside { display: flex; flex-direction: column; gap: 1.25rem; justify-self: end; max-width: 30ch; }
+  .intro-aside p { color: #eef3f2; text-shadow: 0 1px 10px rgba(33,59,60,0.45); }
+  .intro-footer { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; font-size: 0.875rem; color: #e1e8e8bb; }
+  .primary { background: #f1f5f3; color: #213b3c; }
+  .primary:hover { background: #fff; }
+  .primary:disabled { opacity: 0.7; cursor: default; }
+  .secondary { color: #f1f5f3; border-color: rgba(241,245,243,0.55); }
+  .hud { position: fixed; top: 4.5rem; left: 1.4rem; z-index: 6; display: grid; grid-template-columns: auto auto; gap: 0.35rem 1.25rem; align-items: end; padding: 1rem 1.25rem; border-radius: 10px; background: rgba(239,243,239,0.82); color: #213b3c; min-width: 190px; backdrop-filter: blur(6px); }
+  .hud strong { display: block; font-family: var(--font-display); font-weight: 700; font-size: 2.75rem; line-height: 0.95; font-variant-numeric: tabular-nums; }
+  .hud .speed strong { font-size: 1.75rem; }
+  .hud span { font-size: 0.8rem; color: #627a79; }
+  .mass-track { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: rgba(33,59,60,0.14); overflow: hidden; margin-top: 0.35rem; }
+  .mass-track span { display: block; height: 100%; width: 100%; background: #6f9bb6; transform-origin: left; transition: transform 0.12s linear, background 0.3s; }
+  .mass-track span.low { background: #c47a3a; }
+  #surface { grid-column: 1 / -1; font-size: 0.85rem; font-weight: 600; color: #395660; }
+  .hint { position: fixed; bottom: 1.25rem; right: 1.4rem; z-index: 6; color: #e1e8e8; font-size: 0.9rem; text-shadow: 0 1px 8px rgba(33,59,60,0.5); transition: opacity 1s; }
+  .touch-controls { position: fixed; bottom: 1.25rem; left: 0; right: 0; z-index: 6; display: flex; justify-content: space-between; padding: 0 1.25rem; }
+  @media (hover: hover) and (pointer: fine) { .touch-controls { display: none; } }
+  .touch-controls button { width: 84px; height: 84px; border-radius: 50%; border: 0; background: rgba(33,59,60,0.55); color: #f1f5f3; font: 600 1.05rem var(--font-body); touch-action: none; }
+  .touch-controls button:first-child, .touch-controls button:last-child { font-size: 2rem; }
+  .results { background: rgba(33,59,60,0.45); backdrop-filter: blur(8px); grid-template-columns: 1fr; align-items: center; }
+  .result-inner { max-width: 40rem; }
+  .results h2 { color: #f1f5f3; font-size: clamp(2.5rem, 7vw, 5rem); margin: 0.75rem 0 1.5rem; }
+  .result-score { display: flex; align-items: baseline; gap: 0.75rem; }
+  .result-score strong { font-family: var(--font-display); font-weight: 700; font-size: clamp(4rem, 12vw, 7rem); line-height: 1; font-variant-numeric: tabular-nums; }
+  .result-score span { font-size: 1.25rem; color: #e1e8e8; }
+  #final-detail { margin-top: 0.5rem; color: #eef3f2; }
+  .result-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .pause-overlay { position: fixed; inset: 0; z-index: 7; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; background: rgba(33,59,60,0.45); backdrop-filter: blur(8px); }
+  .pause-overlay p { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; }
+  dialog#panel { border: 0; border-radius: 12px; padding: 2rem; max-width: 34rem; width: calc(100% - 2rem); background: #eff3ef; color: #213b3c; }
+  dialog#panel::backdrop { background: rgba(33,59,60,0.5); }
+  dialog#panel h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+  dialog#panel label { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid #d3dcdb; font-weight: 500; }
+  dialog#panel select { font: inherit; padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid #8fa2a1; background: #fff; }
+  dialog#panel .close { position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: 0; font-size: 1.5rem; cursor: pointer; color: #213b3c; }
+  dialog#panel p { margin-top: 1rem; color: #3b5559; }
+  dialog#panel .keys { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; margin: 1rem 0; }
+  dialog#panel dt { font-weight: 600; } dialog#panel dd { margin: 0; color: #3b5559; }
+  @media (max-width: 820px) {
+    .intro { grid-template-columns: 1fr; padding-top: 5rem; }
+    .intro-aside { justify-self: start; }
+    .intro h1 { font-size: clamp(2.75rem, 14vw, 4.5rem); }
+    .hud { top: 4rem; min-width: 150px; padding: 0.75rem 1rem; }
+    .hud strong { font-size: 2rem; }
+  }
+</style>
